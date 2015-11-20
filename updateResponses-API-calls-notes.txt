@@ -1,0 +1,91 @@
+##### First call to updateResponses is just to get data #####
+### POSTED DATA ####
+<request action="update" eventID="1" timestamp="${__time()}" currentPage="0" lastPage="0" prefetch="2" >
+	<accs>
+		<![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&TDS_TTSAA_Pitch&TDS_TTSAA_Rate&TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]>
+	</accs>
+	<responses></responses>
+</request>
+
+
+### Second call posts answers and gets data
+### POSTED DATA ####
+<request action="update" eventID="2" timestamp="${__time()}" currentPage="2" lastPage="2" prefetch="2" >
+	<accs>
+		<![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&TDS_TTSAA_Pitch&TDS_TTSAA_Rate&TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]>
+	</accs>
+	<responses>
+		<response id="187-1700" bankKey="187" itemKey="1700" segmentID="SBAC ELA 3-ELA-3" pageKey="f3f02737-e0f3-4a5f-bb03-d014d7ff3478" page="1" position="2" sequence="1" selected="true" valid="true" >
+			<filePath>70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9RxIaQWV%2BIJdeDNkrL9dG02Znp3LQTd49mjV8ThTgH3%2B</filePath>
+			<value>
+				<![CDATA[<itemResponse><response id="EBSR1"><value>A</value></response><response id="EBSR2"><value>B</value></response></itemResponse>]]>
+			</value>
+		</response>
+		<response id="187-1692" bankKey="187" itemKey="1692" segmentID="SBAC ELA 3-ELA-3" pageKey="f3f02737-e0f3-4a5f-bb03-d014d7ff3478" page="1" position="1" sequence="1" selected="true" valid="true" >
+			<filePath>70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9TUpcZpbJ6864gySGRrzxJwAtZ3wysD6P%2BK5Kt3gTINa</filePath>
+			<value><![CDATA[test textarea content]]></value>
+		</response>
+	</responses>
+</request>
+
+
+### Third call 
+### POSTED DATA ###
+<request action="update" eventID="3" timestamp="${__time()}" currentPage="3" lastPage="4" prefetch="2" >
+	<accs>
+		<![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&TDS_TTSAA_Pitch&TDS_TTSAA_Rate&TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]>
+	</accs>
+	<responses>
+		<response id="187-1701" bankKey="187" itemKey="1701" segmentID="SBAC ELA 3-ELA-3" pageKey="23ac39ce-a413-4203-95ea-ede05cca519b" page="2" position="3" sequence="1" selected="true" valid="true" >
+			<filePath>70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9RJPhg%2F5QKQQl7cYlNNjlpe12w%2FimSVw7DP4VUJVFb%2B8</filePath>
+			<value><![CDATA[more test conent in textarea]]></value>
+		</response>
+	</responses>
+</request>
+
+
+### Fourth call
+### POSTED DATA ###
+<request action="update" eventID="4" timestamp="${__time()}" currentPage="4" lastPage="5" prefetch="2" >
+	<accs>
+		<![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&TDS_TTSAA_Pitch&TDS_TTSAA_Rate&TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]>
+	</accs>
+	<responses>
+		<response id="187-1703" bankKey="187" itemKey="1703" segmentID="SBAC ELA 3-ELA-3" pageKey="ce1533f4-f43f-4e22-9bcf-aaad5f88a4da" page="3" position="4" sequence="1" selected="true" valid="true" >
+			<filePath>70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9eIusv4HTXpZSrg6LsnddOaHMuVDyDSbfbCxwk7mEwxD</filePath>
+			<value><![CDATA[A]]></value>
+		</response>
+	</responses>
+</request>
+
+
+### Fifth call
+### POSTED DATA ###
+<request action="update" eventID="5" timestamp="${__time()}" currentPage="5" lastPage="5" prefetch="2" >
+	<accs>
+		<![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&TDS_TTSAA_Pitch&TDS_TTSAA_Rate&TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]>
+	</accs>
+	<responses>
+		<response id="187-1728" bankKey="187" itemKey="1728" segmentID="SBAC ELA 3-ELA-3" pageKey="6f978827-262c-4b14-b64f-d55ae543dc59" page="4" position="5" sequence="1" selected="true" valid="true" >
+			<filePath>70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9ScX5vg7LspP5Kbb2poLM4II6Y%2BPGVK96V8HR7RbRnmh</filePath>
+			<value><![CDATA[A,C]]></value>
+		</response>
+	</responses>
+</request>
+
+
+### Sixth call
+### POSTED DATA ###
+<request action="update" eventID="6" timestamp="${__time()}" currentPage="5" lastPage="5" prefetch="2" >
+	<accs>
+		<![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&TDS_TTSAA_Pitch&TDS_TTSAA_Rate&TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]>
+	</accs>
+	<responses>
+		<response id="187-1690" bankKey="187" itemKey="1690" segmentID="SBAC ELA 3-ELA-3" pageKey="546a4a2e-2e1d-42ff-9cf5-2d7edb2b185b" page="5" position="6" sequence="1" selected="true" valid="true" >
+			<filePath>70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9UDoaVf%2BTGfTA7VebwM0EROTjDgqlR1LcCB97Cg3oa05</filePath>
+			<value>
+				<![CDATA[<itemResponse><response id="RESPONSE"><value>1 a</value><value>2 b</value><value>3 c</value><value>4 b</value></response></itemResponse>]]>
+			</value>
+		</response>
+	</responses>
+</request>
