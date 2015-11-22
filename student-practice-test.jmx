@@ -160,6 +160,12 @@
           <hashTree/>
         </hashTree>
       </hashTree>
+      <DNSCacheManager guiclass="DNSCachePanel" testclass="DNSCacheManager" testname="DNS Cache Manager" enabled="true">
+        <collectionProp name="DNSCacheManager.servers"/>
+        <boolProp name="DNSCacheManager.clearEachIteration">false</boolProp>
+        <boolProp name="DNSCacheManager.isCustomResolver">false</boolProp>
+      </DNSCacheManager>
+      <hashTree/>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
           <elementProp name="DOMAIN" elementType="Argument">
@@ -1178,8 +1184,8 @@
             <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
               <stringProp name="RegexExtractor.refname">groupInfo</stringProp>
-              <stringProp name="RegexExtractor.regex">&lt;page.*?number=&quot;([0-9]+?)&quot;.*?&lt;group id=&quot;(.*?)&quot;</stringProp>
-              <stringProp name="RegexExtractor.template">$1$$2$</stringProp>
+              <stringProp name="RegexExtractor.regex">&lt;page.*?number=&quot;([0-9]+?)&quot;.*?&lt;group id=&quot;(.*?)&quot; key=&quot;(.*?)&quot;</stringProp>
+              <stringProp name="RegexExtractor.template">$1$$2$$3$</stringProp>
               <stringProp name="RegexExtractor.default"></stringProp>
               <stringProp name="RegexExtractor.match_number">-1</stringProp>
             </RegexExtractor>
@@ -1210,7 +1216,7 @@
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?n=${groupInfo_matchNr}&amp;groupID=${__V(groupInfo_${groupNum}_g2)}&amp;page=${__V(groupInfo_${groupNum}_g1)}&amp;pageKey=${__UUID}&amp;new=false&amp;attempt=1</stringProp>
+              <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=${__V(groupInfo_${groupNum}_g2)}&amp;page=${__V(groupInfo_${groupNum}_g1)}&amp;pageKey=${__V(groupInfo_${groupNum}_g3)}&amp;new=false&amp;attempt=1</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1218,7 +1224,6 @@
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">TODO: figure out what pageKey is and where it comes from, right now it is random GUID</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
