@@ -173,6 +173,12 @@
             <stringProp name="Argument.value">practice.smarterbalanced.org</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="ACC_DATA" elementType="Argument">
+            <stringProp name="Argument.name">ACC_DATA</stringProp>
+            <stringProp name="Argument.value">&lt;![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]&gt;</stringProp>
+            <stringProp name="Argument.desc">This is the ACC data that is posted with each updateResponse call.  TODO: make it dynamic based on the student or something.</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -1118,7 +1124,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;1&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;0&quot; lastPage=&quot;0&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;&lt;![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]&gt;&lt;/accs&gt;&lt;responses&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
+                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;1&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;0&quot; lastPage=&quot;0&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -1184,8 +1190,8 @@
             <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
               <stringProp name="RegexExtractor.useHeaders">false</stringProp>
               <stringProp name="RegexExtractor.refname">groupInfo</stringProp>
-              <stringProp name="RegexExtractor.regex">&lt;page.*?number=&quot;([0-9]+?)&quot;.*?&lt;group id=&quot;(.*?)&quot; key=&quot;(.*?)&quot;</stringProp>
-              <stringProp name="RegexExtractor.template">$1$$2$$3$</stringProp>
+              <stringProp name="RegexExtractor.regex">&lt;page.*?number=&quot;([0-9]+?)&quot;.*?&lt;segment position=&quot;([0-9]+?)&quot; id=&quot;(.*?)&quot;/&gt;&lt;group id=&quot;(.*?)&quot; key=&quot;(.*?)&quot;</stringProp>
+              <stringProp name="RegexExtractor.template">$1$$2$$3$$4$$5$</stringProp>
               <stringProp name="RegexExtractor.default"></stringProp>
               <stringProp name="RegexExtractor.match_number">-1</stringProp>
             </RegexExtractor>
@@ -1216,7 +1222,7 @@
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
               <stringProp name="HTTPSampler.protocol"></stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=${__V(groupInfo_${groupNum}_g2)}&amp;page=${__V(groupInfo_${groupNum}_g1)}&amp;pageKey=${__V(groupInfo_${groupNum}_g3)}&amp;new=false&amp;attempt=1</stringProp>
+              <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=${__V(groupInfo_${groupNum}_g4)}&amp;page=${__V(groupInfo_${groupNum}_g1)}&amp;pageKey=${__V(groupInfo_${groupNum}_g5)}&amp;new=false&amp;attempt=1</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1351,730 +1357,6 @@
               <hashTree/>
             </hashTree>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get first page content" enabled="false">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="accs" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                  <stringProp name="Argument.name">accs</stringProp>
-                  <stringProp name="Argument.value">American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=G-187-3709-0&amp;page=1&amp;pageKey=f3f02737-e0f3-4a5f-bb03-d014d7ff3478&amp;new=false&amp;attempt=1</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                </elementProp>
-                <elementProp name="Pragma" elementType="Header">
-                  <stringProp name="Header.name">Pragma</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                </elementProp>
-                <elementProp name="X-Requested-With" elementType="Header">
-                  <stringProp name="Header.name">X-Requested-With</stringProp>
-                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                </elementProp>
-                <elementProp name="Content-Type" elementType="Header">
-                  <stringProp name="Header.name">Content-Type</stringProp>
-                  <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
-                </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
-            <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Find word lists" enabled="true">
-              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-              <stringProp name="RegexExtractor.refname">wordList</stringProp>
-              <stringProp name="RegexExtractor.regex">&lt;resource type=&quot;wordList&quot; bankKey=&quot;([0-9]+?)&quot; itemKey=&quot;([0-9]+?)&quot;/&gt;</stringProp>
-              <stringProp name="RegexExtractor.template">$1$$2$</stringProp>
-              <stringProp name="RegexExtractor.default"></stringProp>
-              <stringProp name="RegexExtractor.match_number">-1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-          </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop through word lists from response" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${wordList_matchNr}</stringProp>
-          </LoopController>
-          <hashTree>
-            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-              <stringProp name="CounterConfig.start">1</stringProp>
-              <stringProp name="CounterConfig.end">${wordList_matchNr}</stringProp>
-              <stringProp name="CounterConfig.incr">1</stringProp>
-              <stringProp name="CounterConfig.name">groupNum</stringProp>
-              <stringProp name="CounterConfig.format">#</stringProp>
-              <boolProp name="CounterConfig.per_user">true</boolProp>
-              <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
-            </CounterConfig>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="bankKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__V(wordList_${groupNum}_g1)}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">bankKey</stringProp>
-                  </elementProp>
-                  <elementProp name="itemKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__V(wordList_${groupNum}_g2)}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">itemKey</stringProp>
-                  </elementProp>
-                  <elementProp name="TDS_ACCS" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">TDS_ACCS</stringProp>
-                  </elementProp>
-                  <elementProp name="index" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">1</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">index</stringProp>
-                  </elementProp>
-                  <elementProp name="index" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">2</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">index</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">TODO: look intowhat the index values that are posted are?</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="WordList resolve 1" enabled="false">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="bankKey" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">bankKey</stringProp>
-                  <stringProp name="Argument.value">187</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="itemKey" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">itemKey</stringProp>
-                  <stringProp name="Argument.value">1756</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">3</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">4</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">5</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="TDS_ACCS" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">TDS_ACCS</stringProp>
-                  <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                </elementProp>
-                <elementProp name="Pragma" elementType="Header">
-                  <stringProp name="Header.name">Pragma</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                </elementProp>
-                <elementProp name="X-Requested-With" elementType="Header">
-                  <stringProp name="Header.name">X-Requested-With</stringProp>
-                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                </elementProp>
-                <elementProp name="Content-Type" elementType="Header">
-                  <stringProp name="Header.name">Content-Type</stringProp>
-                  <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
-                </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
-            <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="WordList resolve 2" enabled="false">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="bankKey" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">bankKey</stringProp>
-                  <stringProp name="Argument.value">187</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="itemKey" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">itemKey</stringProp>
-                  <stringProp name="Argument.value">1753</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">2</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">1</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="TDS_ACCS" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">TDS_ACCS</stringProp>
-                  <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                </elementProp>
-                <elementProp name="Pragma" elementType="Header">
-                  <stringProp name="Header.name">Pragma</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                </elementProp>
-                <elementProp name="X-Requested-With" elementType="Header">
-                  <stringProp name="Header.name">X-Requested-With</stringProp>
-                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                </elementProp>
-                <elementProp name="Content-Type" elementType="Header">
-                  <stringProp name="Header.name">Content-Type</stringProp>
-                  <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
-                </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
-            <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="WordList resolve 3" enabled="false">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="bankKey" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">bankKey</stringProp>
-                  <stringProp name="Argument.value">187</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="itemKey" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">itemKey</stringProp>
-                  <stringProp name="Argument.value">1732</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">1</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">2</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">3</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">4</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">5</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="TDS_ACCS" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">TDS_ACCS</stringProp>
-                  <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                </elementProp>
-                <elementProp name="Pragma" elementType="Header">
-                  <stringProp name="Header.name">Pragma</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                </elementProp>
-                <elementProp name="X-Requested-With" elementType="Header">
-                  <stringProp name="Header.name">X-Requested-With</stringProp>
-                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                </elementProp>
-                <elementProp name="Content-Type" elementType="Header">
-                  <stringProp name="Header.name">Content-Type</stringProp>
-                  <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
-                </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
-            <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get second page content" enabled="false">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="accs" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                  <stringProp name="Argument.name">accs</stringProp>
-                  <stringProp name="Argument.value">American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=I-187-1701&amp;page=2&amp;pageKey=23ac39ce-a413-4203-95ea-ede05cca519b&amp;new=false&amp;attempt=1</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                </elementProp>
-                <elementProp name="Pragma" elementType="Header">
-                  <stringProp name="Header.name">Pragma</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                </elementProp>
-                <elementProp name="X-Requested-With" elementType="Header">
-                  <stringProp name="Header.name">X-Requested-With</stringProp>
-                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                </elementProp>
-                <elementProp name="Content-Type" elementType="Header">
-                  <stringProp name="Header.name">Content-Type</stringProp>
-                  <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
-                </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
-            <hashTree/>
-            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Find word lists" enabled="true">
-              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-              <stringProp name="RegexExtractor.refname">wordList</stringProp>
-              <stringProp name="RegexExtractor.regex">&lt;resource type=&quot;wordList&quot; bankKey=&quot;([0-9]+?)&quot; itemKey=&quot;([0-9]+?)&quot;/&gt;</stringProp>
-              <stringProp name="RegexExtractor.template">$1$$2$</stringProp>
-              <stringProp name="RegexExtractor.default"></stringProp>
-              <stringProp name="RegexExtractor.match_number">-1</stringProp>
-            </RegexExtractor>
-            <hashTree/>
-          </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="WordList resolve 4" enabled="false">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="bankKey" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">bankKey</stringProp>
-                  <stringProp name="Argument.value">187</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="itemKey" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">itemKey</stringProp>
-                  <stringProp name="Argument.value">1733</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">1</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="index" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">index</stringProp>
-                  <stringProp name="Argument.value">3</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="TDS_ACCS" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">TDS_ACCS</stringProp>
-                  <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain"></stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-            <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="Referer" elementType="Header">
-                  <stringProp name="Header.name">Referer</stringProp>
-                  <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Language" elementType="Header">
-                  <stringProp name="Header.name">Accept-Language</stringProp>
-                  <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                </elementProp>
-                <elementProp name="Pragma" elementType="Header">
-                  <stringProp name="Header.name">Pragma</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept" elementType="Header">
-                  <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                </elementProp>
-                <elementProp name="X-Requested-With" elementType="Header">
-                  <stringProp name="Header.name">X-Requested-With</stringProp>
-                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                </elementProp>
-                <elementProp name="Content-Type" elementType="Header">
-                  <stringProp name="Header.name">Content-Type</stringProp>
-                  <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
-                </elementProp>
-                <elementProp name="Cache-Control" elementType="Header">
-                  <stringProp name="Header.name">Cache-Control</stringProp>
-                  <stringProp name="Header.value">no-cache</stringProp>
-                </elementProp>
-                <elementProp name="Accept-Encoding" elementType="Header">
-                  <stringProp name="Header.name">Accept-Encoding</stringProp>
-                  <stringProp name="Header.value">gzip, deflate</stringProp>
-                </elementProp>
-                <elementProp name="User-Agent" elementType="Header">
-                  <stringProp name="Header.name">User-Agent</stringProp>
-                  <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
-            <hashTree/>
-          </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Request all word lists" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="LoopController.loops">${wordList_matchNr}</stringProp>
-          </LoopController>
-          <hashTree>
-            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-              <stringProp name="CounterConfig.start">1</stringProp>
-              <stringProp name="CounterConfig.end">${wordList_matchNr}</stringProp>
-              <stringProp name="CounterConfig.incr">1</stringProp>
-              <stringProp name="CounterConfig.name">groupNum</stringProp>
-              <stringProp name="CounterConfig.format">#</stringProp>
-              <boolProp name="CounterConfig.per_user">true</boolProp>
-              <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
-            </CounterConfig>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="bankKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__V(wordList_${groupNum}_g1)}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">bankKey</stringProp>
-                  </elementProp>
-                  <elementProp name="itemKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__V(wordList_${groupNum}_g2)}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">itemKey</stringProp>
-                  </elementProp>
-                  <elementProp name="TDS_ACCS" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">TDS_ACCS</stringProp>
-                  </elementProp>
-                  <elementProp name="index" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">1</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">index</stringProp>
-                  </elementProp>
-                  <elementProp name="index" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">2</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">index</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">TODO: look intowhat the index values that are posted are?</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree/>
-          </hashTree>
         </hashTree>
         <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Question Group 2" enabled="true">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -2087,7 +1369,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;2&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;2&quot; lastPage=&quot;2&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;&lt;![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]&gt;&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1700&quot; bankKey=&quot;187&quot; itemKey=&quot;1700&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;f3f02737-e0f3-4a5f-bb03-d014d7ff3478&quot; page=&quot;1&quot; position=&quot;2&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9RxIaQWV%2BIJdeDNkrL9dG02Znp3LQTd49mjV8ThTgH3%2B&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[&lt;itemResponse&gt;&lt;response id=&quot;EBSR1&quot;&gt;&lt;value&gt;A&lt;/value&gt;&lt;/response&gt;&lt;response id=&quot;EBSR2&quot;&gt;&lt;value&gt;B&lt;/value&gt;&lt;/response&gt;&lt;/itemResponse&gt;]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;response id=&quot;187-1692&quot; bankKey=&quot;187&quot; itemKey=&quot;1692&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;f3f02737-e0f3-4a5f-bb03-d014d7ff3478&quot; page=&quot;1&quot; position=&quot;1&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9TUpcZpbJ6864gySGRrzxJwAtZ3wysD6P%2BK5Kt3gTINa&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[test textarea content]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
+                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;2&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;2&quot; lastPage=&quot;2&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;&lt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1700&quot; bankKey=&quot;187&quot; itemKey=&quot;1700&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;f3f02737-e0f3-4a5f-bb03-d014d7ff3478&quot; page=&quot;1&quot; position=&quot;2&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9RxIaQWV%2BIJdeDNkrL9dG02Znp3LQTd49mjV8ThTgH3%2B&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[&lt;itemResponse&gt;&lt;response id=&quot;EBSR1&quot;&gt;&lt;value&gt;A&lt;/value&gt;&lt;/response&gt;&lt;response id=&quot;EBSR2&quot;&gt;&lt;value&gt;B&lt;/value&gt;&lt;/response&gt;&lt;/itemResponse&gt;]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;response id=&quot;187-1692&quot; bankKey=&quot;187&quot; itemKey=&quot;1692&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;f3f02737-e0f3-4a5f-bb03-d014d7ff3478&quot; page=&quot;1&quot; position=&quot;1&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9TUpcZpbJ6864gySGRrzxJwAtZ3wysD6P%2BK5Kt3gTINa&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[test textarea content]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -2585,7 +1867,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;3&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;3&quot; lastPage=&quot;4&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;&lt;![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]&gt;&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1701&quot; bankKey=&quot;187&quot; itemKey=&quot;1701&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;23ac39ce-a413-4203-95ea-ede05cca519b&quot; page=&quot;2&quot; position=&quot;3&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9RJPhg%2F5QKQQl7cYlNNjlpe12w%2FimSVw7DP4VUJVFb%2B8&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[more test conent in textarea]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
+                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;3&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;3&quot; lastPage=&quot;4&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1701&quot; bankKey=&quot;187&quot; itemKey=&quot;1701&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;23ac39ce-a413-4203-95ea-ede05cca519b&quot; page=&quot;2&quot; position=&quot;3&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9RJPhg%2F5QKQQl7cYlNNjlpe12w%2FimSVw7DP4VUJVFb%2B8&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[more test conent in textarea]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -2730,7 +2012,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;4&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;4&quot; lastPage=&quot;5&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;&lt;![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]&gt;&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1703&quot; bankKey=&quot;187&quot; itemKey=&quot;1703&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;ce1533f4-f43f-4e22-9bcf-aaad5f88a4da&quot; page=&quot;3&quot; position=&quot;4&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9eIusv4HTXpZSrg6LsnddOaHMuVDyDSbfbCxwk7mEwxD&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[A]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
+                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;4&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;4&quot; lastPage=&quot;5&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1703&quot; bankKey=&quot;187&quot; itemKey=&quot;1703&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;ce1533f4-f43f-4e22-9bcf-aaad5f88a4da&quot; page=&quot;3&quot; position=&quot;4&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9eIusv4HTXpZSrg6LsnddOaHMuVDyDSbfbCxwk7mEwxD&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[A]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -2805,7 +2087,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;5&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;5&quot; lastPage=&quot;5&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;&lt;![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]&gt;&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1728&quot; bankKey=&quot;187&quot; itemKey=&quot;1728&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;6f978827-262c-4b14-b64f-d55ae543dc59&quot; page=&quot;4&quot; position=&quot;5&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9ScX5vg7LspP5Kbb2poLM4II6Y%2BPGVK96V8HR7RbRnmh&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[A,C]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
+                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;5&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;5&quot; lastPage=&quot;5&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1728&quot; bankKey=&quot;187&quot; itemKey=&quot;1728&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;6f978827-262c-4b14-b64f-d55ae543dc59&quot; page=&quot;4&quot; position=&quot;5&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9ScX5vg7LspP5Kbb2poLM4II6Y%2BPGVK96V8HR7RbRnmh&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[A,C]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
@@ -2880,7 +2162,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;6&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;5&quot; lastPage=&quot;5&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;&lt;![CDATA[American Sign Language:TDS_ASL0;Audio Playback Controls:TDS_APC_SCRUBBER;Braille Type:TDS_BT0;Closed Captioning:TDS_ClosedCap0;Color Choices:TDS_CC0;Expandable Passages:TDS_ExpandablePassages1;Font Type:TDS_FT_Serif;Hardware Checks:TDS_HWPlayback;Highlight:TDS_Highlight1;IntraTest TTS Controls:TDS_ITTC0;Item Font Size:TDS_IF_S14;Item Tools Menu:TDS_ITM1;Language:ENU;Mark for Review:TDS_MfR1;Masking:TDS_Masking0;Mute System Volume:TDS_Mute0;Passage Font Size:TDS_F_S14;Permissive Mode:TDS_PM0;Print on Request:TDS_PoD0;Print Size:TDS_PS_L0;Review Screen Layout:TDS_RSL_ListView;Streamlined Mode:TDS_SLM0;Strikethrough:TDS_ST1;Student Comments:TDS_SCNotepad;System Volume Control:TDS_SVC1;Test Progress Indicator:TDS_TPI_ResponsesFix;Test Shell:TDS_TS_Universal;TTS:TDS_TTS0;TTS Audio Adjustments:TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP;TTS Pausing:TDS_TTSPause1;TTX Business Rules:TDS_TTX_A203;Tutorial:TDS_T1;Word List:TDS_WL_Glossary]]&gt;&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1690&quot; bankKey=&quot;187&quot; itemKey=&quot;1690&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;546a4a2e-2e1d-42ff-9cf5-2d7edb2b185b&quot; page=&quot;5&quot; position=&quot;6&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9UDoaVf%2BTGfTA7VebwM0EROTjDgqlR1LcCB97Cg3oa05&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[&lt;itemResponse&gt;&lt;response id=&quot;RESPONSE&quot;&gt;&lt;value&gt;1 a&lt;/value&gt;&lt;value&gt;2 b&lt;/value&gt;&lt;value&gt;3 c&lt;/value&gt;&lt;value&gt;4 b&lt;/value&gt;&lt;/response&gt;&lt;/itemResponse&gt;]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
+                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;6&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;5&quot; lastPage=&quot;5&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1690&quot; bankKey=&quot;187&quot; itemKey=&quot;1690&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;546a4a2e-2e1d-42ff-9cf5-2d7edb2b185b&quot; page=&quot;5&quot; position=&quot;6&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9UDoaVf%2BTGfTA7VebwM0EROTjDgqlR1LcCB97Cg3oa05&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[&lt;itemResponse&gt;&lt;response id=&quot;RESPONSE&quot;&gt;&lt;value&gt;1 a&lt;/value&gt;&lt;value&gt;2 b&lt;/value&gt;&lt;value&gt;3 c&lt;/value&gt;&lt;value&gt;4 b&lt;/value&gt;&lt;/response&gt;&lt;/itemResponse&gt;]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
