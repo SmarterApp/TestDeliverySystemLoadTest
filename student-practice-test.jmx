@@ -179,10 +179,9 @@
             <stringProp name="Argument.desc">This is the ACC data that is posted with each updateResponse call.  TODO: make it dynamic based on the student or something.</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="RESPONSES_XML" elementType="Argument">
-            <stringProp name="Argument.name">RESPONSES_XML</stringProp>
-            <stringProp name="Argument.value"></stringProp>
-            <stringProp name="Argument.desc">Used in the BeanShell post processors for the XML  data for the updateResponses call</stringProp>
+          <elementProp name="TOTAL_PAGES" elementType="Argument">
+            <stringProp name="Argument.name">TOTAL_PAGES</stringProp>
+            <stringProp name="Argument.value">0</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -1302,16 +1301,23 @@
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
                 <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="script">import org.opentestsystem.loadtesting.tds-loadtesting;
+                <stringProp name="script">import org.opentestsystem.loadtesting.tds_loadtesting;
 
 PageContent pageContent = new PageContent(prev.getResponseDataAsString());
 
 String groupNum = vars.get(&quot;groupNum&quot;);
-String pageKey = vars.get(&quot;groupInfo_&quot; + groupNum + &quot;_g1&quot;);
+String pageKey = vars.get(&quot;groupInfo_&quot; + groupNum + &quot;_g5&quot;);
+
+log.info(&quot;pageKey: &quot; + pageKey);
+
+Integer pages = Integer.parseInt(vars.get(&quot;TOTAL_PAGES&quot;));
 
 String responsesXml = pageContent.get_responsesXml(pageKey);
 log.info(responsesXml);
-vars.put(&quot;RESPONSES_XML&quot;, responsesXml);</stringProp>
+vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
+
+pages++;
+vars.put(&quot;TOTAL_PAGES&quot;, pages.toString());</stringProp>
               </BeanShellPostProcessor>
               <hashTree/>
             </hashTree>
@@ -1368,12 +1374,12 @@ vars.put(&quot;RESPONSES_XML&quot;, responsesXml);</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                       <stringProp name="Argument.name">index</stringProp>
                     </elementProp>
-                    <elementProp name="xml" elementType="HTTPArgument">
+                    <elementProp name="XML" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.value">${RESPONSES_XML}</stringProp>
+                      <stringProp name="Argument.value">${RESPONSES_XML_1}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                      <stringProp name="Argument.name">xml</stringProp>
+                      <stringProp name="Argument.name">XML</stringProp>
                     </elementProp>
                   </collectionProp>
                 </elementProp>

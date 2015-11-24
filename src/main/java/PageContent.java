@@ -13,11 +13,9 @@ import java.util.List;
 public class PageContent {
     private Content _content;
 
-    PageContent(String pageContentResponse) {
+    public PageContent(String pageContentResponse) {
         init(pageContentResponse);
     }
-
-
 
     private void init(String pageContentResponse) {
         try {

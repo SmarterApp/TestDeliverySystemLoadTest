@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.opentestsystem.loadtesting</groupId>
-    <artifactId>tds-loadtesting</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>tds_loadtesting</artifactId>
+    <version>1.0</version>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
