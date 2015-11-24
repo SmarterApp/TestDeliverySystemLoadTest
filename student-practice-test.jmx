@@ -179,6 +179,12 @@
             <stringProp name="Argument.desc">This is the ACC data that is posted with each updateResponse call.  TODO: make it dynamic based on the student or something.</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="RESPONSES_XML" elementType="Argument">
+            <stringProp name="Argument.name">RESPONSES_XML</stringProp>
+            <stringProp name="Argument.value"></stringProp>
+            <stringProp name="Argument.desc">Used in the BeanShell post processors for the XML  data for the updateResponses call</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -196,7 +202,7 @@
         <boolProp name="HTTPSampler.image_parser">true</boolProp>
         <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
-        <stringProp name="HTTPSampler.embedded_url_re">https?://practice.smarterbalanced.org/.*</stringProp>
+        <stringProp name="HTTPSampler.embedded_url_re">https?://${DOMAIN}/.*</stringProp>
       </ConfigTestElement>
       <hashTree/>
       <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
@@ -676,54 +682,63 @@
                   <stringProp name="Argument.name">proctorKey</stringProp>
                   <stringProp name="Argument.value"></stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="proctorName" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">proctorName</stringProp>
                   <stringProp name="Argument.value"></stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="testKey" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">true</boolProp>
                   <stringProp name="Argument.name">testKey</stringProp>
                   <stringProp name="Argument.value">(SBAC_PT)SBAC ELA 3-ELA-3-Spring-2014-2015</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="testID" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">true</boolProp>
                   <stringProp name="Argument.name">testID</stringProp>
                   <stringProp name="Argument.value">SBAC ELA 3-ELA-3</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="oppKey" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">oppKey</stringProp>
                   <stringProp name="Argument.value">00000000-0000-0000-0000-000000000000</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="opportunity" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">opportunity</stringProp>
                   <stringProp name="Argument.value">1</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="subject" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">subject</stringProp>
                   <stringProp name="Argument.value">ELA</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="grade" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
                   <stringProp name="Argument.name">grade</stringProp>
                   <stringProp name="Argument.value">3</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
                 <elementProp name="segment" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">true</boolProp>
                   <stringProp name="Argument.name">segment</stringProp>
                   <stringProp name="Argument.value">0#ENU,TDS_ASL0,TDS_BT0,TDS_ClosedCap0,TDS_CC0,TDS_Highlight1,TDS_MfR1,TDS_Masking0,TDS_PoD0,TDS_ST1,TDS_TTS0,TDS_T1,TDS_ITM1,TDS_PM0,TDS_TTSAA_Volume&amp;TDS_TTSAA_Pitch&amp;TDS_TTSAA_Rate&amp;TDS_TTSAA_SelectVP,TDS_APC_SCRUBBER,TDS_ExpandablePassages1,TDS_FT_Serif,TDS_IF_S14,TDS_Mute0,TDS_F_S14,TDS_PS_L0,TDS_RSL_ListView,TDS_SLM0,TDS_SVC1,TDS_TS_Universal,TDS_TTSPause1,TDS_TTX_A203,TDS_WL_Glossary,TDS_ITTC0,TDS_SCNotepad,TDS_TPI_ResponsesFix,TDS_HWPlayback</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -822,6 +837,7 @@
                   <stringProp name="Argument.name">testKey</stringProp>
                   <stringProp name="Argument.value">(SBAC_PT)SBAC ELA 3-ELA-3-Spring-2014-2015</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -1282,6 +1298,22 @@
                 <stringProp name="RegexExtractor.match_number">-1</stringProp>
               </RegexExtractor>
               <hashTree/>
+              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+                <stringProp name="filename"></stringProp>
+                <stringProp name="parameters"></stringProp>
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="script">import org.opentestsystem.loadtesting.tds-loadtesting;
+
+PageContent pageContent = new PageContent(prev.getResponseDataAsString());
+
+String groupNum = vars.get(&quot;groupNum&quot;);
+String pageKey = vars.get(&quot;groupInfo_&quot; + groupNum + &quot;_g1&quot;);
+
+String responsesXml = pageContent.get_responsesXml(pageKey);
+log.info(responsesXml);
+vars.put(&quot;RESPONSES_XML&quot;, responsesXml);</stringProp>
+              </BeanShellPostProcessor>
+              <hashTree/>
             </hashTree>
             <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop through word lists from response" enabled="true">
               <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -1336,6 +1368,13 @@
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                       <stringProp name="Argument.name">index</stringProp>
                     </elementProp>
+                    <elementProp name="xml" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">${RESPONSES_XML}</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                      <stringProp name="Argument.name">xml</stringProp>
+                    </elementProp>
                   </collectionProp>
                 </elementProp>
                 <stringProp name="HTTPSampler.domain"></stringProp>
@@ -1369,7 +1408,7 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;2&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;2&quot; lastPage=&quot;2&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;&lt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1700&quot; bankKey=&quot;187&quot; itemKey=&quot;1700&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;f3f02737-e0f3-4a5f-bb03-d014d7ff3478&quot; page=&quot;1&quot; position=&quot;2&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9RxIaQWV%2BIJdeDNkrL9dG02Znp3LQTd49mjV8ThTgH3%2B&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[&lt;itemResponse&gt;&lt;response id=&quot;EBSR1&quot;&gt;&lt;value&gt;A&lt;/value&gt;&lt;/response&gt;&lt;response id=&quot;EBSR2&quot;&gt;&lt;value&gt;B&lt;/value&gt;&lt;/response&gt;&lt;/itemResponse&gt;]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;response id=&quot;187-1692&quot; bankKey=&quot;187&quot; itemKey=&quot;1692&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;f3f02737-e0f3-4a5f-bb03-d014d7ff3478&quot; page=&quot;1&quot; position=&quot;1&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9TUpcZpbJ6864gySGRrzxJwAtZ3wysD6P%2BK5Kt3gTINa&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[test textarea content]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
+                  <stringProp name="Argument.value">&lt;request action=&quot;update&quot; eventID=&quot;2&quot; timestamp=&quot;${__time()}&quot; currentPage=&quot;2&quot; lastPage=&quot;2&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;response id=&quot;187-1700&quot; bankKey=&quot;187&quot; itemKey=&quot;1700&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;f3f02737-e0f3-4a5f-bb03-d014d7ff3478&quot; page=&quot;1&quot; position=&quot;2&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9RxIaQWV%2BIJdeDNkrL9dG02Znp3LQTd49mjV8ThTgH3%2B&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[&lt;itemResponse&gt;&lt;response id=&quot;EBSR1&quot;&gt;&lt;value&gt;A&lt;/value&gt;&lt;/response&gt;&lt;response id=&quot;EBSR2&quot;&gt;&lt;value&gt;B&lt;/value&gt;&lt;/response&gt;&lt;/itemResponse&gt;]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;response id=&quot;187-1692&quot; bankKey=&quot;187&quot; itemKey=&quot;1692&quot; segmentID=&quot;SBAC ELA 3-ELA-3&quot; pageKey=&quot;f3f02737-e0f3-4a5f-bb03-d014d7ff3478&quot; page=&quot;1&quot; position=&quot;1&quot; sequence=&quot;1&quot; selected=&quot;true&quot; valid=&quot;true&quot; &gt;&lt;filePath&gt;70ThFUdftgANlOktn0bU0gBIYSfwJbgYpqnEdcI7ryrghbYslma6wS%2Bt1GIzPcBMcbvnOgceXEGIrMGte9rl9TUpcZpbJ6864gySGRrzxJwAtZ3wysD6P%2BK5Kt3gTINa&lt;/filePath&gt;&lt;value&gt;&lt;![CDATA[test textarea content]]&gt;&lt;/value&gt;&lt;/response&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                 </elementProp>
               </collectionProp>
