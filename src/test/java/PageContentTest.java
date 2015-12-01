@@ -1,11 +1,3 @@
-import jdk.internal.org.xml.sax.InputSource;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import static org.junit.Assert.*;
 
 public class PageContentTest {
