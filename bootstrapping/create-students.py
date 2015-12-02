@@ -14,11 +14,11 @@ def main(argv):
 	#grade levels
 	grade_levels = []
 
-	# connection string
+	# default connection string
 	connection = "mongodb://localhost:27017/"
 
 	try:
-		opts, args = getopt.getopt(argv, "hn:i:g:", ["help", "number=", "institutions=", "grades="])
+		opts, args = getopt.getopt(argv, "hn:i:g:c:", ["help", "number=", "institutions=", "grades=", "connection="])
 	except getopt.GetoptError:
 		usage()
 		sys.exit(2)
@@ -40,8 +40,9 @@ def main(argv):
 			print "Grades = " + arg
 			grade_levels = arg.split(',')
 
-
-	# TODO: add validation checking and call usage() if we don't have valid data
+	# default to grades 3-12 if none provided
+	if (len(grade_levels) == 0):
+		grade_levels = range(3, 12)
 
 	client = MongoClient(connection)
 	db = client.local
@@ -51,13 +52,10 @@ def main(argv):
 		grade_levels[idx] = "{0:0>2}".format(grade_levels[idx])
 
 	# get the matching institutions objects
-	# TODO: change this to do 1 query to get all items 
-	for institutionId in institution_ids:
-		institutionObject = db.institutionEntity.find_one({ "entityId" : institutionId})
-		print "Looking up " + institutionId + " details"
-		
-		if institutionObject is not None:
-			institutions.append(institutionObject);
+	if (len(institution_ids) != 0):
+		institutions = list(db.institutionEntity.find({ "entityId" : { "$in" : institution_ids } }))
+	else:
+		institutions = list(db.institutionEntity.find({}))
 	
 	total_grade_levels = len(grade_levels)
 	total_institutions = len(institutions)
@@ -75,14 +73,14 @@ def main(argv):
 		new_students.append({
 		    "_class" : "org.opentestsystem.delivery.testreg.domain.Student",
 		    "stateAbbreviation" : institutionObject['stateAbbreviation'],
-		    "entityId" : "ssid" + student_num,
+		    "entityId" : "SSID" + student_num,
 		    "institutionIdentifier" : institutionObject['entityId'],
 		    "institutionEntityMongoId" : str(institutionObject['_id']),
 		    "districtIdentifier" : institutionObject['parentEntityId'],
 		    "districtEntityMongoId" : institutionObject['parentId'],
 		    "firstName" : "FirstName" + student_num,
 		    "lastName" : "LastName" + student_num,
-		    "externalSsid" : "assid" + student_num,
+		    "externalSsid" : "ASSID" + student_num,
 		    "gradeLevelWhenAssessed" : grade_level,
 		    "gender" : "Female" if random.randint(0, 1) == 0 else "Male", # 50/50 male/female
 		    "hispanicOrLatino" : race[0],
@@ -130,8 +128,8 @@ def usage():
 	print "Help/usage details:"
 	print "  -c, --connection : mongo connection string (defaults to mongodb://localhost:27017/)"
 	print "  -n, --number     : the number of students to create"
-	print "  --institutions   : comma separated list of institution entityIds to use (from the institutionEntity collection"
-	print "  --grades         : comma separated list of grade levels to choose from"
+	print "  --institutions   : comma separated list of institution entityIds to use (from the institutionEntity collection). if none provided it will use all available"
+	print "  --grades         : comma separated list of grade levels to choose from. if none provided it will use 3-12"
 	print "  -h, --help       : this help screen"
 
 
