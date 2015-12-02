@@ -22,11 +22,6 @@
             <stringProp name="Argument.value">sso-dev.sbtds.org</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="IDP_HOST_PORT" elementType="Argument">
-            <stringProp name="Argument.name">IDP_HOST_PORT</stringProp>
-            <stringProp name="Argument.value">443</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
         </collectionProp>
       </elementProp>
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
@@ -48,7 +43,7 @@
         <boolProp name="CookieManager.clearEachIteration">true</boolProp>
       </CookieManager>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group - SP initiated SSO With SAML" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Proctor Users" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -64,7 +59,7 @@
         <boolProp name="ThreadGroup.delayedStart">true</boolProp>
       </ThreadGroup>
       <hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://serviceprovider.com (protected resource on the SP)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Request Proctor Application" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -80,8 +75,9 @@
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.image_parser">true</boolProp>
           <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
-          <stringProp name="HTTPSampler.concurrentPool">2</stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
@@ -105,12 +101,12 @@
           </RegexExtractor>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://identityprovider.com:8080/auth/SSORedirect/metaAlias/sbac/idp (HTTP GET endpoint IdP)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Redirect to SSO login page" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain">${IDP_HOST}</stringProp>
-          <stringProp name="HTTPSampler.port">{IDP_HOST_PORT}</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
@@ -121,8 +117,9 @@
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.image_parser">true</boolProp>
           <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
-          <stringProp name="HTTPSampler.concurrentPool">2</stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
@@ -172,11 +169,6 @@
             <stringProp name="RegexExtractor.match_number">1</stringProp>
           </RegexExtractor>
           <hashTree/>
-          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion - 1000ms" enabled="false">
-            <stringProp name="DurationAssertion.duration">1000</stringProp>
-            <stringProp name="Assertion.scope">all</stringProp>
-          </DurationAssertion>
-          <hashTree/>
           <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor - appName" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">appName</stringProp>
@@ -196,7 +188,7 @@
           </RegexExtractor>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://identityprovider.com:8080/openam/UI/Login (login page IdP)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST Proctor Login and redirect back" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments">
               <elementProp name="IDButton" elementType="HTTPArgument">
@@ -272,7 +264,7 @@
             </collectionProp>
           </elementProp>
           <stringProp name="HTTPSampler.domain">${IDP_HOST}</stringProp>
-          <stringProp name="HTTPSampler.port">${IDP_HOST_PORT}</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
@@ -283,128 +275,13 @@
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.image_parser">true</boolProp>
           <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
-          <stringProp name="HTTPSampler.concurrentPool">2</stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
-        <hashTree>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor - Relay State" enabled="false">
-            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-            <stringProp name="RegexExtractor.refname">RelayState2</stringProp>
-            <stringProp name="RegexExtractor.regex">name=&quot;RelayState&quot; value=&quot;(.*?)&quot;</stringProp>
-            <stringProp name="RegexExtractor.template">$1$</stringProp>
-            <stringProp name="RegexExtractor.default"></stringProp>
-            <stringProp name="RegexExtractor.match_number">1</stringProp>
-          </RegexExtractor>
-          <hashTree/>
-          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="XPath Extractor - SAMLResponse" enabled="false">
-            <stringProp name="XPathExtractor.default"></stringProp>
-            <stringProp name="XPathExtractor.refname">SAMLResponse</stringProp>
-            <stringProp name="XPathExtractor.xpathQuery">//input[@type=&quot;hidden&quot;][@name=&quot;SAMLResponse&quot;]/@value</stringProp>
-            <boolProp name="XPathExtractor.validate">false</boolProp>
-            <boolProp name="XPathExtractor.tolerant">true</boolProp>
-            <boolProp name="XPathExtractor.namespace">false</boolProp>
-          </XPathExtractor>
-          <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion - Is Not Authentication Failed" enabled="false">
-            <collectionProp name="Asserion.test_strings">
-              <stringProp name="1155674821">Authentication failed</stringProp>
-            </collectionProp>
-            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">6</intProp>
-          </ResponseAssertion>
-          <hashTree/>
-          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion -  1500ms" enabled="false">
-            <stringProp name="DurationAssertion.duration">1500</stringProp>
-            <stringProp name="Assertion.scope">all</stringProp>
-          </DurationAssertion>
-          <hashTree/>
-          <BeanShellListener guiclass="TestBeanGUI" testclass="BeanShellListener" testname="BeanShell Listener" enabled="false">
-            <boolProp name="resetInterpreter">false</boolProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="script">import org.apache.jmeter.assertions.AssertionResult;
-
-AssertionResult[] results = sampleResult.getAssertionResults();
-
-boolean skipPostAssertionConsumerService = false;
-
-for(int i =0; i&lt;results.length; i++) { 
-	
-	AssertionResult result = results[i];
-
-	boolean isResponseAssertion = result.getName().equals(&quot;Response Assertion - Is Not Authentication Failed&quot;);
-	boolean resultHasFailed = result.isFailure() || result.isError();	                                                  
-	
-     if(isResponseAssertion &amp;&amp; resultHasFailed) { 
-		skipPostAssertionConsumerService = true;
-		break;
-     } 
-}
-
-log.info(&quot;do_post_assertion_consumer_service_url = &quot; + (!skipPostAssertionConsumerService).toString());
-vars.put(&quot;do_post_assertion_consumer_service_url&quot;, (!skipPostAssertionConsumerService).toString());</stringProp>
-          </BeanShellListener>
-          <hashTree/>
-        </hashTree>
-        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller - Do Post Assertion Consumer Service URL?" enabled="false">
-          <stringProp name="IfController.condition">${do_post_assertion_consumer_service_url}</stringProp>
-          <boolProp name="IfController.evaluateAll">false</boolProp>
-        </IfController>
-        <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="http://serviceprovider.com/SAML/SSO/Post (assertion consumer service URL SP)" enabled="true">
-            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-              <collectionProp name="Arguments.arguments">
-                <elementProp name="SAMLResponse" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                  <stringProp name="Argument.name">SAMLResponse</stringProp>
-                  <stringProp name="Argument.value">${SAMLResponse}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-                <elementProp name="RelayState" elementType="HTTPArgument">
-                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">${RelayState2}</stringProp>
-                  <stringProp name="Argument.metadata">=</stringProp>
-                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                  <stringProp name="Argument.name">RelayState</stringProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <stringProp name="HTTPSampler.domain">${SP_HOST}</stringProp>
-            <stringProp name="HTTPSampler.port">${SP_HOST_PORT}</stringProp>
-            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-            <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">SAML/SSO/Post</stringProp>
-            <stringProp name="HTTPSampler.method">POST</stringProp>
-            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
-            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-            <boolProp name="HTTPSampler.BROWSER_COMPATIBLE_MULTIPART">true</boolProp>
-            <stringProp name="HTTPSampler.implementation">Java</stringProp>
-            <boolProp name="HTTPSampler.image_parser">true</boolProp>
-            <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
-            <stringProp name="HTTPSampler.concurrentPool">2</stringProp>
-            <boolProp name="HTTPSampler.monitor">false</boolProp>
-            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-          </HTTPSamplerProxy>
-          <hashTree>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion - Is Logged In As ${login}" enabled="true">
-              <collectionProp name="Asserion.test_strings">
-                <stringProp name="-714392687">You are logged in as Name: &lt;strong&gt;${login}.&lt;/strong&gt;</stringProp>
-              </collectionProp>
-              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
-              <boolProp name="Assertion.assume_success">false</boolProp>
-              <intProp name="Assertion.test_type">2</intProp>
-            </ResponseAssertion>
-            <hashTree/>
-          </hashTree>
-        </hashTree>
+        <hashTree/>
       </hashTree>
       <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
