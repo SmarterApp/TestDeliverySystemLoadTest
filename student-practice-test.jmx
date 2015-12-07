@@ -192,12 +192,12 @@
           </elementProp>
           <elementProp name="TOTAL_STUDENT_COUNT" elementType="Argument">
             <stringProp name="Argument.name">TOTAL_STUDENT_COUNT</stringProp>
-            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.value">4</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="STUDENTS_PER_PROCTOR" elementType="Argument">
             <stringProp name="Argument.name">STUDENTS_PER_PROCTOR</stringProp>
-            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.value">2</stringProp>
             <stringProp name="Argument.desc">10 means there are 10 students for every proctor</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -256,45 +256,6 @@
         <boolProp name="CookieManager.clearEachIteration">true</boolProp>
       </CookieManager>
       <hashTree/>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
-        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
-          <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
-        </elementProp>
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-        <longProp name="ThreadGroup.start_time">1449266849000</longProp>
-        <longProp name="ThreadGroup.end_time">1449266849000</longProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
-        <stringProp name="ThreadGroup.delay"></stringProp>
-      </SetupThreadGroup>
-      <hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Cleanup Controller" enabled="true">
-          <boolProp name="TransactionController.includeTimers">false</boolProp>
-          <boolProp name="TransactionController.parent">false</boolProp>
-        </TransactionController>
-        <hashTree>
-          <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Clearout Sessions CSV file" enabled="true">
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <boolProp name="resetInterpreter">false</boolProp>
-            <stringProp name="script">
-import org.apache.jmeter.services.FileServer;
-
-// Pass true if you want to append to existing file
-// If you want to overwrite, then don&apos;t pass the second argument
-f = new FileOutputStream(&quot;sessions.csv&quot;);
-p = new PrintStream(f); 
-log.info(&quot;Clearing sessions.csv&quot;);
-
-p.close();
-f.close();</stringProp>
-          </BeanShellPreProcessor>
-          <hashTree/>
-        </hashTree>
-      </hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Proctor Users" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" enabled="true">
@@ -598,7 +559,7 @@ f.close();</stringProp>
 var json = JSON.parse(response);
 log.info(json.tests[0].Key);
 var testsAvailable = json.tests.length;
-var testKeys, testIds;
+var testKeys = &quot;&quot;, testIds = &quot;&quot;;
 //Construct the queryString variables to enable all available tests
 for (var i=0; i &lt; testsAvailable; i++) {
 	if (i != 0) {
@@ -609,6 +570,8 @@ for (var i=0; i &lt; testsAvailable; i++) {
 	testIds += json.tests[i].Id;
 }
 
+log.info(&quot;testKeys: &quot; + testKeys);
+log.info(&quot;testIds: &quot; + testIds);
 vars.put(&quot;SESSION_START_POST_KEYS&quot;, testKeys);
 vars.put(&quot;SESSION_START_POST_IDS&quot;, testIds);</stringProp>
               <stringProp name="scriptLanguage">javascript</stringProp>
@@ -654,7 +617,7 @@ vars.put(&quot;SESSION_START_POST_IDS&quot;, testIds);</stringProp>
             <stringProp name="HTTPSampler.protocol"></stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path">/Services/XHR.axd/InsertSessionTests</stringProp>
-            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -664,7 +627,7 @@ vars.put(&quot;SESSION_START_POST_IDS&quot;, testIds);</stringProp>
             <stringProp name="TestPlan.comments">// failure: {&quot;reason&quot;:&quot;An active session for this user already exists. [11880]&quot;,&quot;status&quot;:&quot;failed&quot;}</stringProp>
           </HTTPSamplerProxy>
           <hashTree>
-            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Find newly created session ID" enabled="true">
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Find and store newly created session ID" enabled="true">
               <stringProp name="cacheKey"></stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
@@ -674,8 +637,8 @@ log.info(response);
 
 var json = JSON.parse(response)
 log.info(&quot;new sessionid = &quot; + json.session.id);
-vars.put(&quot;NEW_SESSION_ID&quot;, json.session.id);
-vars.put(&quot;NEW_SESSION_KEY&quot;, json.session._key);</stringProp>
+vars.put(&quot;NEW_SESSION_KEY&quot;, json.session._key);
+props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);</stringProp>
               <stringProp name="scriptLanguage">javascript</stringProp>
             </JSR223PostProcessor>
             <hashTree/>
@@ -685,18 +648,19 @@ vars.put(&quot;NEW_SESSION_KEY&quot;, json.session._key);</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="script">import org.apache.jmeter.services.FileServer;
 
-log.info(&quot;writing new session id = &quot; + vars.get(&quot;NEW_SESSION_ID&quot;));
 
 // Pass true if you want to append to existing file
 // If you want to overwrite, then don&apos;t pass the second argument
-f = new FileOutputStream(&quot;sessions.csv&quot;, true);
-p = new PrintStream(f); 
-String sessionId = vars.get(&quot;NEW_SESSION_ID&quot;);
-
-p.println(sessionId);
-
-p.close();
-f.close();</stringProp>
+//log.info(bsh.cwd());
+//f = new FileOutputStream(&quot;sessions${__threadNum}.csv&quot;);
+//p = new PrintStream(f); 
+//
+//String sessionId = vars.get(&quot;NEW_SESSION_ID&quot;);
+//
+//p.println(sessionId);
+//
+//p.close();
+//f.close();</stringProp>
             </BeanShellPostProcessor>
             <hashTree/>
           </hashTree>
@@ -911,7 +875,7 @@ if (json.approvalOpps != null &amp;&amp; json.approvalOpps.length &gt; 0) {
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">5</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${TOTAL_STUDENT_COUNT}</stringProp>
         <stringProp name="ThreadGroup.ramp_time"></stringProp>
         <longProp name="ThreadGroup.start_time">1449092782000</longProp>
         <longProp name="ThreadGroup.end_time">1449092788000</longProp>
@@ -1795,24 +1759,28 @@ vars.put(&quot;SESSION_KEY&quot;, sessionKey);
 vars.put(&quot;TEST_GRADE&quot;, testGrade);</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
-              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Session Id Extractor" enabled="true">
                 <boolProp name="resetInterpreter">false</boolProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="script">import java.io.FileReader;
 
-FileReader fileReader = new FileReader(&quot;sessions.csv&quot;);
-BufferedReader bufferedReader = new BufferedReader(fileReader);
-String line = bufferedReader.readLine();
-String sessionId = null;
- 
-log.info(&quot;Starting sesion read loop loop&quot;);
-
-while (line != null) {
-	log.info(&quot;Setting sessionID: &quot; + line);
-	vars.put(&quot;SESSION_ID&quot;, line);
-	line = bufferedReader.readLine();
-}
+//Get the sessionIndex (1 based) which corresponds to the thread number of the proctor that created the session
+String sessionIndex = (((${__threadNum} - 1) / ${STUDENTS_PER_PROCTOR}) + 1).toString();
+String sessionId = props.get(&quot;SESSION_ID_&quot; + sessionIndex);
+log.info(&quot;Sessions csv index: &quot; + sessionIndex);
+log.info(&quot;Setting sessionID: &quot; + sessionId);
+vars.put(&quot;SESSION_ID&quot;, sessionId);
+//FileReader fileReader = new FileReader(&quot;sessions&quot; + sessionIndex + &quot;.csv&quot;);
+//BufferedReader bufferedReader = new BufferedReader(fileReader);
+//String line = bufferedReader.readLine();
+//log.info(&quot;Starting sesion read loop loop&quot;);
+//
+//while (line != null) {
+//	log.info(&quot;Setting sessionID: &quot; + line);
+//	vars.put(&quot;SESSION_ID&quot;, line);
+//	line = bufferedReader.readLine();
+//}
 </stringProp>
               </BeanShellPreProcessor>
               <hashTree/>
