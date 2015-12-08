@@ -1,0 +1,58 @@
+## reference: http://opendj.forgerock.org/doc/admin-guide/index/chap-import-export.html
+
+# create proctor.template in the /opt/opendj/config/MakeLDIF/ directory
+# CHANGE the numusers variable in the file below o how many users you want to create
+
+#########################
+
+define suffix=dc=smarterbalanced,dc=org
+define maildomain=example.com
+define numusers=2
+
+branch: [suffix]
+
+branch: ou=People,[suffix]
+subordinateTemplate: person:[numusers]
+
+template: person
+rdnAttr: sbacUUID
+objectClass: sbacPerson
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: sunFMSAML2NameIdentifier
+objectClass: iplanet-am-user-service
+objectClass: inetuser
+objectClass: top
+sbacUUID: <random:chars:123456789abcdefghijklmnopqrstuvwxyz:20><sequential:0>
+uid: proctor<sequential:0>@[maildomain]
+givenName: Paulie
+sn: Proctor<sequential:0>
+cn: {givenName} {sn}
+sbacTenancyChain: |orbendhs|Test Admininistrator|INSTITUTION|98765|fairwaytech|||OR|OREGON|||orbend001|BendDistrict|||orbendhs|BendHigh|
+telephoneNumber: <random:telephone>
+userPassword: password123
+mail: {uid}
+inetUserStatus: Active
+iplanet-am-user-password-reset-question-answer: AQICWQNrGvcMoE1l43whvRONGuP9Q+xdmp5Y
+iplanet-am-user-password-reset-question-answer: AQICWQNrGvcMoE1LLxsOpoIwrfnkBWUMEQ2HplJkYlRTCW8=
+iplanet-am-user-password-reset-question-answer: AQICWQNrGvcMoE29/XpYqKOkoQU7F/YRSXGoHRnW7EcP4AU=
+
+#########################
+
+
+# creates an ldif file that can be used to import
+sudo cd /opt/opendj
+sudo ./bin/make-ldif --randomSeed 11 --templateFile ./config/MakeLDIF/proctor.template --ldifFile ./config/MakeLDIF/output.ldif
+
+# for some reason he make-ldif akes the objectClass values and lowercases them, which causes an error when logging in
+#	so we need to updae the file to fix this before we use it to import the proctors
+sudo sed -i 's/sunfmsaml2nameidentifier/sunFMSAML2NameIdentifier/g' ./config/MakeLDIF/output.ldif
+sudo sed -i 's/sbacperson/sbacPerson/g' ./config/MakeLDIF/output.ldif
+sudo sed -i 's/organizationalperson/organizationalPerson/g' ./config/MakeLDIF/output.ldif
+sudo sed -i 's/inetorgperson/inetOrgPerson/g' ./config/MakeLDIF/output.ldif
+
+# import using this command
+sudo ./bin/stop-ds
+sudo ./bin/import-ldif --includeBranch dc=smarterbalanced,dc=org --backendID userRoot --ldifFile ./config/MakeLDIF/output.ldif --append
+sudo ./bin/start-ds
