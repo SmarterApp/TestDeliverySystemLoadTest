@@ -1,11 +1,12 @@
 import pymongo
+import csv
 import sys, getopt, random
 
 from pymongo import MongoClient
 
 def main(argv):
 	# number of students to create
-	n = 1
+	n = 500
 
 	# institution
 	institution_ids = []
@@ -15,7 +16,7 @@ def main(argv):
 	grade_levels = []
 
 	# default connection string
-	connection = "mongodb://localhost:27017/"
+	connection = "mongodb://mongo_admin:password123@52.32.66.151:27017/art"
 
 	try:
 		opts, args = getopt.getopt(argv, "hn:i:g:c:", ["help", "number=", "institutions=", "grades=", "connection="])
@@ -45,7 +46,7 @@ def main(argv):
 		grade_levels = range(3, 12)
 
 	client = MongoClient(connection)
-	db = client.local
+	db = client.art
 
 	# clean up grade levels to make sure that they are 2 digits
 	for idx, grade in enumerate(grade_levels):
@@ -61,68 +62,59 @@ def main(argv):
 	total_institutions = len(institutions)
 	new_students = []
 
-	for i in xrange(1, n+1):
-		student_num = str(i)
-		institutionObject = institutions[random.randint(0, total_institutions-1)]
-		grade_level = grade_levels[random.randint(0, total_grade_levels-1)]
+	#open students file for reading
+	with open ('student_logins.csv', 'w') as csvfile:
+		fieldnames = ['StateAbbreviation', 'ResponsibleDistrictIdentifier', 'ResponsibleInstitutionIdentifier', 'LastOrSurname', 'FirstName', 'MiddleName',
+		'Birthdate', 'SSID', 'AlternateSSID', 'GradeLevelWhenAssessed', 'Sex', 'HispanicOrLatinoEthnicity', 'AmericanIndianOrAlaskaNative', 'Asian', 
+		'BlackOrAfricanAmerican', 'White', 'NativeHawaiianOrOtherPacificIslander', 'DemographicRaceTwoOrMoreRaces', 'IDEAIndicator', 'LEPStatus', 
+		'Section504Status', 'EconomicDisadvantageStatus', 'LanguageCode', 'EnglishLanguageProficiencyLevel', 'MigrantStatus', 'FirstEntryDateIntoUSSchool',
+		'LimitedEnglishProficiencyEntryDate', 'LEPExitDate', 'TitleIIILanguageInstructionProgramType', 'PrimaryDisabilityType', 'Delete']
+		
+		writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+		writer.writeheader()
 
-		# the 7 race options are all set to NO to start, then we randomly make 1 YES
-		race = ["NO","NO","NO","NO","NO","NO","NO"]
-		race[random.randint(0,6)] = "YES"
+		#SSID, Alt SSID must be unique
+		for i in range(0, n):
+			studentNum = str(i)
+			institutionObject = institutions[random.randint(0, total_institutions-1)]
+			grade_level = grade_levels[random.randint(0, total_grade_levels-1)]
 
-		new_students.append({
-		    "_class" : "org.opentestsystem.delivery.testreg.domain.Student",
-		    "stateAbbreviation" : institutionObject['stateAbbreviation'],
-		    "entityId" : "SSID" + student_num,
-		    "institutionIdentifier" : institutionObject['entityId'],
-		    "institutionEntityMongoId" : str(institutionObject['_id']),
-		    "districtIdentifier" : institutionObject['parentEntityId'],
-		    "districtEntityMongoId" : institutionObject['parentId'],
-		    "firstName" : "FirstName" + student_num,
-		    "lastName" : "LastName" + student_num,
-		    "externalSsid" : "ASSID" + student_num,
-		    "gradeLevelWhenAssessed" : grade_level,
-		    "gender" : "Female" if random.randint(0, 1) == 0 else "Male", # 50/50 male/female
-		    "hispanicOrLatino" : race[0],
-		    "americanIndianOrAlaskaNative" : race[1],
-		    "asian" : race[2],
-		    "blackOrAfricanAmerican" : race[3],
-		    "white" : race[4],
-		    "nativeHawaiianOrPacificIsland" : race[5],
-		    "twoOrMoreRaces" : race[6],
-		    "iDEAIndicator" : "NO",
-		    "lepStatus" : "NO",
-		    "section504Status" : "NO",
-		    "disadvantageStatus" : "NO",
-		    "migrantStatus" : "NO",
-		    "accommodations" : [ 
-		        {
-		            "studentId" : "ssid" + student_num,
-		            "stateAbbreviation" : institutionObject['stateAbbreviation'],
-		            "subject" : "ELA"
-		        }, 
-		        {
-		            "studentId" : "ssid" + student_num,
-		            "stateAbbreviation" : institutionObject['stateAbbreviation'],
-		            "subject" : "MATH"
-		        }
-		    ],
-		    "race" : "",
-		    "studentPackageVersion" : 2.0000000000000000,
-		    "inValidAccommodationsSubject" : False
-		    #"languageCode" : "eng"
-		    #"primaryDisabilityType" : "AUT"
-		})
+			# the 6 race options are all set to NO to start, then we randomly make 1 YES
+			race = ["NO","NO","NO","NO","NO","NO"]
+			race[random.randint(0,5)] = "YES"
 
-		# do batches of 500
-		if i % 500 == 0:
-			db.student.insert_many(new_students)
-			new_students = []
-
-	# insert any that are left over
-	if len(new_students) != 0:
-		db.student.insert_many(new_students)
-
+			writer.writerow({
+				'StateAbbreviation': institutionObject['stateAbbreviation'], 
+				'ResponsibleDistrictIdentifier': institutionObject['parentEntityId'], 
+				'ResponsibleInstitutionIdentifier': institutionObject['entityId'],
+				'LastOrSurname': 'LastName' + studentNum, 
+				'FirstName': 'FirstName' + studentNum, 
+				'MiddleName': 'MiddleName' + studentNum,
+				'Birthdate': '', 
+				'SSID': 'STUDENT' + studentNum, 
+				'AlternateSSID': 'ASTUDENT' + studentNum, 
+				'GradeLevelWhenAssessed': grade_level, 
+				'Sex': "Female" if random.randint(0, 1) == 0 else "Male", # 50/50 male/female
+				'HispanicOrLatinoEthnicity': race[0],
+				'AmericanIndianOrAlaskaNative': race[1], 
+				'Asian': race[2], 
+				'BlackOrAfricanAmerican': race[3], 
+				'White': race[4], 
+				'NativeHawaiianOrOtherPacificIslander': race[5],
+				'DemographicRaceTwoOrMoreRaces': 'NO', 
+				'IDEAIndicator': 'NO', 
+				'LEPStatus': 'NO', 
+				'Section504Status': 'NO', 
+				'EconomicDisadvantageStatus': 'NO',
+				'LanguageCode': '', 
+				'EnglishLanguageProficiencyLevel': '', 
+				'MigrantStatus': 'NO', 
+				'FirstEntryDateIntoUSSchool': '', 
+				'LimitedEnglishProficiencyEntryDate': '',
+				'LEPExitDate': '', 
+				'TitleIIILanguageInstructionProgramType': '', 
+				'PrimaryDisabilityType': '',
+				'Delete': '' })
 
 def usage():
 	print "Help/usage details:"

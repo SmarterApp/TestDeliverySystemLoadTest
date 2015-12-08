@@ -550,6 +550,19 @@
             <stringProp name="TestPlan.comments">gets the available tests that we can start</stringProp>
           </HTTPSamplerProxy>
           <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">X-Requested-With</stringProp>
+                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">X-Transaction</stringProp>
+                  <stringProp name="Header.value">Get data</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
             <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Find available sessions" enabled="true">
               <stringProp name="cacheKey"></stringProp>
               <stringProp name="filename"></stringProp>
@@ -576,19 +589,6 @@ vars.put(&quot;SESSION_START_POST_KEYS&quot;, testKeys);
 vars.put(&quot;SESSION_START_POST_IDS&quot;, testIds);</stringProp>
               <stringProp name="scriptLanguage">javascript</stringProp>
             </JSR223PostProcessor>
-            <hashTree/>
-            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-              <collectionProp name="HeaderManager.headers">
-                <elementProp name="" elementType="Header">
-                  <stringProp name="Header.name">X-Requested-With</stringProp>
-                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                </elementProp>
-                <elementProp name="" elementType="Header">
-                  <stringProp name="Header.name">X-Transaction</stringProp>
-                  <stringProp name="Header.value">Get data</stringProp>
-                </elementProp>
-              </collectionProp>
-            </HeaderManager>
             <hashTree/>
           </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST start session" enabled="true">
@@ -641,27 +641,6 @@ vars.put(&quot;NEW_SESSION_KEY&quot;, json.session._key);
 props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);</stringProp>
               <stringProp name="scriptLanguage">javascript</stringProp>
             </JSR223PostProcessor>
-            <hashTree/>
-            <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="Write to sessions CSV file" enabled="true">
-              <boolProp name="resetInterpreter">false</boolProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="script">import org.apache.jmeter.services.FileServer;
-
-
-// Pass true if you want to append to existing file
-// If you want to overwrite, then don&apos;t pass the second argument
-//log.info(bsh.cwd());
-//f = new FileOutputStream(&quot;sessions${__threadNum}.csv&quot;);
-//p = new PrintStream(f); 
-//
-//String sessionId = vars.get(&quot;NEW_SESSION_ID&quot;);
-//
-//p.println(sessionId);
-//
-//p.close();
-//f.close();</stringProp>
-            </BeanShellPostProcessor>
             <hashTree/>
           </hashTree>
         </hashTree>
@@ -725,11 +704,21 @@ var json = JSON.parse(response);
 
 log.info(response);
 
-// check for new awaiting approvals to deal with and auto-approve
-if (json.approvalOpps != null &amp;&amp; json.approvalOpps.length &gt; 0) {
+var oppCount = json.approvalOpps.length;
+// check for new awaiting approvals to deal with and auto-approve all available opportunities
+if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
 	log.info(&quot;there are approval opps&quot;);
 	vars.put(&quot;APPROVAL_OPP_KEY&quot;, json.approvalOpps[0].oppKey);
 	vars.put(&quot;APPROVAL_TEST_KEY&quot;, json.approvalOpps[0].testKey);
+	vars.put(&quot;APPROVAL_TEST_KEY&quot;, &quot;&quot;);
+//	vars.put(&quot;APPROVAL_OPP_COUNT&quot; , oppCount);
+//	
+//	for (var i = 0; i &lt; oppCount; ++i) {
+//		log.info(&quot;App count: &quot; + oppCount);
+//		log.info(&quot;Approving opp key: &quot; + json.approvalOpps[i].oppKey);
+//		vars.put(&quot;APPROVAL_OPP_KEY_&quot; + i, json.approvalOpps[i].oppKey);
+//		vars.put(&quot;APPROVAL_TEST_KEY_&quot; + i, json.approvalOpps[i].testKey);
+//	}
 } else {
 	log.info(&quot;there are NOT ANY approval opps&quot;);
 	vars.put(&quot;APPROVAL_OPP_KEY&quot;, &quot;&quot;);
@@ -819,6 +808,101 @@ if (json.approvalOpps != null &amp;&amp; json.approvalOpps.length &gt; 0) {
             </HTTPSamplerProxy>
             <hashTree/>
           </hashTree>
+          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Approval Loop Controller" enabled="false">
+            <boolProp name="LoopController.continue_forever">true</boolProp>
+            <stringProp name="TestPlan.comments">${APPROVAL_OPP_COUNT}</stringProp>
+            <stringProp name="LoopController.loops">2</stringProp>
+          </LoopController>
+          <hashTree>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+              <stringProp name="CounterConfig.start">0</stringProp>
+              <stringProp name="CounterConfig.end"></stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">oppIndex</stringProp>
+              <stringProp name="CounterConfig.format">#</stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+            </CounterConfig>
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Accomodations" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="testKey" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${__BeanShell(vars.get(&quot;APPROVAL_TEST_KEY_0&quot;))}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">testKey</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
+              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/Services/XHR.axd/GetAccs</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <boolProp name="HTTPSampler.monitor">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Approve Opportunity" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="oppKey" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${__V(APPROVAL_OPP_KEY_${oppIndex})}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">oppKey</stringProp>
+                  </elementProp>
+                  <elementProp name="sessionKey" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${NEW_SESSION_KEY}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">sessionKey</stringProp>
+                  </elementProp>
+                  <elementProp name="accs" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">TDS_PS_L0|TDS_Other|ENU|;</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">accs</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
+              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/Services/XHR.axd/ApproveOpportunity</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <boolProp name="HTTPSampler.monitor">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button // TODO: parse and ge real accs values</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree/>
+            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+              <boolProp name="resetInterpreter">false</boolProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="script">log.info(&quot;APPROVALOPPKEY_0: &quot; + vars.get(&quot;APPROVAL_OPP_KEY_0&quot;))</stringProp>
+            </BeanShellPreProcessor>
+            <hashTree/>
+          </hashTree>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Stop Session" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -888,9 +972,9 @@ if (json.approvalOpps != null &amp;&amp; json.approvalOpps.length &gt; 0) {
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Student Credentials File" enabled="true">
           <stringProp name="filename">student_logins.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames">student_ssid,student_name</stringProp>
+          <stringProp name="variableNames"></stringProp>
           <stringProp name="delimiter">,</stringProp>
-          <boolProp name="quotedData">true</boolProp>
+          <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
           <boolProp name="stopThread">false</boolProp>
           <stringProp name="shareMode">shareMode.all</stringProp>
@@ -1658,7 +1742,7 @@ if (json.approvalOpps != null &amp;&amp; json.approvalOpps.length &gt; 0) {
                   <elementProp name="keyValues" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">true</boolProp>
                     <stringProp name="Argument.name">keyValues</stringProp>
-                    <stringProp name="Argument.value">ID:${student_ssid};FirstName:${student_name}</stringProp>
+                    <stringProp name="Argument.value">ID:${AlternateSSID};FirstName:${FirstName}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   </elementProp>
@@ -1735,6 +1819,30 @@ if (json.approvalOpps != null &amp;&amp; json.approvalOpps.length &gt; 0) {
                 </collectionProp>
               </HeaderManager>
               <hashTree/>
+              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Session Id Extractor" enabled="true">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">import java.io.FileReader;
+
+//Get the sessionIndex (1 based) which corresponds to the thread number of the proctor that created the session
+String sessionIndex = (((${__threadNum} - 1) / ${STUDENTS_PER_PROCTOR}) + 1).toString();
+String sessionId = props.get(&quot;SESSION_ID_&quot; + sessionIndex);
+log.info(&quot;Setting sessionID: &quot; + sessionId + &quot; at index &quot; + sessionIndex);
+vars.put(&quot;SESSION_ID&quot;, sessionId);
+//FileReader fileReader = new FileReader(&quot;sessions&quot; + sessionIndex + &quot;.csv&quot;);
+//BufferedReader bufferedReader = new BufferedReader(fileReader);
+//String line = bufferedReader.readLine();
+//log.info(&quot;Starting sesion read loop loop&quot;);
+//
+//while (line != null) {
+//	log.info(&quot;Setting sessionID: &quot; + line);
+//	vars.put(&quot;SESSION_ID&quot;, line);
+//	line = bufferedReader.readLine();
+//}
+</stringProp>
+              </BeanShellPreProcessor>
+              <hashTree/>
               <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Session and Testee Info Extractor" enabled="true">
                 <stringProp name="scriptLanguage">javascript</stringProp>
                 <stringProp name="parameters"></stringProp>
@@ -1758,31 +1866,6 @@ vars.put(&quot;TESTEE_TOKEN&quot;, testeeToken);
 vars.put(&quot;SESSION_KEY&quot;, sessionKey);
 vars.put(&quot;TEST_GRADE&quot;, testGrade);</stringProp>
               </JSR223PostProcessor>
-              <hashTree/>
-              <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="Session Id Extractor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">import java.io.FileReader;
-
-//Get the sessionIndex (1 based) which corresponds to the thread number of the proctor that created the session
-String sessionIndex = (((${__threadNum} - 1) / ${STUDENTS_PER_PROCTOR}) + 1).toString();
-String sessionId = props.get(&quot;SESSION_ID_&quot; + sessionIndex);
-log.info(&quot;Sessions csv index: &quot; + sessionIndex);
-log.info(&quot;Setting sessionID: &quot; + sessionId);
-vars.put(&quot;SESSION_ID&quot;, sessionId);
-//FileReader fileReader = new FileReader(&quot;sessions&quot; + sessionIndex + &quot;.csv&quot;);
-//BufferedReader bufferedReader = new BufferedReader(fileReader);
-//String line = bufferedReader.readLine();
-//log.info(&quot;Starting sesion read loop loop&quot;);
-//
-//while (line != null) {
-//	log.info(&quot;Setting sessionID: &quot; + line);
-//	vars.put(&quot;SESSION_ID&quot;, line);
-//	line = bufferedReader.readLine();
-//}
-</stringProp>
-              </BeanShellPreProcessor>
               <hashTree/>
             </hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get available tests" enabled="true">
@@ -2724,6 +2807,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
           </hashTree>
           <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Question While Controller" enabled="false">
             <stringProp name="WhileController.condition">${__javaScript((&quot;${TEST_FINISHED}&quot; == &quot;false&quot; &amp;&amp; &quot;${PAGE_POS}&quot; != &quot;${MAX_QUESTION_ATTEMPTS}&quot;))}</stringProp>
+            <stringProp name="TestPlan.comments">Disable to allow multiple test runs</stringProp>
           </WhileController>
           <hashTree>
             <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Question Group ${PAGE_POS}" enabled="true">
