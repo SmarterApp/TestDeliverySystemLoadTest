@@ -174,30 +174,14 @@
             <stringProp name="Argument.value">practice.smarterbalanced.org</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="ACC_DATA" elementType="Argument">
-            <stringProp name="Argument.name">ACC_DATA</stringProp>
-            <stringProp name="Argument.value">&lt;accs&gt;&lt;![CDATA[language:ENU;Print Size:TDS_PS_L0]]&gt;&lt;/accs&gt;</stringProp>
-            <stringProp name="Argument.desc">This is the ACC data that is posted with each updateResponse call.  TODO: make it dynamic based on the student or something.</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="TOTAL_PAGES" elementType="Argument">
-            <stringProp name="Argument.name">TOTAL_PAGES</stringProp>
-            <stringProp name="Argument.value">0</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="PAGE_POS" elementType="Argument">
-            <stringProp name="Argument.name">PAGE_POS</stringProp>
-            <stringProp name="Argument.value">1</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="TOTAL_STUDENT_COUNT" elementType="Argument">
             <stringProp name="Argument.name">TOTAL_STUDENT_COUNT</stringProp>
-            <stringProp name="Argument.value">4</stringProp>
+            <stringProp name="Argument.value">6</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="STUDENTS_PER_PROCTOR" elementType="Argument">
             <stringProp name="Argument.name">STUDENTS_PER_PROCTOR</stringProp>
-            <stringProp name="Argument.value">2</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
             <stringProp name="Argument.desc">10 means there are 10 students for every proctor</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -215,42 +199,6 @@
             <stringProp name="Argument.name">SSO_HOST</stringProp>
             <stringProp name="Argument.value">sso-dev.sbtds.org</stringProp>
             <stringProp name="Argument.desc">openAM SSO server for login</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="STOP_PROCTOR" elementType="Argument">
-            <stringProp name="Argument.name">STOP_PROCTOR</stringProp>
-            <stringProp name="Argument.value">false</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="TEST_KEY" elementType="Argument">
-            <stringProp name="Argument.name">TEST_KEY</stringProp>
-            <stringProp name="Argument.value">(SBAC_PT)SBAC ELA HS-ELA-10-Spring-2014-2015</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="TEST_GRADE" elementType="Argument">
-            <stringProp name="Argument.name">TEST_GRADE</stringProp>
-            <stringProp name="Argument.value">12</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="MAX_QUESTION_ATTEMPTS" elementType="Argument">
-            <stringProp name="Argument.name">MAX_QUESTION_ATTEMPTS</stringProp>
-            <stringProp name="Argument.value">40</stringProp>
-            <stringProp name="Argument.desc">The hard limit for the question answering loop - prevents infinite requests from being fired off in case of load test failure (test finished condition not met ).</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="SSID" elementType="Argument">
-            <stringProp name="Argument.name">SSID</stringProp>
-            <stringProp name="Argument.value">AERNIE03</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="FIRSTNAME" elementType="Argument">
-            <stringProp name="Argument.name">FIRSTNAME</stringProp>
-            <stringProp name="Argument.value">Ernie</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APPROVAL_COUNT" elementType="Argument">
-            <stringProp name="Argument.name">APPROVAL_COUNT</stringProp>
-            <stringProp name="Argument.value">0</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -276,6 +224,28 @@
         <stringProp name="ThreadGroup.delay">0</stringProp>
       </ThreadGroup>
       <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="MAX_PROCTOR_APPROVAL_ATTEMPTS" elementType="Argument">
+              <stringProp name="Argument.name">MAX_PROCTOR_APPROVAL_ATTEMPTS</stringProp>
+              <stringProp name="Argument.value">20</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">The proctor approval attempt hard limit</stringProp>
+            </elementProp>
+            <elementProp name="GET_TEST_OPPS" elementType="Argument">
+              <stringProp name="Argument.name">GET_TEST_OPPS</stringProp>
+              <stringProp name="Argument.value">false</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">This flag indicates whether students pending approval should be retrieved, or students currently under test should be retrieved.</stringProp>
+            </elementProp>
+            <elementProp name="STOP_PROCTOR" elementType="Argument">
+              <stringProp name="Argument.name">STOP_PROCTOR</stringProp>
+              <stringProp name="Argument.value">false</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Proctor credentials file" enabled="true">
           <stringProp name="filename">proctor_logins.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
@@ -650,7 +620,7 @@ props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);</stringProp>
           </hashTree>
         </hashTree>
         <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
-          <stringProp name="WhileController.condition">${__javaScript(parseInt(&quot;${APPROVAL_COUNT}&quot;) &lt; parseInt(&quot;${STUDENTS_PER_PROCTOR}&quot;))}</stringProp>
+          <stringProp name="WhileController.condition">${__javaScript(&quot;${STOP_PROCTOR}&quot; == &quot;false&quot;)}</stringProp>
         </WhileController>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Check for approval opps transaction" enabled="true">
@@ -667,7 +637,7 @@ props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="bGetCurTestees" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">false</stringProp>
+                    <stringProp name="Argument.value">${GET_TEST_OPPS}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     <stringProp name="Argument.name">bGetCurTestees</stringProp>
@@ -707,6 +677,32 @@ var json = JSON.parse(response);
 
 log.info(response);
 
+//Get current students flag must be toggled false/true each time a check for approval is made.
+//False seems to indicate that pending approvals are to be retrieved
+//True seems to indicate that students currently taking the test are retrieved
+var getTestOppsFlag = vars.get(&quot;GET_TEST_OPPS&quot;); 
+if (getTestOppsFlag) { //Check if &quot;completed&quot; students matches our overall student count 
+	var completedStudents = 0;
+	for (var testOpp in json.testOpps) {
+		if (testOpp.status === &quot;completed&quot;) {
+			completedStudents++;
+		} else {
+			break;
+		}
+	}
+
+	if (completedStudents == vars.get(&quot;STUDENTS_PER_PROCTOR&quot;)) {
+		vars.put(&quot;STOP_PROCTOR&quot;, true);
+	}
+} 
+
+if (getTestOppsFlag === &quot;true&quot;) {
+	getTestOppsFlag = &quot;false&quot;;
+} else {
+	getTestOppsFlag = &quot;true&quot;;
+}
+vars.put(&quot;GET_TEST_OPPS&quot;, getTestOppsFlag);
+
 var oppCount = json.approvalOpps.length;
 // check for new awaiting approvals to deal with and auto-approve all available opportunities
 if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
@@ -714,6 +710,7 @@ if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
 	vars.put(&quot;APPROVAL_OPP_KEY&quot;, json.approvalOpps[0].oppKey);
 	vars.put(&quot;APPROVAL_TEST_KEY&quot;, json.approvalOpps[0].testKey);
 	vars.put(&quot;APPROVAL_TEST_KEY&quot;, &quot;&quot;);
+
 //	vars.put(&quot;APPROVAL_OPP_COUNT&quot; , oppCount);
 //	
 //	for (var i = 0; i &lt; oppCount; ++i) {
@@ -727,6 +724,18 @@ if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
 	vars.put(&quot;APPROVAL_OPP_KEY&quot;, &quot;&quot;);
 	vars.put(&quot;APPROVAL_TEST_KEY&quot;, &quot;&quot;);
 }
+
+//Keep count of the amount of approval attempts
+var attempt = vars.get(&quot;APPROVAL_ATTEMPTS&quot;);
+if (attempt === vars.get(&quot;MAX_PROCTOR_APPROVAL_ATTEMPTS&quot;)) {
+	vars.put(&quot;STOP_PROCTOR&quot;, true);
+	log.info(&quot;Max approval attempts reached!&quot;);
+} else {
+	attempt++;
+	log.info(&quot;Current approval attempts: &quot; + attempt);
+	vars.put(&quot;APPROVAL_ATTEMPTS&quot;,  attempt);
+}
+
 </stringProp>
                 <stringProp name="scriptLanguage">javascript</stringProp>
               </JSR223PostProcessor>
@@ -809,18 +818,7 @@ if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button // TODO: parse and ge real accs values</stringProp>
             </HTTPSamplerProxy>
-            <hashTree>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">Integer approvalCount = Integer.parseInt(vars.get(&quot;APPROVAL_COUNT&quot;));
-approvalCount++;
-log.info(&quot;Approval Count: &quot; + approvalCount.toString() + &quot; For Proctor${__threadNum}&quot;);
-vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-            </hashTree>
+            <hashTree/>
           </hashTree>
           <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Approval Loop Controller" enabled="false">
             <boolProp name="LoopController.continue_forever">true</boolProp>
@@ -1205,7 +1203,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
           <stringProp name="HTTPSampler.path">/Services/XHR.axd/PauseSession</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -1215,13 +1213,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
-        <hashTree>
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Student Test Delay Timer" enabled="true">
-            <stringProp name="TestPlan.comments">Allow some time seconds after last approval for students to take test</stringProp>
-            <stringProp name="ConstantTimer.delay">30000</stringProp>
-          </ConstantTimer>
-          <hashTree/>
-        </hashTree>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Logout" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -1250,7 +1242,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${TOTAL_STUDENT_COUNT}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time"></stringProp>
+        <stringProp name="ThreadGroup.ramp_time">60</stringProp>
         <longProp name="ThreadGroup.start_time">1449092782000</longProp>
         <longProp name="ThreadGroup.end_time">1449092788000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -1259,16 +1251,34 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
         <stringProp name="TestPlan.comments">${__javaScript(${TOTAL_STUDENT_COUNT} / 2; )}</stringProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Student Credentials File" enabled="false">
-          <stringProp name="filename">student_logins.csv</stringProp>
-          <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames">FirstName,AlternateSSID</stringProp>
-          <stringProp name="delimiter">,</stringProp>
-          <boolProp name="quotedData">false</boolProp>
-          <boolProp name="recycle">true</boolProp>
-          <boolProp name="stopThread">false</boolProp>
-          <stringProp name="shareMode">shareMode.all</stringProp>
-        </CSVDataSet>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="ACC_DATA" elementType="Argument">
+              <stringProp name="Argument.name">ACC_DATA</stringProp>
+              <stringProp name="Argument.value">&lt;accs&gt;&lt;![CDATA[language:ENU;Print Size:TDS_PS_L0]]&gt;&lt;/accs&gt;</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">This is the ACC data that is posted with each updateResponse call.  TODO: make it dynamic based on the student or something.</stringProp>
+            </elementProp>
+            <elementProp name="MAX_QUESTION_ATTEMPTS" elementType="Argument">
+              <stringProp name="Argument.name">MAX_QUESTION_ATTEMPTS</stringProp>
+              <stringProp name="Argument.value">40</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">The hard limit for the question answering loop - prevents infinite requests from being fired off in case of load test failure (test finished condition not met ).</stringProp>
+            </elementProp>
+            <elementProp name="PAGE_POS" elementType="Argument">
+              <stringProp name="Argument.name">PAGE_POS</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.desc">The position of the current page being viewed by the student.</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="TOTAL_PAGES" elementType="Argument">
+              <stringProp name="Argument.name">TOTAL_PAGES</stringProp>
+              <stringProp name="Argument.value">0</stringProp>
+              <stringProp name="Argument.desc">The total pages that have been retrieved (by the getPageContent called)</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
         <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Student Credentials File" enabled="true">
           <stringProp name="filename">student_logins.csv</stringProp>
@@ -1304,7 +1314,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
             <stringProp name="HTTPSampler.embedded_url_re">https?://${PROCTOR_HOST}:${PROCTOR_HOST_PORT}/.*</stringProp>
           </ConfigTestElement>
           <hashTree/>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Login Page View" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Student Login Page View" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
@@ -1352,7 +1362,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
               </HeaderManager>
               <hashTree/>
               <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Initial Student Delay Constant Timer" enabled="true">
-                <stringProp name="ConstantTimer.delay">10000</stringProp>
+                <stringProp name="ConstantTimer.delay">60000</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
@@ -2037,7 +2047,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login form POST" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Student Login form POST" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="keyValues" elementType="HTTPArgument">
@@ -2131,16 +2141,6 @@ String sessionIndex = (((${__threadNum} - 1) / ${STUDENTS_PER_PROCTOR}) + 1).toS
 String sessionId = props.get(&quot;SESSION_ID_&quot; + sessionIndex);
 log.info(&quot;Setting sessionID: &quot; + sessionId + &quot; at index &quot; + sessionIndex);
 vars.put(&quot;SESSION_ID&quot;, sessionId);
-//FileReader fileReader = new FileReader(&quot;sessions&quot; + sessionIndex + &quot;.csv&quot;);
-//BufferedReader bufferedReader = new BufferedReader(fileReader);
-//String line = bufferedReader.readLine();
-//log.info(&quot;Starting sesion read loop loop&quot;);
-//
-//while (line != null) {
-//	log.info(&quot;Setting sessionID: &quot; + line);
-//	vars.put(&quot;SESSION_ID&quot;, line);
-//	line = bufferedReader.readLine();
-//}
 </stringProp>
               </BeanShellPreProcessor>
               <hashTree/>
@@ -3106,7 +3106,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
               </hashTree>
             </hashTree>
           </hashTree>
-          <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Question While Controller" enabled="false">
+          <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Question While Controller" enabled="true">
             <stringProp name="WhileController.condition">${__javaScript((&quot;${TEST_FINISHED}&quot; == &quot;false&quot; &amp;&amp; &quot;${PAGE_POS}&quot; != &quot;${MAX_QUESTION_ATTEMPTS}&quot;))}</stringProp>
             <stringProp name="TestPlan.comments">Disable to allow multiple test runs</stringProp>
           </WhileController>
@@ -3533,7 +3533,7 @@ if (questionAttempts.equals(maxAttempts)) {
             </BeanShellAssertion>
             <hashTree/>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Review and Complete test" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Review and Complete test" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
@@ -3647,7 +3647,7 @@ if (questionAttempts.equals(maxAttempts)) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Submit to scoring" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Submit to scoring" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
