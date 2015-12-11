@@ -174,83 +174,31 @@
             <stringProp name="Argument.value">practice.smarterbalanced.org</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="ACC_DATA" elementType="Argument">
-            <stringProp name="Argument.name">ACC_DATA</stringProp>
-            <stringProp name="Argument.value">&lt;accs&gt;&lt;![CDATA[language:ENU;Print Size:TDS_PS_L0]]&gt;&lt;/accs&gt;</stringProp>
-            <stringProp name="Argument.desc">This is the ACC data that is posted with each updateResponse call.  TODO: make it dynamic based on the student or something.</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="TOTAL_PAGES" elementType="Argument">
-            <stringProp name="Argument.name">TOTAL_PAGES</stringProp>
-            <stringProp name="Argument.value">0</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="PAGE_POS" elementType="Argument">
-            <stringProp name="Argument.name">PAGE_POS</stringProp>
-            <stringProp name="Argument.value">1</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="TOTAL_STUDENT_COUNT" elementType="Argument">
             <stringProp name="Argument.name">TOTAL_STUDENT_COUNT</stringProp>
-            <stringProp name="Argument.value">4</stringProp>
+            <stringProp name="Argument.value">12</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="STUDENTS_PER_PROCTOR" elementType="Argument">
             <stringProp name="Argument.name">STUDENTS_PER_PROCTOR</stringProp>
-            <stringProp name="Argument.value">2</stringProp>
+            <stringProp name="Argument.value">3</stringProp>
             <stringProp name="Argument.desc">10 means there are 10 students for every proctor</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PROCTOR_HOST" elementType="Argument">
             <stringProp name="Argument.name">PROCTOR_HOST</stringProp>
-            <stringProp name="Argument.value">52.34.235.203</stringProp>
+            <stringProp name="Argument.value">tds-loadtest.sbtds.org</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PROCTOR_HOST_PORT" elementType="Argument">
             <stringProp name="Argument.name">PROCTOR_HOST_PORT</stringProp>
-            <stringProp name="Argument.value">8080</stringProp>
+            <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="SSO_HOST" elementType="Argument">
             <stringProp name="Argument.name">SSO_HOST</stringProp>
             <stringProp name="Argument.value">sso-dev.sbtds.org</stringProp>
             <stringProp name="Argument.desc">openAM SSO server for login</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="STOP_PROCTOR" elementType="Argument">
-            <stringProp name="Argument.name">STOP_PROCTOR</stringProp>
-            <stringProp name="Argument.value">false</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="TEST_KEY" elementType="Argument">
-            <stringProp name="Argument.name">TEST_KEY</stringProp>
-            <stringProp name="Argument.value">(SBAC_PT)SBAC ELA HS-ELA-10-Spring-2014-2015</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="TEST_GRADE" elementType="Argument">
-            <stringProp name="Argument.name">TEST_GRADE</stringProp>
-            <stringProp name="Argument.value">12</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="MAX_QUESTION_ATTEMPTS" elementType="Argument">
-            <stringProp name="Argument.name">MAX_QUESTION_ATTEMPTS</stringProp>
-            <stringProp name="Argument.value">40</stringProp>
-            <stringProp name="Argument.desc">The hard limit for the question answering loop - prevents infinite requests from being fired off in case of load test failure (test finished condition not met ).</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="SSID" elementType="Argument">
-            <stringProp name="Argument.name">SSID</stringProp>
-            <stringProp name="Argument.value">AERNIE03</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="FIRSTNAME" elementType="Argument">
-            <stringProp name="Argument.name">FIRSTNAME</stringProp>
-            <stringProp name="Argument.value">Ernie</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="APPROVAL_COUNT" elementType="Argument">
-            <stringProp name="Argument.name">APPROVAL_COUNT</stringProp>
-            <stringProp name="Argument.value">0</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -276,6 +224,39 @@
         <stringProp name="ThreadGroup.delay">0</stringProp>
       </ThreadGroup>
       <hashTree>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="MAX_PROCTOR_APPROVAL_ATTEMPTS" elementType="Argument">
+              <stringProp name="Argument.name">MAX_PROCTOR_APPROVAL_ATTEMPTS</stringProp>
+              <stringProp name="Argument.value">10</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">The proctor approval attempt hard limit</stringProp>
+            </elementProp>
+            <elementProp name="GET_TEST_OPPS" elementType="Argument">
+              <stringProp name="Argument.name">GET_TEST_OPPS</stringProp>
+              <stringProp name="Argument.value">false</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">This flag indicates whether students pending approval should be retrieved, or students currently under test should be retrieved.</stringProp>
+            </elementProp>
+            <elementProp name="STOP_PROCTOR" elementType="Argument">
+              <stringProp name="Argument.name">STOP_PROCTOR</stringProp>
+              <stringProp name="Argument.value">false</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="NEW_SESSION_KEY" elementType="Argument">
+              <stringProp name="Argument.name">NEW_SESSION_KEY</stringProp>
+              <stringProp name="Argument.value">NULL</stringProp>
+              <stringProp name="Argument.desc">Initialize to null value - should be replaced once session is obtained</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="RETRY_START_SESSION" elementType="Argument">
+              <stringProp name="Argument.name">RETRY_START_SESSION</stringProp>
+              <stringProp name="Argument.value">true</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
+        <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Proctor credentials file" enabled="true">
           <stringProp name="filename">proctor_logins.csv</stringProp>
           <stringProp name="fileEncoding"></stringProp>
@@ -529,7 +510,7 @@
           </HTTPSamplerProxy>
           <hashTree/>
         </hashTree>
-        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Start Session Transaction" enabled="true">
+        <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Start Session Transaction" enabled="false">
           <boolProp name="TransactionController.includeTimers">false</boolProp>
           <boolProp name="TransactionController.parent">false</boolProp>
         </TransactionController>
@@ -649,8 +630,143 @@ props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);</stringProp>
             <hashTree/>
           </hashTree>
         </hashTree>
-        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="While Controller" enabled="true">
-          <stringProp name="WhileController.condition">${__javaScript(parseInt(&quot;${APPROVAL_COUNT}&quot;) &lt; parseInt(&quot;${STUDENTS_PER_PROCTOR}&quot;))}</stringProp>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Start Session Retry Controller" enabled="true">
+          <stringProp name="WhileController.condition">${__javaScript(&quot;${RETRY_START_SESSION}&quot; == &quot;true&quot; &amp;&amp; &quot;${retryCount}&quot; != &quot;2&quot;)}</stringProp>
+        </WhileController>
+        <hashTree>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end"></stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">retryCount</stringProp>
+            <stringProp name="CounterConfig.format">#</stringProp>
+            <boolProp name="CounterConfig.per_user">true</boolProp>
+            <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+          </CounterConfig>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Init Data" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
+            <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/Services/XHR.axd/GetInitData</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">gets the available tests that we can start</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+              <collectionProp name="HeaderManager.headers">
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">X-Requested-With</stringProp>
+                  <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                </elementProp>
+                <elementProp name="" elementType="Header">
+                  <stringProp name="Header.name">X-Transaction</stringProp>
+                  <stringProp name="Header.value">Get data</stringProp>
+                </elementProp>
+              </collectionProp>
+            </HeaderManager>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Find available sessions" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">var response = prev.getResponseDataAsString();
+
+var json = JSON.parse(response);
+log.info(json.tests[0].Key);
+var testsAvailable = json.tests.length;
+var testKeys = &quot;&quot;, testIds = &quot;&quot;;
+//Construct the queryString variables to enable all available tests
+for (var i=0; i &lt; testsAvailable; i++) {
+	if (i != 0) {
+		testKeys += &quot;%7C&quot;; //all but the first key/id need to be preappended with a &apos;|&apos; pipe
+		testIds += &quot;%7C&quot;;
+	}
+	testKeys += json.tests[i].Key;
+	testIds += json.tests[i].Id;
+}
+
+log.info(&quot;testKeys: &quot; + testKeys);
+log.info(&quot;testIds: &quot; + testIds);
+vars.put(&quot;SESSION_START_POST_KEYS&quot;, testKeys);
+vars.put(&quot;SESSION_START_POST_IDS&quot;, testIds);</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Start Session Delay Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">3000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
+          </hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST start session" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="testKeys" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${SESSION_START_POST_KEYS}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">testKeys</stringProp>
+                </elementProp>
+                <elementProp name="testIDs" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">${SESSION_START_POST_IDS}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">testIDs</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
+            <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/Services/XHR.axd/InsertSessionTests</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            <stringProp name="TestPlan.comments">// failure: {&quot;reason&quot;:&quot;An active session for this user already exists. [11880]&quot;,&quot;status&quot;:&quot;failed&quot;}</stringProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Find and store newly created session ID" enabled="true">
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">var response = prev.getResponseDataAsString();
+
+log.info(response);
+
+var json = JSON.parse(response)
+log.info(&quot;new sessionid = &quot; + json.session.id + &quot; on proctor ${__threadNum()}&quot;);
+vars.put(&quot;NEW_SESSION_KEY&quot;, json.session._key);
+vars.put(&quot;RETRY_START_SESSION&quot;, &quot;false&quot;);
+props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);
+</stringProp>
+              <stringProp name="scriptLanguage">javascript</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Approval While Controller" enabled="true">
+          <stringProp name="WhileController.condition">${__javaScript(&quot;${STOP_PROCTOR}&quot; == &quot;false&quot; &amp;&amp; &quot;${NEW_SESSION_KEY}&quot; != &quot;NULL&quot;)}</stringProp>
         </WhileController>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Check for approval opps transaction" enabled="true">
@@ -658,8 +774,8 @@ props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);</stringProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="10 second wait (change to 30)" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="15 second wait (change to 30)" enabled="true">
+              <stringProp name="ConstantTimer.delay">15000</stringProp>
             </ConstantTimer>
             <hashTree/>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Check for awaiting approvals" enabled="true">
@@ -667,7 +783,7 @@ props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);</stringProp>
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="bGetCurTestees" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">false</stringProp>
+                    <stringProp name="Argument.value">${GET_TEST_OPPS}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     <stringProp name="Argument.name">bGetCurTestees</stringProp>
@@ -704,36 +820,176 @@ props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);</stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="script">var response = prev.getResponseDataAsString();
 var json = JSON.parse(response);
-
 log.info(response);
+
+//Get current students flag must be toggled false/true each time a check for approval is made.
+//False seems to indicate that pending approvals are to be retrieved
+//True seems to indicate that students currently taking the test are retrieved
+var getTestOppsFlag = vars.get(&quot;GET_TEST_OPPS&quot;); 
+if (getTestOppsFlag) { //Check if &quot;completed&quot; students matches our overall student count 
+	var completedStudents = 0;
+	for (var testOpp in json.testOpps) {
+		if (testOpp.status === &quot;completed&quot;) {
+			completedStudents++;
+		} else {
+			break;
+		}
+	}
+
+	if (completedStudents == vars.get(&quot;STUDENTS_PER_PROCTOR&quot;)) {
+		vars.put(&quot;STOP_PROCTOR&quot;, true);
+	}
+} 
+
+if (getTestOppsFlag === &quot;true&quot;) {
+	getTestOppsFlag = &quot;false&quot;;
+} else {
+	getTestOppsFlag = &quot;true&quot;;
+}
+vars.put(&quot;GET_TEST_OPPS&quot;, getTestOppsFlag);
 
 var oppCount = json.approvalOpps.length;
 // check for new awaiting approvals to deal with and auto-approve all available opportunities
 if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
 	log.info(&quot;there are approval opps&quot;);
-	vars.put(&quot;APPROVAL_OPP_KEY&quot;, json.approvalOpps[0].oppKey);
-	vars.put(&quot;APPROVAL_TEST_KEY&quot;, json.approvalOpps[0].testKey);
-	vars.put(&quot;APPROVAL_TEST_KEY&quot;, &quot;&quot;);
-//	vars.put(&quot;APPROVAL_OPP_COUNT&quot; , oppCount);
-//	
-//	for (var i = 0; i &lt; oppCount; ++i) {
-//		log.info(&quot;App count: &quot; + oppCount);
-//		log.info(&quot;Approving opp key: &quot; + json.approvalOpps[i].oppKey);
-//		vars.put(&quot;APPROVAL_OPP_KEY_&quot; + i, json.approvalOpps[i].oppKey);
-//		vars.put(&quot;APPROVAL_TEST_KEY_&quot; + i, json.approvalOpps[i].testKey);
-//	}
+//	vars.put(&quot;APPROVAL_OPP_KEY&quot;, json.approvalOpps[0].oppKey);
+//	vars.put(&quot;APPROVAL_TEST_KEY&quot;, json.approvalOpps[0].testKey);
+
+	for (var i = 0; i &lt; oppCount; ++i) {
+		log.info(&quot;App count: &quot; + oppCount);
+		log.info(&quot;Approving opp key: &quot; + json.approvalOpps[i].oppKey);
+		vars.put(&quot;APPROVAL_OPP_KEYS_&quot; + (i + 1), json.approvalOpps[i].oppKey);
+		vars.put(&quot;APPROVAL_TEST_KEYS_&quot; + (i + 1), json.approvalOpps[i].testKey);
+	}
 } else {
 	log.info(&quot;there are NOT ANY approval opps&quot;);
-	vars.put(&quot;APPROVAL_OPP_KEY&quot;, &quot;&quot;);
-	vars.put(&quot;APPROVAL_TEST_KEY&quot;, &quot;&quot;);
+//	vars.put(&quot;APPROVAL_OPP_KEY&quot;, &quot;&quot;);
+//	vars.put(&quot;APPROVAL_TEST_KEY&quot;, &quot;&quot;);
+
+	for (var i = 1; i &lt;= vars.get(&quot;STUDENTS_PER_PROCTOR&quot;); i++) {
+		vars.remove(&quot;APPROVAL_OPP_KEYS_&quot; + i);
+		vars.remove(&quot;APPROVAL_TEST_KEYS_&quot; + i);
+	}
 }
+
+//Keep count of the amount of approval attempts
+var attempt = vars.get(&quot;APPROVAL_ATTEMPTS&quot;);
+if (attempt === vars.get(&quot;MAX_PROCTOR_APPROVAL_ATTEMPTS&quot;)) {
+	vars.put(&quot;STOP_PROCTOR&quot;, true);
+	log.info(&quot;Max approval attempts reached!&quot;);
+} else {
+	attempt++;
+	log.info(&quot;Current approval attempts: &quot; + attempt);
+	vars.put(&quot;APPROVAL_ATTEMPTS&quot;,  attempt);
+}
+
 </stringProp>
                 <stringProp name="scriptLanguage">javascript</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
+          <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="Approval ForEach Controller" enabled="true">
+            <stringProp name="TestPlan.comments">TODO: Get the right APPROVAL_TEST_KEYS_ index</stringProp>
+            <stringProp name="ForeachController.inputVal">APPROVAL_OPP_KEYS</stringProp>
+            <stringProp name="ForeachController.returnVal">APPROVAL_OPP_KEY</stringProp>
+            <boolProp name="ForeachController.useSeparator">true</boolProp>
+            <stringProp name="ForeachController.startIndex">0</stringProp>
+          </ForeachController>
+          <hashTree>
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Approval Index" enabled="true">
+              <stringProp name="CounterConfig.start">1</stringProp>
+              <stringProp name="CounterConfig.end"></stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">approvalIndex</stringProp>
+              <stringProp name="CounterConfig.format">#</stringProp>
+              <boolProp name="CounterConfig.per_user">true</boolProp>
+              <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+            </CounterConfig>
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Accomodations" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="testKey" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${__BeanShell(vars.get(&quot;APPROVAL_TEST_KEYS_1&quot;))}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">testKey</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
+              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/Services/XHR.axd/GetAccs</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <boolProp name="HTTPSampler.monitor">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree/>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Approve Opportunity" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="oppKey" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${APPROVAL_OPP_KEY}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">oppKey</stringProp>
+                  </elementProp>
+                  <elementProp name="sessionKey" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${NEW_SESSION_KEY}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">sessionKey</stringProp>
+                  </elementProp>
+                  <elementProp name="accs" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">TDS_PS_L0|TDS_Other|ENU|;</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">accs</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
+              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/Services/XHR.axd/ApproveOpportunity</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <boolProp name="HTTPSampler.monitor">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button // TODO: parse and get real accs values</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree>
+              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+                <boolProp name="resetInterpreter">false</boolProp>
+                <stringProp name="parameters"></stringProp>
+                <stringProp name="filename"></stringProp>
+                <stringProp name="script">Integer index = Integer.parseInt(vars.get(&quot;approvalIndex&quot;));
+vars.remove(&quot;APPROVAL_OPP_KEYS_&quot; + index.toString());</stringProp>
+              </BeanShellPostProcessor>
+              <hashTree/>
+            </hashTree>
+          </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="false">
             <stringProp name="IfController.condition">&apos;${APPROVAL_OPP_KEY}&apos; != &apos;&apos;</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
           </IfController>
@@ -809,382 +1065,6 @@ if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button // TODO: parse and ge real accs values</stringProp>
             </HTTPSamplerProxy>
-            <hashTree>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">Integer approvalCount = Integer.parseInt(vars.get(&quot;APPROVAL_COUNT&quot;));
-approvalCount++;
-log.info(&quot;Approval Count: &quot; + approvalCount.toString() + &quot; For Proctor${__threadNum}&quot;);
-vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Approval Loop Controller" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="TestPlan.comments">${APPROVAL_OPP_COUNT}</stringProp>
-            <stringProp name="LoopController.loops">2</stringProp>
-          </LoopController>
-          <hashTree>
-            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-              <stringProp name="CounterConfig.start">0</stringProp>
-              <stringProp name="CounterConfig.end"></stringProp>
-              <stringProp name="CounterConfig.incr">1</stringProp>
-              <stringProp name="CounterConfig.name">oppIndex</stringProp>
-              <stringProp name="CounterConfig.format">#</stringProp>
-              <boolProp name="CounterConfig.per_user">false</boolProp>
-            </CounterConfig>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Accomodations" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="testKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__BeanShell(vars.get(&quot;APPROVAL_TEST_KEY_0&quot;))}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">testKey</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
-              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/GetAccs</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Approve Opportunity" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="oppKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__V(APPROVAL_OPP_KEY_${oppIndex})}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">oppKey</stringProp>
-                  </elementProp>
-                  <elementProp name="sessionKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${NEW_SESSION_KEY}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">sessionKey</stringProp>
-                  </elementProp>
-                  <elementProp name="accs" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">TDS_PS_L0|TDS_Other|ENU|;</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">accs</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
-              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/ApproveOpportunity</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button // TODO: parse and ge real accs values</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree/>
-            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
-              <boolProp name="resetInterpreter">false</boolProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="script">log.info(&quot;APPROVALOPPKEY_0: &quot; + vars.get(&quot;APPROVAL_OPP_KEY_0&quot;))</stringProp>
-            </BeanShellPreProcessor>
-            <hashTree/>
-          </hashTree>
-        </hashTree>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="false">
-          <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">5</stringProp>
-        </LoopController>
-        <hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Check for approval opps transaction" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="10 second wait (change to 30)" enabled="true">
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
-            </ConstantTimer>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Check for awaiting approvals" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="bGetCurTestees" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">false</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">bGetCurTestees</stringProp>
-                  </elementProp>
-                  <elementProp name="sessionKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${NEW_SESSION_KEY}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">sessionKey</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
-              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/AutoRefreshData</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">TODO: run every 30 seconds and auto-approve</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Find new awaiting approvals in response" enabled="true">
-                <stringProp name="cacheKey"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="script">var response = prev.getResponseDataAsString();
-var json = JSON.parse(response);
-
-log.info(response);
-
-var oppCount = json.approvalOpps.length;
-// check for new awaiting approvals to deal with and auto-approve all available opportunities
-if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
-	log.info(&quot;there are approval opps&quot;);
-	vars.put(&quot;APPROVAL_OPP_KEY&quot;, json.approvalOpps[0].oppKey);
-	vars.put(&quot;APPROVAL_TEST_KEY&quot;, json.approvalOpps[0].testKey);
-	vars.put(&quot;APPROVAL_TEST_KEY&quot;, &quot;&quot;);
-//	vars.put(&quot;APPROVAL_OPP_COUNT&quot; , oppCount);
-//	
-//	for (var i = 0; i &lt; oppCount; ++i) {
-//		log.info(&quot;App count: &quot; + oppCount);
-//		log.info(&quot;Approving opp key: &quot; + json.approvalOpps[i].oppKey);
-//		vars.put(&quot;APPROVAL_OPP_KEY_&quot; + i, json.approvalOpps[i].oppKey);
-//		vars.put(&quot;APPROVAL_TEST_KEY_&quot; + i, json.approvalOpps[i].testKey);
-//	}
-} else {
-	log.info(&quot;there are NOT ANY approval opps&quot;);
-	vars.put(&quot;APPROVAL_OPP_KEY&quot;, &quot;&quot;);
-	vars.put(&quot;APPROVAL_TEST_KEY&quot;, &quot;&quot;);
-}
-</stringProp>
-                <stringProp name="scriptLanguage">javascript</stringProp>
-              </JSR223PostProcessor>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
-            <stringProp name="IfController.condition">&apos;${APPROVAL_OPP_KEY}&apos; != &apos;&apos;</stringProp>
-            <boolProp name="IfController.evaluateAll">false</boolProp>
-          </IfController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Accomodations" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="testKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${APPROVAL_TEST_KEY}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">testKey</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
-              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/GetAccs</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Approve Opportunity" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="oppKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${APPROVAL_OPP_KEY}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">oppKey</stringProp>
-                  </elementProp>
-                  <elementProp name="sessionKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${NEW_SESSION_KEY}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">sessionKey</stringProp>
-                  </elementProp>
-                  <elementProp name="accs" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">TDS_PS_L0|TDS_Other|ENU|;</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">accs</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
-              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/ApproveOpportunity</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button // TODO: parse and ge real accs values</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">Integer approvalCount = Integer.parseInt(vars.get(&quot;APPROVAL_COUNT&quot;));
-approvalCount++;
-log.info(&quot;Approval Count: &quot; + approvalCount.toString() + &quot; For Proctor${__threadNum}&quot;);
-vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-            </hashTree>
-          </hashTree>
-          <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Approval Loop Controller" enabled="false">
-            <boolProp name="LoopController.continue_forever">true</boolProp>
-            <stringProp name="TestPlan.comments">${APPROVAL_OPP_COUNT}</stringProp>
-            <stringProp name="LoopController.loops">2</stringProp>
-          </LoopController>
-          <hashTree>
-            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-              <stringProp name="CounterConfig.start">0</stringProp>
-              <stringProp name="CounterConfig.end"></stringProp>
-              <stringProp name="CounterConfig.incr">1</stringProp>
-              <stringProp name="CounterConfig.name">oppIndex</stringProp>
-              <stringProp name="CounterConfig.format">#</stringProp>
-              <boolProp name="CounterConfig.per_user">false</boolProp>
-            </CounterConfig>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Accomodations" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="testKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__BeanShell(vars.get(&quot;APPROVAL_TEST_KEY_0&quot;))}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">testKey</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
-              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/GetAccs</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Approve Opportunity" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="oppKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${__V(APPROVAL_OPP_KEY_${oppIndex})}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">oppKey</stringProp>
-                  </elementProp>
-                  <elementProp name="sessionKey" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">${NEW_SESSION_KEY}</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">sessionKey</stringProp>
-                  </elementProp>
-                  <elementProp name="accs" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">TDS_PS_L0|TDS_Other|ENU|;</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">accs</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
-              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/ApproveOpportunity</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button // TODO: parse and ge real accs values</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree/>
-            <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
-              <boolProp name="resetInterpreter">false</boolProp>
-              <stringProp name="parameters"></stringProp>
-              <stringProp name="filename"></stringProp>
-              <stringProp name="script">log.info(&quot;APPROVALOPPKEY_0: &quot; + vars.get(&quot;APPROVAL_OPP_KEY_0&quot;))</stringProp>
-            </BeanShellPreProcessor>
             <hashTree/>
           </hashTree>
         </hashTree>
@@ -1205,7 +1085,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
-          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
           <stringProp name="HTTPSampler.path">/Services/XHR.axd/PauseSession</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
@@ -1215,13 +1095,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
-        <hashTree>
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Student Test Delay Timer" enabled="true">
-            <stringProp name="TestPlan.comments">Allow some time seconds after last approval for students to take test</stringProp>
-            <stringProp name="ConstantTimer.delay">30000</stringProp>
-          </ConstantTimer>
-          <hashTree/>
-        </hashTree>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Logout" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -1250,7 +1124,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${TOTAL_STUDENT_COUNT}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time"></stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1449092782000</longProp>
         <longProp name="ThreadGroup.end_time">1449092788000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -1259,16 +1133,34 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
         <stringProp name="TestPlan.comments">${__javaScript(${TOTAL_STUDENT_COUNT} / 2; )}</stringProp>
       </ThreadGroup>
       <hashTree>
-        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Student Credentials File" enabled="false">
-          <stringProp name="filename">student_logins.csv</stringProp>
-          <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="variableNames">FirstName,AlternateSSID</stringProp>
-          <stringProp name="delimiter">,</stringProp>
-          <boolProp name="quotedData">false</boolProp>
-          <boolProp name="recycle">true</boolProp>
-          <boolProp name="stopThread">false</boolProp>
-          <stringProp name="shareMode">shareMode.all</stringProp>
-        </CSVDataSet>
+        <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="ACC_DATA" elementType="Argument">
+              <stringProp name="Argument.name">ACC_DATA</stringProp>
+              <stringProp name="Argument.value">&lt;accs&gt;&lt;![CDATA[language:ENU;Print Size:TDS_PS_L0]]&gt;&lt;/accs&gt;</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">This is the ACC data that is posted with each updateResponse call.  TODO: make it dynamic based on the student or something.</stringProp>
+            </elementProp>
+            <elementProp name="MAX_QUESTION_ATTEMPTS" elementType="Argument">
+              <stringProp name="Argument.name">MAX_QUESTION_ATTEMPTS</stringProp>
+              <stringProp name="Argument.value">40</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">The hard limit for the question answering loop - prevents infinite requests from being fired off in case of load test failure (test finished condition not met ).</stringProp>
+            </elementProp>
+            <elementProp name="PAGE_POS" elementType="Argument">
+              <stringProp name="Argument.name">PAGE_POS</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.desc">The position of the current page being viewed by the student.</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="TOTAL_PAGES" elementType="Argument">
+              <stringProp name="Argument.name">TOTAL_PAGES</stringProp>
+              <stringProp name="Argument.value">0</stringProp>
+              <stringProp name="Argument.desc">The total pages that have been retrieved (by the getPageContent called)</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </Arguments>
         <hashTree/>
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Student Credentials File" enabled="true">
           <stringProp name="filename">student_logins.csv</stringProp>
@@ -1304,7 +1196,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
             <stringProp name="HTTPSampler.embedded_url_re">https?://${PROCTOR_HOST}:${PROCTOR_HOST_PORT}/.*</stringProp>
           </ConfigTestElement>
           <hashTree/>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Login Page View" enabled="true">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Student Login Page View" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
@@ -2037,7 +1929,7 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Login form POST" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Student Login form POST" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="keyValues" elementType="HTTPArgument">
@@ -2129,18 +2021,13 @@ vars.put(&quot;APPROVAL_COUNT&quot;, approvalCount.toString());</stringProp>
 //Get the sessionIndex (1 based) which corresponds to the thread number of the proctor that created the session
 String sessionIndex = (((${__threadNum} - 1) / ${STUDENTS_PER_PROCTOR}) + 1).toString();
 String sessionId = props.get(&quot;SESSION_ID_&quot; + sessionIndex);
-log.info(&quot;Setting sessionID: &quot; + sessionId + &quot; at index &quot; + sessionIndex);
-vars.put(&quot;SESSION_ID&quot;, sessionId);
-//FileReader fileReader = new FileReader(&quot;sessions&quot; + sessionIndex + &quot;.csv&quot;);
-//BufferedReader bufferedReader = new BufferedReader(fileReader);
-//String line = bufferedReader.readLine();
-//log.info(&quot;Starting sesion read loop loop&quot;);
-//
-//while (line != null) {
-//	log.info(&quot;Setting sessionID: &quot; + line);
-//	vars.put(&quot;SESSION_ID&quot;, line);
-//	line = bufferedReader.readLine();
-//}
+
+if (sessionId != null) {
+	log.info(&quot;Setting sessionID: &quot; + sessionId + &quot; at index &quot; + sessionIndex);
+	vars.put(&quot;SESSION_ID&quot;, sessionId);	
+} else {
+	log.error(&quot;Failed to retrieve the sessionId from proctor thread &quot; + sessionIndex);
+}
 </stringProp>
               </BeanShellPreProcessor>
               <hashTree/>
@@ -2152,20 +2039,25 @@ vars.put(&quot;SESSION_ID&quot;, sessionId);
                 <stringProp name="script">var response = prev.getResponseDataAsString();
 var json = JSON.parse(response);
 
-var testeeKey = json.data.testee.key;
-var testeeToken = json.data.testee.token;
-var sessionKey = json.data.session.key;
-var testGrade = json.data.testee.grade;
-
-log.info(&quot;TESTEE_KEY: &quot; + testeeKey);
-log.info(&quot;TESTEE_TOKEN: &quot; + testeeToken);
-log.info(&quot;SESSION_KEY: &quot; + sessionKey);
-log.info(&quot;TEST_GRADE: &quot; + testGrade);
-
-vars.put(&quot;TESTEE_KEY&quot;, testeeKey);
-vars.put(&quot;TESTEE_TOKEN&quot;, testeeToken);
-vars.put(&quot;SESSION_KEY&quot;, sessionKey);
-vars.put(&quot;TEST_GRADE&quot;, testGrade);</stringProp>
+if (json.data) {
+	var testeeKey = json.data.testee.key;
+	var testeeToken = json.data.testee.token;
+	var sessionKey = json.data.session.key;
+	var testGrade = json.data.testee.grade;
+	
+	log.info(&quot;TESTEE_KEY: &quot; + testeeKey);
+	log.info(&quot;TESTEE_TOKEN: &quot; + testeeToken);
+	log.info(&quot;SESSION_KEY: &quot; + sessionKey);
+	log.info(&quot;TEST_GRADE: &quot; + testGrade);
+	
+	vars.put(&quot;TESTEE_KEY&quot;, testeeKey);
+	vars.put(&quot;TESTEE_TOKEN&quot;, testeeToken);
+	vars.put(&quot;SESSION_KEY&quot;, sessionKey);
+	vars.put(&quot;TEST_GRADE&quot;, testGrade);
+} else {
+	log.error(&quot;Student ${__threadNum()} failed to log in!!!&quot;);
+}
+</stringProp>
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
@@ -2576,7 +2468,7 @@ log.info(response);</stringProp>
                 </JSR223PostProcessor>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-                  <stringProp name="ConstantTimer.delay">5000</stringProp>
+                  <stringProp name="ConstantTimer.delay">10000</stringProp>
                 </ConstantTimer>
                 <hashTree/>
               </hashTree>
@@ -2714,7 +2606,7 @@ log.info(response);</stringProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">user clicks the Begin Test button and posts this data to kick things off - TODO: dynamic key and token for testee</stringProp>
+              <stringProp name="TestPlan.comments">user clicks the Begin Test button and posts this data to kick things off</stringProp>
             </HTTPSamplerProxy>
             <hashTree>
               <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
@@ -2804,11 +2696,16 @@ log.info(response);</stringProp>
                 </collectionProp>
               </HeaderManager>
               <hashTree/>
-              <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Assertion: Start test takes less than 15 seconds" enabled="true">
+              <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Assertion: Start test takes less than 15 seconds" enabled="false">
                 <stringProp name="DurationAssertion.duration">15000</stringProp>
               </DurationAssertion>
               <hashTree/>
             </hashTree>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Content Delay Timer" enabled="true">
+              <stringProp name="TestPlan.comments">10 seconds to view page before proceeding with next test initialization page //TODO change to more realistic value during test</stringProp>
+              <stringProp name="ConstantTimer.delay">5000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
           </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Question Group 1" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -3789,7 +3686,7 @@ if (questionAttempts.equals(maxAttempts)) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <RecordingController guiclass="RecordController" testclass="RecordingController" testname="Recording Controller" enabled="true"/>
+          <RecordingController guiclass="RecordController" testclass="RecordingController" testname="Recording Controller" enabled="false"/>
           <hashTree/>
         </hashTree>
       </hashTree>
@@ -5629,7 +5526,7 @@ log.info(&quot;Test finished: ${TEST_FINISHED}&quot;);</stringProp>
         <stringProp name="filename">simple-data.txt</stringProp>
       </ResultCollector>
       <hashTree/>
-      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
