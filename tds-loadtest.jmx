@@ -238,7 +238,7 @@
           <collectionProp name="Arguments.arguments">
             <elementProp name="MAX_PROCTOR_APPROVAL_ATTEMPTS" elementType="Argument">
               <stringProp name="Argument.name">MAX_PROCTOR_APPROVAL_ATTEMPTS</stringProp>
-              <stringProp name="Argument.value">15</stringProp>
+              <stringProp name="Argument.value">7</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
               <stringProp name="Argument.desc">The proctor approval attempt hard limit</stringProp>
             </elementProp>
@@ -643,6 +643,7 @@ props.put(&quot;SESSION_ID_${__threadNum}&quot;, json.session.id);
         </hashTree>
         <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Approval While Controller" enabled="true">
           <stringProp name="WhileController.condition">${__javaScript(&quot;${STOP_PROCTOR}&quot; == &quot;false&quot; &amp;&amp; &quot;${NEW_SESSION_KEY}&quot; != &quot;NULL&quot;)}</stringProp>
+          <stringProp name="TestPlan.comments">If NEW_SESSION_KEY is NULL, then something went wrong creating the session and we do not need to enter the approval loop</stringProp>
         </WhileController>
         <hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Check for approval opps transaction" enabled="true">
@@ -702,23 +703,25 @@ log.info(response);
 //False seems to indicate that pending approvals are to be retrieved
 //True seems to indicate that students currently taking the test are retrieved
 var getTestOppsFlag = vars.get(&quot;GET_TEST_OPPS&quot;); 
-if (getTestOppsFlag) { //Check if &quot;completed&quot; students matches our overall student count 
+if (getTestOppsFlag === &quot;true&quot;) { 
+	getTestOppsFlag = &quot;false&quot;;
+	//Check if &quot;completed&quot; students matches our overall student count 
 	var completedStudents = 0;
-	for (var testOpp in json.testOpps) {
-		if (testOpp.status === &quot;completed&quot;) {
-			completedStudents++;
-		} else {
-			break;
+	if (json.testOpps) {
+		for (var i = 0; i &lt; json.testOpps.length; i++) {
+			var testOpp = json.testOpps[i];
+			if (testOpp.status === &quot;completed&quot;) {
+				completedStudents++;
+			} else {
+				break;
+			}
+		}
+	
+		if (completedStudents == vars.get(&quot;STUDENTS_PER_PROCTOR&quot;)) {
+			log.info(&quot;Detected that all students have completed tests under this proctor - closing session for proctor ${__threadNum()}.&quot;);
+			vars.put(&quot;STOP_PROCTOR&quot;, true);
 		}
 	}
-
-	if (completedStudents == vars.get(&quot;STUDENTS_PER_PROCTOR&quot;)) {
-		vars.put(&quot;STOP_PROCTOR&quot;, true);
-	}
-} 
-
-if (getTestOppsFlag === &quot;true&quot;) {
-	getTestOppsFlag = &quot;false&quot;;
 } else {
 	getTestOppsFlag = &quot;true&quot;;
 }
@@ -726,14 +729,13 @@ vars.put(&quot;GET_TEST_OPPS&quot;, getTestOppsFlag);
 
 var oppCount = json.approvalOpps.length;
 // check for new awaiting approvals to deal with and auto-approve all available opportunities
+	
 if (json.approvalOpps != null &amp;&amp; oppCount &gt; 0) {
 	log.info(&quot;Proctor ${__threadNum()} - there are approval opps&quot;);
 
 	for (var i = 0; i &lt; oppCount; ++i) {
-		log.info(&quot;App count: &quot; + oppCount);
 		//Save as comma delimitted value for use in foreach controller
 		var oppAndTestKeys = json.approvalOpps[i].oppKey + &quot;,&quot; + json.approvalOpps[i].testKey;
-		log.info(&quot;Opp and Test keys: &quot; + oppAndTestKeys);
 		vars.put(&quot;APPROVAL_OPPS_AND_TEST_KEYS_&quot; + (i + 1), oppAndTestKeys);
 	}
 } else {
@@ -2869,7 +2871,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
               </hashTree>
             </hashTree>
           </hashTree>
-          <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Question While Controller" enabled="false">
+          <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Question While Controller" enabled="true">
             <stringProp name="WhileController.condition">${__javaScript((&quot;${TEST_FINISHED}&quot; == &quot;false&quot; &amp;&amp; &quot;${PAGE_POS}&quot; != &quot;${MAX_QUESTION_ATTEMPTS}&quot;))}</stringProp>
             <stringProp name="TestPlan.comments">Disable to allow multiple test runs</stringProp>
           </WhileController>
@@ -3296,7 +3298,7 @@ if (questionAttempts.equals(maxAttempts)) {
             </BeanShellAssertion>
             <hashTree/>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Review and Complete test" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Review and Complete test" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
@@ -3410,7 +3412,7 @@ if (questionAttempts.equals(maxAttempts)) {
               <hashTree/>
             </hashTree>
           </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Submit to scoring" enabled="false">
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Submit to scoring" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
@@ -5425,8 +5427,8 @@ log.info(&quot;Test finished: ${TEST_FINISHED}&quot;);</stringProp>
         <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
-        <boolProp name="ResultCollector.error_logging">true</boolProp>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
