@@ -169,14 +169,9 @@
       <hashTree/>
       <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
-          <elementProp name="DOMAIN" elementType="Argument">
-            <stringProp name="Argument.name">DOMAIN</stringProp>
-            <stringProp name="Argument.value">practice.smarterbalanced.org</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="TOTAL_STUDENT_COUNT" elementType="Argument">
             <stringProp name="Argument.name">TOTAL_STUDENT_COUNT</stringProp>
-            <stringProp name="Argument.value">5000</stringProp>
+            <stringProp name="Argument.value">10000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="STUDENTS_PER_PROCTOR" elementType="Argument">
@@ -197,7 +192,7 @@
           </elementProp>
           <elementProp name="SSO_HOST" elementType="Argument">
             <stringProp name="Argument.name">SSO_HOST</stringProp>
-            <stringProp name="Argument.value">sso-dev.sbtds.org</stringProp>
+            <stringProp name="Argument.value">openam1-dev.sbtds.org</stringProp>
             <stringProp name="Argument.desc">openAM SSO server for login</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -208,8 +203,21 @@
           </elementProp>
           <elementProp name="STUDENT_START_DELAY_IN_MILLIS" elementType="Argument">
             <stringProp name="Argument.name">STUDENT_START_DELAY_IN_MILLIS</stringProp>
-            <stringProp name="Argument.value">720000</stringProp>
+            <stringProp name="Argument.value">330000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">The delay before the students begin session id retrieval/test execution.</stringProp>
+          </elementProp>
+          <elementProp name="PROCTOR_RAMP_UP_TIME_IN_SECS" elementType="Argument">
+            <stringProp name="Argument.name">PROCTOR_RAMP_UP_TIME_IN_SECS</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">300</stringProp>
+          </elementProp>
+          <elementProp name="STUDENT_RAMP_UP_TIME_IN_SECS" elementType="Argument">
+            <stringProp name="Argument.name">STUDENT_RAMP_UP_TIME_IN_SECS</stringProp>
+            <stringProp name="Argument.value">600</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">600</stringProp>
           </elementProp>
         </collectionProp>
       </Arguments>
@@ -226,7 +234,7 @@
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${__javaScript(${TOTAL_STUDENT_COUNT} / ${STUDENTS_PER_PROCTOR}; )}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">600</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${PROCTOR_RAMP_UP_TIME_IN_SECS}</stringProp>
         <longProp name="ThreadGroup.start_time">1363247040000</longProp>
         <longProp name="ThreadGroup.end_time">1363247040000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -238,7 +246,7 @@
           <collectionProp name="Arguments.arguments">
             <elementProp name="MAX_PROCTOR_APPROVAL_ATTEMPTS" elementType="Argument">
               <stringProp name="Argument.name">MAX_PROCTOR_APPROVAL_ATTEMPTS</stringProp>
-              <stringProp name="Argument.value">150</stringProp>
+              <stringProp name="Argument.value">50</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
               <stringProp name="Argument.desc">The proctor approval attempt hard limit</stringProp>
             </elementProp>
@@ -262,6 +270,18 @@
             <elementProp name="RETRY_START_SESSION" elementType="Argument">
               <stringProp name="Argument.name">RETRY_START_SESSION</stringProp>
               <stringProp name="Argument.value">true</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="MAX_APPROVAL_FAILURES" elementType="Argument">
+              <stringProp name="Argument.name">MAX_APPROVAL_FAILURES</stringProp>
+              <stringProp name="Argument.value">5</stringProp>
+              <stringProp name="Argument.desc">Max approval failures before stopping session</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="APPROVAL_FAILURES" elementType="Argument">
+              <stringProp name="Argument.name">APPROVAL_FAILURES</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.desc">The approval failure count</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -321,10 +341,10 @@
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
             <stringProp name="HTTPSampler.domain">${SSO_HOST}</stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.port">8080</stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">https</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path">/auth/SSORedirect/metaAlias/sbac/idp?SAMLRequest=${SAMLRequest}</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -479,10 +499,10 @@
               </collectionProp>
             </elementProp>
             <stringProp name="HTTPSampler.domain">${SSO_HOST}</stringProp>
-            <stringProp name="HTTPSampler.port"></stringProp>
+            <stringProp name="HTTPSampler.port">8080</stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">https</stringProp>
+            <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path">auth/UI/Login</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -654,6 +674,10 @@ try {
               <stringProp name="scriptLanguage">javascript</stringProp>
             </JSR223PostProcessor>
             <hashTree/>
+            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+              <stringProp name="ConstantTimer.delay">5000</stringProp>
+            </ConstantTimer>
+            <hashTree/>
           </hashTree>
         </hashTree>
         <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="Approval While Controller" enabled="true">
@@ -746,9 +770,19 @@ try {
 	if (json.approvalOpps) {
 		oppCount =  json.approvalOpps.length;
 	} else {
-		log.error(&quot;No approvals key detected... bad response??? see below...&quot;);
+		log.error(&quot;Proctor ${__threadNum()} : No approvals key detected... bad response??? see below...&quot;);
 		log.error(response);
 		prev.setSuccessful(false);
+			//Keep count of the amount of approval failures
+		var failure = vars.get(&quot;APPROVAL_FAILURES&quot;);
+		if (failure == vars.get(&quot;MAX_APPROVAL_FAILURES&quot;)) {
+			vars.put(&quot;STOP_PROCTOR&quot;, true);
+			log.info(&quot;Max approval failures reached on proctor ${__threadNum()}!&quot;);
+		} else {
+			failure++;
+			log.info(&quot;Proctor ${__threadNum()} - Current approval failures: &quot; + failure);
+			vars.put(&quot;APPROVAL_FAILURES&quot;,  failure);
+		}
 	}
 	// check for new awaiting approvals to deal with and auto-approve all available opportunities
 	if (oppCount &gt; 0) {
@@ -777,19 +811,19 @@ try {
 		vars.put(&quot;APPROVAL_ATTEMPTS&quot;,  attempt);
 	}
 } catch (exception) {
-	log.error(&quot;Error in Check for awaiting approvals sample. Response below...&quot;);
+	log.error(&quot;Proctor ${__threadNum()} : Error in Check for awaiting approvals sample. Response below...&quot;);
 	log.error(response);
 	prev.setSuccessful(false);
 
-		//Keep count of the amount of approval attempts
-	var attempt = vars.get(&quot;APPROVAL_ATTEMPTS&quot;);
-	if (attempt == vars.get(&quot;MAX_PROCTOR_APPROVAL_ATTEMPTS&quot;)) {
+	//Keep count of the amount of approval failures
+	var failure = vars.get(&quot;APPROVAL_FAILURES&quot;);
+	if (failure == vars.get(&quot;MAX_APPROVAL_FAILURES&quot;)) {
 		vars.put(&quot;STOP_PROCTOR&quot;, true);
-		log.info(&quot;Max approval attempts reached on proctor ${__threadNum()}!&quot;);
+		log.info(&quot;Max approval failures reached on proctor ${__threadNum()}!&quot;);
 	} else {
-		attempt++;
-		log.info(&quot;Proctor ${__threadNum()} - Current approval attempts: &quot; + attempt);
-		vars.put(&quot;APPROVAL_ATTEMPTS&quot;,  attempt);
+		failure++;
+		log.info(&quot;Proctor ${__threadNum()} - Current approval failures: &quot; + failure);
+		vars.put(&quot;APPROVAL_FAILURES&quot;,  failure);
 	}
 }
 </stringProp>
@@ -1002,7 +1036,7 @@ if (json[0]) {
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${TOTAL_STUDENT_COUNT}</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1200</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${STUDENT_RAMP_UP_TIME_IN_SECS}</stringProp>
         <longProp name="ThreadGroup.start_time">1449092782000</longProp>
         <longProp name="ThreadGroup.end_time">1449092788000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -1126,49 +1160,6 @@ if (json[0]) {
               </ConstantTimer>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="2 /student/" enabled="true">
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                <collectionProp name="Arguments.arguments"/>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/student/</stringProp>
-              <stringProp name="HTTPSampler.method">GET</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">Detected a redirect from the previous sample</stringProp>
-            </HTTPSamplerProxy>
-            <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Accept-Language" elementType="Header">
-                    <stringProp name="Header.name">Accept-Language</stringProp>
-                    <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                  </elementProp>
-                  <elementProp name="Accept-Encoding" elementType="Header">
-                    <stringProp name="Header.name">Accept-Encoding</stringProp>
-                    <stringProp name="Header.value">gzip, deflate</stringProp>
-                  </elementProp>
-                  <elementProp name="User-Agent" elementType="Header">
-                    <stringProp name="Header.name">User-Agent</stringProp>
-                    <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                  </elementProp>
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-            </hashTree>
           </hashTree>
           <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Login and load test" enabled="true">
             <boolProp name="TransactionController.includeTimers">false</boolProp>
@@ -1269,7 +1260,7 @@ String sessionIndex = (((${__threadNum} - 1) / ${STUDENTS_PER_PROCTOR}) + 1).toS
 String sessionId = props.get(&quot;SESSION_ID_&quot; + sessionIndex);
 
 if (sessionId != null) {
-	log.info(&quot;Setting sessionID: &quot; + sessionId + &quot; at index &quot; + sessionIndex);
+	log.info(&quot;Setting sessionID: &quot; + sessionId + &quot; at index &quot; + sessionIndex + &quot; for student ${__threadNum()}.&quot;);
 	vars.put(&quot;SESSION_ID&quot;, sessionId);	
 } else {
 	log.error(&quot;Failed to retrieve the sessionId from proctor thread &quot; + sessionIndex);
@@ -1758,7 +1749,7 @@ if (json.data) {
                   <stringProp name="script">var response = prev.getResponseDataAsString();
 var json = JSON.parse(response);
 if (!json.data) {
-	log.error(&quot;Check approval call failed... response below.&quot;);
+	log.error(&quot;Student ${__threadNum()} : Check approval call failed... response below.&quot;);
 	log.error(response);
 	prev.setSuccessful(false);
 } else if (json.data.segmentsAccommodations !== null) {
@@ -1824,12 +1815,6 @@ if (!json.data) {
               </ConstantTimer>
               <hashTree/>
             </hashTree>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Intro and actual start" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Load help content" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
@@ -1877,6 +1862,12 @@ if (!json.data) {
               </HeaderManager>
               <hashTree/>
             </hashTree>
+          </hashTree>
+          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Intro and actual start" enabled="true">
+            <boolProp name="TransactionController.includeTimers">false</boolProp>
+            <boolProp name="TransactionController.parent">false</boolProp>
+          </TransactionController>
+          <hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Start the actual test" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
@@ -1954,6 +1945,11 @@ if (!json.data) {
                 </collectionProp>
               </HeaderManager>
               <hashTree/>
+              <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Content Delay Timer" enabled="true">
+                <stringProp name="TestPlan.comments">10 seconds to view page before proceeding with next test initialization page //TODO change to more realistic value during test</stringProp>
+                <stringProp name="ConstantTimer.delay">10000</stringProp>
+              </ConstantTimer>
+              <hashTree/>
             </hashTree>
             <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Load the test shell page" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
@@ -2005,210 +2001,204 @@ if (!json.data) {
               </DurationAssertion>
               <hashTree/>
             </hashTree>
-            <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Content Delay Timer" enabled="true">
-              <stringProp name="TestPlan.comments">10 seconds to view page before proceeding with next test initialization page //TODO change to more realistic value during test</stringProp>
-              <stringProp name="ConstantTimer.delay">10000</stringProp>
-            </ConstantTimer>
-            <hashTree/>
-          </hashTree>
-          <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Question Group 1" enabled="true">
-            <boolProp name="TransactionController.includeTimers">false</boolProp>
-            <boolProp name="TransactionController.parent">false</boolProp>
-          </TransactionController>
-          <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fetch first 2 questions" enabled="true">
-              <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
-              <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
-                <collectionProp name="Arguments.arguments">
-                  <elementProp name="" elementType="HTTPArgument">
-                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                    <stringProp name="Argument.value">&lt;request action=&quot;update&quot; timestamp=&quot;${__time()}&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
-                    <stringProp name="Argument.metadata">=</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </elementProp>
-              <stringProp name="HTTPSampler.domain"></stringProp>
-              <stringProp name="HTTPSampler.port"></stringProp>
-              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-              <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
-              <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-              <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/updateResponses</stringProp>
-              <stringProp name="HTTPSampler.method">POST</stringProp>
-              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-              <boolProp name="HTTPSampler.monitor">false</boolProp>
-              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-              <stringProp name="TestPlan.comments">TODO: regex to get prefetch and then dynamically make next calls from that</stringProp>
-            </HTTPSamplerProxy>
+            <TransactionController guiclass="TransactionControllerGui" testclass="TransactionController" testname="Question Group 1" enabled="true">
+              <boolProp name="TransactionController.includeTimers">false</boolProp>
+              <boolProp name="TransactionController.parent">false</boolProp>
+            </TransactionController>
             <hashTree>
-              <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                <collectionProp name="HeaderManager.headers">
-                  <elementProp name="Referer" elementType="Header">
-                    <stringProp name="Header.name">Referer</stringProp>
-                    <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
-                  </elementProp>
-                  <elementProp name="Accept-Language" elementType="Header">
-                    <stringProp name="Header.name">Accept-Language</stringProp>
-                    <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                  </elementProp>
-                  <elementProp name="Pragma" elementType="Header">
-                    <stringProp name="Header.name">Pragma</stringProp>
-                    <stringProp name="Header.value">no-cache</stringProp>
-                  </elementProp>
-                  <elementProp name="Accept" elementType="Header">
-                    <stringProp name="Header.name">Accept</stringProp>
-                    <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                  </elementProp>
-                  <elementProp name="X-Requested-With" elementType="Header">
-                    <stringProp name="Header.name">X-Requested-With</stringProp>
-                    <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                  </elementProp>
-                  <elementProp name="Content-Type" elementType="Header">
-                    <stringProp name="Header.name">Content-Type</stringProp>
-                    <stringProp name="Header.value">application/xml; charset=UTF-8</stringProp>
-                  </elementProp>
-                  <elementProp name="Cache-Control" elementType="Header">
-                    <stringProp name="Header.name">Cache-Control</stringProp>
-                    <stringProp name="Header.value">no-cache</stringProp>
-                  </elementProp>
-                  <elementProp name="Accept-Encoding" elementType="Header">
-                    <stringProp name="Header.name">Accept-Encoding</stringProp>
-                    <stringProp name="Header.value">gzip, deflate</stringProp>
-                  </elementProp>
-                  <elementProp name="User-Agent" elementType="Header">
-                    <stringProp name="Header.name">User-Agent</stringProp>
-                    <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                  </elementProp>
-                </collectionProp>
-              </HeaderManager>
-              <hashTree/>
-              <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-                <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                <stringProp name="RegexExtractor.refname">groupInfo</stringProp>
-                <stringProp name="RegexExtractor.regex">&lt;page.*?number=&quot;([0-9]+?)&quot;.*?&lt;segment position=&quot;([0-9]+?)&quot; id=&quot;(.*?)&quot;/&gt;&lt;group id=&quot;(.*?)&quot; key=&quot;(.*?)&quot;</stringProp>
-                <stringProp name="RegexExtractor.template">$1$$2$$3$$4$$5$</stringProp>
-                <stringProp name="RegexExtractor.default"></stringProp>
-                <stringProp name="RegexExtractor.match_number">-1</stringProp>
-              </RegexExtractor>
-              <hashTree/>
-              <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                <boolProp name="resetInterpreter">false</boolProp>
-                <stringProp name="parameters"></stringProp>
-                <stringProp name="filename"></stringProp>
-                <stringProp name="script">vars.put(&quot;PAGE_POS&quot;, &quot;${__javaScript(${PAGE_POS} + 1)}&quot;);</stringProp>
-              </BeanShellPostProcessor>
-              <hashTree/>
-              <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="Test Finished Flag Extractor" enabled="true">
-                <stringProp name="XPathExtractor.default">false</stringProp>
-                <stringProp name="XPathExtractor.refname">TEST_FINISHED</stringProp>
-                <stringProp name="XPathExtractor.xpathQuery">/results/testsummary/@finished</stringProp>
-                <boolProp name="XPathExtractor.validate">false</boolProp>
-                <boolProp name="XPathExtractor.tolerant">false</boolProp>
-                <boolProp name="XPathExtractor.namespace">false</boolProp>
-              </XPathExtractor>
-              <hashTree/>
-            </hashTree>
-            <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop thru pages" enabled="true">
-              <boolProp name="LoopController.continue_forever">true</boolProp>
-              <stringProp name="LoopController.loops">${groupInfo_matchNr}</stringProp>
-            </LoopController>
-            <hashTree>
-              <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-                <stringProp name="CounterConfig.start">1</stringProp>
-                <stringProp name="CounterConfig.end">${groupInfo_matchNr}</stringProp>
-                <stringProp name="CounterConfig.incr">1</stringProp>
-                <stringProp name="CounterConfig.name">groupNum</stringProp>
-                <stringProp name="CounterConfig.format">#</stringProp>
-                <boolProp name="CounterConfig.per_user">true</boolProp>
-                <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
-                <stringProp name="TestPlan.comments">${groupInfo_matchNr}</stringProp>
-              </CounterConfig>
-              <hashTree/>
-              <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
-                <stringProp name="TestPlan.comments">${__BeanShell(vars.get(&quot;groupInfo_${groupNum}_g5&quot;) != null)}</stringProp>
-                <stringProp name="IfController.condition">${__BeanShell(vars.get(&quot;groupInfo_${groupNum}_g5&quot;) != null)}</stringProp>
-                <boolProp name="IfController.evaluateAll">false</boolProp>
-                <boolProp name="IfController.useExpression">true</boolProp>
-              </IfController>
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fetch first 2 questions" enabled="true">
+                <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+                <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+                  <collectionProp name="Arguments.arguments">
+                    <elementProp name="" elementType="HTTPArgument">
+                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                      <stringProp name="Argument.value">&lt;request action=&quot;update&quot; timestamp=&quot;${__time()}&quot; prefetch=&quot;2&quot; &gt;&lt;accs&gt;${ACC_DATA}&lt;/accs&gt;&lt;responses&gt;&lt;/responses&gt;&lt;/request&gt;</stringProp>
+                      <stringProp name="Argument.metadata">=</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </elementProp>
+                <stringProp name="HTTPSampler.domain"></stringProp>
+                <stringProp name="HTTPSampler.port"></stringProp>
+                <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                <stringProp name="HTTPSampler.protocol">http</stringProp>
+                <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/updateResponses</stringProp>
+                <stringProp name="HTTPSampler.method">POST</stringProp>
+                <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <boolProp name="HTTPSampler.monitor">false</boolProp>
+                <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                <stringProp name="TestPlan.comments">TODO: regex to get prefetch and then dynamically make next calls from that</stringProp>
+              </HTTPSamplerProxy>
               <hashTree>
-                <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getPageContent" enabled="true">
-                  <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                    <collectionProp name="Arguments.arguments"/>
-                  </elementProp>
-                  <stringProp name="HTTPSampler.domain"></stringProp>
-                  <stringProp name="HTTPSampler.port"></stringProp>
-                  <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                  <stringProp name="HTTPSampler.protocol"></stringProp>
-                  <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                  <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=${__V(groupInfo_${groupNum}_g4)}&amp;page=${__V(groupInfo_${groupNum}_g1)}&amp;pageKey=${__V(groupInfo_${groupNum}_g5)}&amp;new=false&amp;attempt=1</stringProp>
-                  <stringProp name="HTTPSampler.method">POST</stringProp>
-                  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                  <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                  <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                  <boolProp name="HTTPSampler.monitor">false</boolProp>
-                  <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                </HTTPSamplerProxy>
+                <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                  <collectionProp name="HeaderManager.headers">
+                    <elementProp name="Referer" elementType="Header">
+                      <stringProp name="Header.name">Referer</stringProp>
+                      <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
+                    </elementProp>
+                    <elementProp name="Accept-Language" elementType="Header">
+                      <stringProp name="Header.name">Accept-Language</stringProp>
+                      <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                    </elementProp>
+                    <elementProp name="Pragma" elementType="Header">
+                      <stringProp name="Header.name">Pragma</stringProp>
+                      <stringProp name="Header.value">no-cache</stringProp>
+                    </elementProp>
+                    <elementProp name="Accept" elementType="Header">
+                      <stringProp name="Header.name">Accept</stringProp>
+                      <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
+                    </elementProp>
+                    <elementProp name="X-Requested-With" elementType="Header">
+                      <stringProp name="Header.name">X-Requested-With</stringProp>
+                      <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                    </elementProp>
+                    <elementProp name="Content-Type" elementType="Header">
+                      <stringProp name="Header.name">Content-Type</stringProp>
+                      <stringProp name="Header.value">application/xml; charset=UTF-8</stringProp>
+                    </elementProp>
+                    <elementProp name="Cache-Control" elementType="Header">
+                      <stringProp name="Header.name">Cache-Control</stringProp>
+                      <stringProp name="Header.value">no-cache</stringProp>
+                    </elementProp>
+                    <elementProp name="Accept-Encoding" elementType="Header">
+                      <stringProp name="Header.name">Accept-Encoding</stringProp>
+                      <stringProp name="Header.value">gzip, deflate</stringProp>
+                    </elementProp>
+                    <elementProp name="User-Agent" elementType="Header">
+                      <stringProp name="Header.name">User-Agent</stringProp>
+                      <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
+                    </elementProp>
+                  </collectionProp>
+                </HeaderManager>
+                <hashTree/>
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                  <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                  <stringProp name="RegexExtractor.refname">groupInfo</stringProp>
+                  <stringProp name="RegexExtractor.regex">&lt;page.*?number=&quot;([0-9]+?)&quot;.*?&lt;segment position=&quot;([0-9]+?)&quot; id=&quot;(.*?)&quot;/&gt;&lt;group id=&quot;(.*?)&quot; key=&quot;(.*?)&quot;</stringProp>
+                  <stringProp name="RegexExtractor.template">$1$$2$$3$$4$$5$</stringProp>
+                  <stringProp name="RegexExtractor.default"></stringProp>
+                  <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                </RegexExtractor>
+                <hashTree/>
+                <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+                  <boolProp name="resetInterpreter">false</boolProp>
+                  <stringProp name="parameters"></stringProp>
+                  <stringProp name="filename"></stringProp>
+                  <stringProp name="script">vars.put(&quot;PAGE_POS&quot;, &quot;${__javaScript(${PAGE_POS} + 1)}&quot;);</stringProp>
+                </BeanShellPostProcessor>
+                <hashTree/>
+                <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="Test Finished Flag Extractor" enabled="true">
+                  <stringProp name="XPathExtractor.default">false</stringProp>
+                  <stringProp name="XPathExtractor.refname">TEST_FINISHED</stringProp>
+                  <stringProp name="XPathExtractor.xpathQuery">/results/testsummary/@finished</stringProp>
+                  <boolProp name="XPathExtractor.validate">false</boolProp>
+                  <boolProp name="XPathExtractor.tolerant">false</boolProp>
+                  <boolProp name="XPathExtractor.namespace">false</boolProp>
+                </XPathExtractor>
+                <hashTree/>
+              </hashTree>
+              <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop thru pages" enabled="true">
+                <boolProp name="LoopController.continue_forever">true</boolProp>
+                <stringProp name="LoopController.loops">${groupInfo_matchNr}</stringProp>
+              </LoopController>
+              <hashTree>
+                <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                  <stringProp name="CounterConfig.start">1</stringProp>
+                  <stringProp name="CounterConfig.end">${groupInfo_matchNr}</stringProp>
+                  <stringProp name="CounterConfig.incr">1</stringProp>
+                  <stringProp name="CounterConfig.name">groupNum</stringProp>
+                  <stringProp name="CounterConfig.format">#</stringProp>
+                  <boolProp name="CounterConfig.per_user">true</boolProp>
+                  <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                  <stringProp name="TestPlan.comments">${groupInfo_matchNr}</stringProp>
+                </CounterConfig>
+                <hashTree/>
+                <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Controller" enabled="true">
+                  <stringProp name="TestPlan.comments">${__BeanShell(vars.get(&quot;groupInfo_${groupNum}_g5&quot;) != null)}</stringProp>
+                  <stringProp name="IfController.condition">${__BeanShell(vars.get(&quot;groupInfo_${groupNum}_g5&quot;) != null)}</stringProp>
+                  <boolProp name="IfController.evaluateAll">false</boolProp>
+                  <boolProp name="IfController.useExpression">true</boolProp>
+                </IfController>
                 <hashTree>
-                  <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
-                    <collectionProp name="HeaderManager.headers">
-                      <elementProp name="Referer" elementType="Header">
-                        <stringProp name="Header.name">Referer</stringProp>
-                        <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept-Language" elementType="Header">
-                        <stringProp name="Header.name">Accept-Language</stringProp>
-                        <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
-                      </elementProp>
-                      <elementProp name="Pragma" elementType="Header">
-                        <stringProp name="Header.name">Pragma</stringProp>
-                        <stringProp name="Header.value">no-cache</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept" elementType="Header">
-                        <stringProp name="Header.name">Accept</stringProp>
-                        <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
-                      </elementProp>
-                      <elementProp name="X-Requested-With" elementType="Header">
-                        <stringProp name="Header.name">X-Requested-With</stringProp>
-                        <stringProp name="Header.value">XMLHttpRequest</stringProp>
-                      </elementProp>
-                      <elementProp name="Content-Type" elementType="Header">
-                        <stringProp name="Header.name">Content-Type</stringProp>
-                        <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
-                      </elementProp>
-                      <elementProp name="Cache-Control" elementType="Header">
-                        <stringProp name="Header.name">Cache-Control</stringProp>
-                        <stringProp name="Header.value">no-cache</stringProp>
-                      </elementProp>
-                      <elementProp name="Accept-Encoding" elementType="Header">
-                        <stringProp name="Header.name">Accept-Encoding</stringProp>
-                        <stringProp name="Header.value">gzip, deflate</stringProp>
-                      </elementProp>
-                      <elementProp name="User-Agent" elementType="Header">
-                        <stringProp name="Header.name">User-Agent</stringProp>
-                        <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
-                      </elementProp>
-                    </collectionProp>
-                  </HeaderManager>
-                  <hashTree/>
-                  <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Find word lists" enabled="true">
-                    <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                    <stringProp name="RegexExtractor.refname">wordList</stringProp>
-                    <stringProp name="RegexExtractor.regex">&lt;resource type=&quot;wordList&quot; bankKey=&quot;([0-9]+?)&quot; itemKey=&quot;([0-9]+?)&quot;/&gt;</stringProp>
-                    <stringProp name="RegexExtractor.template">$1$$2$</stringProp>
-                    <stringProp name="RegexExtractor.default"></stringProp>
-                    <stringProp name="RegexExtractor.match_number">-1</stringProp>
-                  </RegexExtractor>
-                  <hashTree/>
-                  <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
-                    <stringProp name="filename"></stringProp>
-                    <stringProp name="parameters"></stringProp>
-                    <boolProp name="resetInterpreter">false</boolProp>
-                    <stringProp name="script">import org.opentestsystem.loadtesting.tds_loadtesting;
+                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="getPageContent" enabled="true">
+                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                      <collectionProp name="Arguments.arguments"/>
+                    </elementProp>
+                    <stringProp name="HTTPSampler.domain"></stringProp>
+                    <stringProp name="HTTPSampler.port"></stringProp>
+                    <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                    <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                    <stringProp name="HTTPSampler.protocol"></stringProp>
+                    <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                    <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=${__V(groupInfo_${groupNum}_g4)}&amp;page=${__V(groupInfo_${groupNum}_g1)}&amp;pageKey=${__V(groupInfo_${groupNum}_g5)}&amp;new=false&amp;attempt=1</stringProp>
+                    <stringProp name="HTTPSampler.method">POST</stringProp>
+                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                    <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                    <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                    <boolProp name="HTTPSampler.monitor">false</boolProp>
+                    <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                  </HTTPSamplerProxy>
+                  <hashTree>
+                    <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+                      <collectionProp name="HeaderManager.headers">
+                        <elementProp name="Referer" elementType="Header">
+                          <stringProp name="Header.name">Referer</stringProp>
+                          <stringProp name="Header.value">http://practice.smarterbalanced.org/student/Pages/TestShell.aspx</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept-Language" elementType="Header">
+                          <stringProp name="Header.name">Accept-Language</stringProp>
+                          <stringProp name="Header.value">en-US,en;q=0.5</stringProp>
+                        </elementProp>
+                        <elementProp name="Pragma" elementType="Header">
+                          <stringProp name="Header.name">Pragma</stringProp>
+                          <stringProp name="Header.value">no-cache</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept" elementType="Header">
+                          <stringProp name="Header.name">Accept</stringProp>
+                          <stringProp name="Header.value">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</stringProp>
+                        </elementProp>
+                        <elementProp name="X-Requested-With" elementType="Header">
+                          <stringProp name="Header.name">X-Requested-With</stringProp>
+                          <stringProp name="Header.value">XMLHttpRequest</stringProp>
+                        </elementProp>
+                        <elementProp name="Content-Type" elementType="Header">
+                          <stringProp name="Header.name">Content-Type</stringProp>
+                          <stringProp name="Header.value">application/x-www-form-urlencoded; charset=UTF-8</stringProp>
+                        </elementProp>
+                        <elementProp name="Cache-Control" elementType="Header">
+                          <stringProp name="Header.name">Cache-Control</stringProp>
+                          <stringProp name="Header.value">no-cache</stringProp>
+                        </elementProp>
+                        <elementProp name="Accept-Encoding" elementType="Header">
+                          <stringProp name="Header.name">Accept-Encoding</stringProp>
+                          <stringProp name="Header.value">gzip, deflate</stringProp>
+                        </elementProp>
+                        <elementProp name="User-Agent" elementType="Header">
+                          <stringProp name="Header.name">User-Agent</stringProp>
+                          <stringProp name="Header.value">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:42.0) Gecko/20100101 Firefox/42.0</stringProp>
+                        </elementProp>
+                      </collectionProp>
+                    </HeaderManager>
+                    <hashTree/>
+                    <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Find word lists" enabled="true">
+                      <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+                      <stringProp name="RegexExtractor.refname">wordList</stringProp>
+                      <stringProp name="RegexExtractor.regex">&lt;resource type=&quot;wordList&quot; bankKey=&quot;([0-9]+?)&quot; itemKey=&quot;([0-9]+?)&quot;/&gt;</stringProp>
+                      <stringProp name="RegexExtractor.template">$1$$2$</stringProp>
+                      <stringProp name="RegexExtractor.default"></stringProp>
+                      <stringProp name="RegexExtractor.match_number">-1</stringProp>
+                    </RegexExtractor>
+                    <hashTree/>
+                    <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+                      <stringProp name="filename"></stringProp>
+                      <stringProp name="parameters"></stringProp>
+                      <boolProp name="resetInterpreter">false</boolProp>
+                      <stringProp name="script">import org.opentestsystem.loadtesting.tds_loadtesting;
 import org.opentestsystem.loadtesting.tds_loadtesting.PageContent;
 import org.opentestsystem.loadtesting.tds_loadtesting.Content;
 import org.opentestsystem.loadtesting.tds_loadtesting.Item;
@@ -2228,81 +2218,82 @@ log.info(responsesXml);
 vars.put(&quot;TOTAL_PAGES&quot;, pages.toString());
 vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
 </stringProp>
-                  </BeanShellPostProcessor>
-                  <hashTree/>
-                </hashTree>
-                <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop through word lists from response" enabled="true">
-                  <boolProp name="LoopController.continue_forever">true</boolProp>
-                  <stringProp name="LoopController.loops">${wordList_matchNr}</stringProp>
-                </LoopController>
-                <hashTree>
-                  <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-                    <stringProp name="CounterConfig.start">1</stringProp>
-                    <stringProp name="CounterConfig.end">${wordList_matchNr}</stringProp>
-                    <stringProp name="CounterConfig.incr">1</stringProp>
-                    <stringProp name="CounterConfig.name">wordNum</stringProp>
-                    <stringProp name="CounterConfig.format">#</stringProp>
-                    <boolProp name="CounterConfig.per_user">true</boolProp>
-                    <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
-                  </CounterConfig>
-                  <hashTree/>
-                  <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list" enabled="true">
-                    <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                      <collectionProp name="Arguments.arguments">
-                        <elementProp name="bankKey" elementType="HTTPArgument">
-                          <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                          <stringProp name="Argument.value">${__V(wordList_${wordNum}_g1)}</stringProp>
-                          <stringProp name="Argument.metadata">=</stringProp>
-                          <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                          <stringProp name="Argument.name">bankKey</stringProp>
-                        </elementProp>
-                        <elementProp name="itemKey" elementType="HTTPArgument">
-                          <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                          <stringProp name="Argument.value">${__V(wordList_${wordNum}_g2)}</stringProp>
-                          <stringProp name="Argument.metadata">=</stringProp>
-                          <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                          <stringProp name="Argument.name">itemKey</stringProp>
-                        </elementProp>
-                        <elementProp name="TDS_ACCS" elementType="HTTPArgument">
-                          <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                          <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
-                          <stringProp name="Argument.metadata">=</stringProp>
-                          <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                          <stringProp name="Argument.name">TDS_ACCS</stringProp>
-                        </elementProp>
-                        <elementProp name="index" elementType="HTTPArgument">
-                          <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                          <stringProp name="Argument.value">1</stringProp>
-                          <stringProp name="Argument.metadata">=</stringProp>
-                          <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                          <stringProp name="Argument.name">index</stringProp>
-                        </elementProp>
-                        <elementProp name="index" elementType="HTTPArgument">
-                          <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                          <stringProp name="Argument.value">2</stringProp>
-                          <stringProp name="Argument.metadata">=</stringProp>
-                          <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                          <stringProp name="Argument.name">index</stringProp>
-                        </elementProp>
-                      </collectionProp>
-                    </elementProp>
-                    <stringProp name="HTTPSampler.domain"></stringProp>
-                    <stringProp name="HTTPSampler.port"></stringProp>
-                    <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                    <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                    <stringProp name="HTTPSampler.protocol"></stringProp>
-                    <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                    <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
-                    <stringProp name="HTTPSampler.method">POST</stringProp>
-                    <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                    <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                    <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                    <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                    <boolProp name="HTTPSampler.monitor">false</boolProp>
-                    <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                    <stringProp name="TestPlan.comments">TODO: look into what the index values that are posted are?</stringProp>
-                  </HTTPSamplerProxy>
-                  <hashTree/>
+                    </BeanShellPostProcessor>
+                    <hashTree/>
+                  </hashTree>
+                  <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop through word lists from response" enabled="true">
+                    <boolProp name="LoopController.continue_forever">true</boolProp>
+                    <stringProp name="LoopController.loops">${wordList_matchNr}</stringProp>
+                  </LoopController>
+                  <hashTree>
+                    <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+                      <stringProp name="CounterConfig.start">1</stringProp>
+                      <stringProp name="CounterConfig.end">${wordList_matchNr}</stringProp>
+                      <stringProp name="CounterConfig.incr">1</stringProp>
+                      <stringProp name="CounterConfig.name">wordNum</stringProp>
+                      <stringProp name="CounterConfig.format">#</stringProp>
+                      <boolProp name="CounterConfig.per_user">true</boolProp>
+                      <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
+                    </CounterConfig>
+                    <hashTree/>
+                    <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list" enabled="true">
+                      <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                        <collectionProp name="Arguments.arguments">
+                          <elementProp name="bankKey" elementType="HTTPArgument">
+                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                            <stringProp name="Argument.value">${__V(wordList_${wordNum}_g1)}</stringProp>
+                            <stringProp name="Argument.metadata">=</stringProp>
+                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                            <stringProp name="Argument.name">bankKey</stringProp>
+                          </elementProp>
+                          <elementProp name="itemKey" elementType="HTTPArgument">
+                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                            <stringProp name="Argument.value">${__V(wordList_${wordNum}_g2)}</stringProp>
+                            <stringProp name="Argument.metadata">=</stringProp>
+                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                            <stringProp name="Argument.name">itemKey</stringProp>
+                          </elementProp>
+                          <elementProp name="TDS_ACCS" elementType="HTTPArgument">
+                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                            <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
+                            <stringProp name="Argument.metadata">=</stringProp>
+                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                            <stringProp name="Argument.name">TDS_ACCS</stringProp>
+                          </elementProp>
+                          <elementProp name="index" elementType="HTTPArgument">
+                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                            <stringProp name="Argument.value">1</stringProp>
+                            <stringProp name="Argument.metadata">=</stringProp>
+                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                            <stringProp name="Argument.name">index</stringProp>
+                          </elementProp>
+                          <elementProp name="index" elementType="HTTPArgument">
+                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                            <stringProp name="Argument.value">2</stringProp>
+                            <stringProp name="Argument.metadata">=</stringProp>
+                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                            <stringProp name="Argument.name">index</stringProp>
+                          </elementProp>
+                        </collectionProp>
+                      </elementProp>
+                      <stringProp name="HTTPSampler.domain"></stringProp>
+                      <stringProp name="HTTPSampler.port"></stringProp>
+                      <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                      <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                      <stringProp name="HTTPSampler.protocol"></stringProp>
+                      <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                      <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
+                      <stringProp name="HTTPSampler.method">POST</stringProp>
+                      <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                      <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                      <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                      <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                      <boolProp name="HTTPSampler.monitor">false</boolProp>
+                      <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                      <stringProp name="TestPlan.comments">TODO: look into what the index values that are posted are?</stringProp>
+                    </HTTPSamplerProxy>
+                    <hashTree/>
+                  </hashTree>
                 </hashTree>
               </hashTree>
             </hashTree>
@@ -5696,39 +5687,6 @@ if (questionAttempts.equals(maxAttempts)) {
             <idleTime>true</idleTime>
           </value>
         </objProp>
-        <stringProp name="filename">simple-data.txt</stringProp>
-      </ResultCollector>
-      <hashTree/>
-      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="false">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>false</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <threadCounts>true</threadCounts>
-          </value>
-        </objProp>
         <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
@@ -5762,44 +5720,11 @@ if (questionAttempts.equals(maxAttempts)) {
             <threadCounts>true</threadCounts>
           </value>
         </objProp>
-        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput.jtl</stringProp>
-      </ResultCollector>
-      <hashTree/>
-      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="false">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>false</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <threadCounts>true</threadCounts>
-          </value>
-        </objProp>
-        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput.jtl</stringProp>
+        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput-segcount2-195kopps-10kstudents.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
-        <boolProp name="ResultCollector.error_logging">true</boolProp>
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
@@ -5828,7 +5753,7 @@ if (questionAttempts.equals(maxAttempts)) {
             <threadCounts>true</threadCounts>
           </value>
         </objProp>
-        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput.jtl</stringProp>
+        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput-segcount2-185kopps-20kstudents.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
