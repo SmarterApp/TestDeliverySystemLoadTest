@@ -171,12 +171,12 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="TOTAL_STUDENT_COUNT" elementType="Argument">
             <stringProp name="Argument.name">TOTAL_STUDENT_COUNT</stringProp>
-            <stringProp name="Argument.value">10000</stringProp>
+            <stringProp name="Argument.value">20000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="STUDENTS_PER_PROCTOR" elementType="Argument">
             <stringProp name="Argument.name">STUDENTS_PER_PROCTOR</stringProp>
-            <stringProp name="Argument.value">10</stringProp>
+            <stringProp name="Argument.value">20</stringProp>
             <stringProp name="Argument.desc">10 means there are 10 students for every proctor</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -211,13 +211,24 @@
             <stringProp name="Argument.name">PROCTOR_RAMP_UP_TIME_IN_SECS</stringProp>
             <stringProp name="Argument.value">300</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
-            <stringProp name="Argument.desc">300</stringProp>
+            <stringProp name="Argument.desc">300 = 5 mins</stringProp>
           </elementProp>
           <elementProp name="STUDENT_RAMP_UP_TIME_IN_SECS" elementType="Argument">
             <stringProp name="Argument.name">STUDENT_RAMP_UP_TIME_IN_SECS</stringProp>
-            <stringProp name="Argument.value">600</stringProp>
+            <stringProp name="Argument.value">1200</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
-            <stringProp name="Argument.desc">600</stringProp>
+            <stringProp name="Argument.desc">600 = 10 mins</stringProp>
+          </elementProp>
+          <elementProp name="MAX_APPROVAL_FAILURES" elementType="Argument">
+            <stringProp name="Argument.name">MAX_APPROVAL_FAILURES</stringProp>
+            <stringProp name="Argument.value">5</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">Max amount of failure to approve student or check for approval before exiting loop</stringProp>
+          </elementProp>
+          <elementProp name="APPROVAL_FAILURES" elementType="Argument">
+            <stringProp name="Argument.name">APPROVAL_FAILURES</stringProp>
+            <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
       </Arguments>
@@ -246,7 +257,7 @@
           <collectionProp name="Arguments.arguments">
             <elementProp name="MAX_PROCTOR_APPROVAL_ATTEMPTS" elementType="Argument">
               <stringProp name="Argument.name">MAX_PROCTOR_APPROVAL_ATTEMPTS</stringProp>
-              <stringProp name="Argument.value">50</stringProp>
+              <stringProp name="Argument.value">70</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
               <stringProp name="Argument.desc">The proctor approval attempt hard limit</stringProp>
             </elementProp>
@@ -270,18 +281,6 @@
             <elementProp name="RETRY_START_SESSION" elementType="Argument">
               <stringProp name="Argument.name">RETRY_START_SESSION</stringProp>
               <stringProp name="Argument.value">true</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="MAX_APPROVAL_FAILURES" elementType="Argument">
-              <stringProp name="Argument.name">MAX_APPROVAL_FAILURES</stringProp>
-              <stringProp name="Argument.value">5</stringProp>
-              <stringProp name="Argument.desc">Max approval failures before stopping session</stringProp>
-              <stringProp name="Argument.metadata">=</stringProp>
-            </elementProp>
-            <elementProp name="APPROVAL_FAILURES" elementType="Argument">
-              <stringProp name="Argument.name">APPROVAL_FAILURES</stringProp>
-              <stringProp name="Argument.value">1</stringProp>
-              <stringProp name="Argument.desc">The approval failure count</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -336,7 +335,7 @@
             </RegexExtractor>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Redirect to SSO login page" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Redirect to SSO login page - /idp" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -423,7 +422,7 @@
             </RegexExtractor>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST Proctor Login" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST Proctor Login - /Login" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="IDButton" elementType="HTTPArgument">
@@ -545,7 +544,7 @@
           <boolProp name="TransactionController.parent">false</boolProp>
         </TransactionController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Init Data" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Init Data - /GetInitData" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -618,7 +617,7 @@ try {
             </JSR223PostProcessor>
             <hashTree/>
           </hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST start session" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST start session - /InsertSessionTests" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="testKeys" elementType="HTTPArgument">
@@ -694,7 +693,7 @@ try {
               <stringProp name="ConstantTimer.delay">30000</stringProp>
             </ConstantTimer>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Check for awaiting approvals" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Check for awaiting approvals - /AutoRefreshData" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="bGetCurTestees" elementType="HTTPArgument">
@@ -773,7 +772,7 @@ try {
 		log.error(&quot;Proctor ${__threadNum()} : No approvals key detected... bad response??? see below...&quot;);
 		log.error(response);
 		prev.setSuccessful(false);
-			//Keep count of the amount of approval failures
+		//Keep count of the amount of approval failures
 		var failure = vars.get(&quot;APPROVAL_FAILURES&quot;);
 		if (failure == vars.get(&quot;MAX_APPROVAL_FAILURES&quot;)) {
 			vars.put(&quot;STOP_PROCTOR&quot;, true);
@@ -840,7 +839,7 @@ try {
             <stringProp name="ForeachController.startIndex">0</stringProp>
           </ForeachController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Accomodations" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Accomodations - /GetAccs" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="testKey" elementType="HTTPArgument">
@@ -935,7 +934,7 @@ if (json[0]) {
               </BeanShellAssertion>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Approve Opportunity" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Approve Opportunity - /ApproveOpportunity" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="oppKey" elementType="HTTPArgument">
@@ -980,7 +979,7 @@ if (json[0]) {
             <hashTree/>
           </hashTree>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Stop Session" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Stop Session - /PauseSession" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments">
               <elementProp name="sessionKey" elementType="HTTPArgument">
@@ -1008,7 +1007,7 @@ if (json[0]) {
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Logout" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Logout - /saml/logout" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
@@ -1166,7 +1165,7 @@ if (json[0]) {
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Student Login form POST" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Student Login form POST - /loginStudent" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="keyValues" elementType="HTTPArgument">
@@ -1318,7 +1317,7 @@ if (json.data) {
               </ConstantTimer>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get available tests" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get available tests - /getTests" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="testeeKey" elementType="HTTPArgument">
@@ -1408,7 +1407,7 @@ if (json.data) {
                 </collectionProp>
               </HeaderManager>
               <hashTree/>
-              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="getTests PostProcessor" enabled="true">
                 <stringProp name="scriptLanguage">javascript</stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="filename"></stringProp>
@@ -1441,7 +1440,7 @@ vars.put(&quot;OPP_KEY&quot;, oppKey);</stringProp>
               </ConstantTimer>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Open Test" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Open Test - /openTest" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="testeeKey" elementType="HTTPArgument">
@@ -1595,7 +1594,7 @@ vars.put(&quot;OPP_KEY&quot;, oppKey);</stringProp>
                 </collectionProp>
               </HeaderManager>
               <hashTree/>
-              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+              <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Open Test PostProcessor" enabled="true">
                 <stringProp name="scriptLanguage">javascript</stringProp>
                 <stringProp name="parameters"></stringProp>
                 <stringProp name="filename"></stringProp>
@@ -1643,7 +1642,7 @@ if (json.data) {
               <stringProp name="WhileController.condition">${__javaScript(&quot;${SESSION_APPROVED}&quot; !== &quot;true&quot;)}</stringProp>
             </WhileController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Check approval" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Check approval - /checkApproval" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="oppKey" elementType="HTTPArgument">
@@ -1741,20 +1740,47 @@ if (json.data) {
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="JSR223 PostProcessor" enabled="true">
+                <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Check Approval Post Processor" enabled="true">
                   <stringProp name="scriptLanguage">javascript</stringProp>
                   <stringProp name="parameters"></stringProp>
                   <stringProp name="filename"></stringProp>
                   <stringProp name="cacheKey"></stringProp>
                   <stringProp name="script">var response = prev.getResponseDataAsString();
-var json = JSON.parse(response);
-if (!json.data) {
+try {
+	var json = JSON.parse(response);
+	if (!json.data) {
+		log.error(&quot;Student ${__threadNum()} : Check approval call failed... response below.&quot;);
+		log.error(response);
+		//Keep count of the amount of approval failures
+		var failure = vars.get(&quot;APPROVAL_FAILURES&quot;);
+		if (failure == vars.get(&quot;MAX_APPROVAL_FAILURES&quot;)) {
+			prev.setSuccessful(false); //Add failure tolerance
+			log.info(&quot;Max approval failures reached on student ${__threadNum()}!&quot;);
+		} else {
+			failure++;
+			log.info(&quot;Student ${__threadNum()} - Current approval failures: &quot; + failure);
+			prev.setSuccessful(true); //Add failure tolerance
+			vars.put(&quot;APPROVAL_FAILURES&quot;,  failure);
+		}
+	} else if (json.data.segmentsAccommodations !== null) {
+		vars.put(&quot;SESSION_APPROVED&quot;, &quot;true&quot;);
+	} 
+} catch (e) {
 	log.error(&quot;Student ${__threadNum()} : Check approval call failed... response below.&quot;);
 	log.error(response);
-	prev.setSuccessful(false);
-} else if (json.data.segmentsAccommodations !== null) {
-	vars.put(&quot;SESSION_APPROVED&quot;, &quot;true&quot;);
-} </stringProp>
+	//Keep count of the amount of approval failures
+	var failure = vars.get(&quot;APPROVAL_FAILURES&quot;);
+	if (failure == vars.get(&quot;MAX_APPROVAL_FAILURES&quot;)) {
+		prev.setSuccessful(false);
+		log.info(&quot;Max approval failures reached on student ${__threadNum()}!&quot;);
+	} else {
+		failure++;
+		prev.setSuccessful(true); //Add failure tolerance
+		log.info(&quot;Student ${__threadNum()} - Current approval failures: &quot; + failure);
+		vars.put(&quot;APPROVAL_FAILURES&quot;,  failure);
+	}
+}
+</stringProp>
                 </JSR223PostProcessor>
                 <hashTree/>
                 <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
@@ -1763,7 +1789,7 @@ if (!json.data) {
                 <hashTree/>
               </hashTree>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get sound check audio file" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get sound check audio file -/SoundCheckSample.ogg" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -1815,7 +1841,7 @@ if (!json.data) {
               </ConstantTimer>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Load help content" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Load help content - /help" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -1868,7 +1894,7 @@ if (!json.data) {
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Start the actual test" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Start the actual test - /startTest" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="testeeKey" elementType="HTTPArgument">
@@ -1951,7 +1977,7 @@ if (!json.data) {
               </ConstantTimer>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Load the test shell page" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Load the test shell page - /TestShell.aspx" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -2006,7 +2032,7 @@ if (!json.data) {
               <boolProp name="TransactionController.parent">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fetch first 2 questions" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fetch first 2 questions - /updateResponses" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
@@ -2236,7 +2262,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                       <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
                     </CounterConfig>
                     <hashTree/>
-                    <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list" enabled="true">
+                    <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list - /resolve" enabled="true">
                       <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                         <collectionProp name="Arguments.arguments">
                           <elementProp name="bankKey" elementType="HTTPArgument">
@@ -2308,7 +2334,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
               <boolProp name="TransactionController.parent">false</boolProp>
             </TransactionController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fetch next questions" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Fetch next questions - /updateResponses" enabled="true">
                 <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
                   <collectionProp name="Arguments.arguments">
@@ -2379,7 +2405,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                   </collectionProp>
                 </HeaderManager>
                 <hashTree/>
-                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+                <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Fetch Next Questions REGEX Extractor" enabled="true">
                   <stringProp name="RegexExtractor.useHeaders">false</stringProp>
                   <stringProp name="RegexExtractor.refname">groupInfo</stringProp>
                   <stringProp name="RegexExtractor.regex">&lt;page.*?number=&quot;([0-9]+?)&quot;.*?&lt;segment position=&quot;([0-9]+?)&quot; id=&quot;(.*?)&quot;/&gt;&lt;group id=&quot;(.*?)&quot; key=&quot;(.*?)&quot;</stringProp>
@@ -2406,7 +2432,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                 <hashTree/>
                 <UniformRandomTimer guiclass="UniformRandomTimerGui" testclass="UniformRandomTimer" testname="Uniform Random Timer" enabled="true">
                   <stringProp name="ConstantTimer.delay">30000</stringProp>
-                  <stringProp name="RandomTimer.range">60000.0</stringProp>
+                  <stringProp name="RandomTimer.range">120000.0</stringProp>
                 </UniformRandomTimer>
                 <hashTree/>
               </hashTree>
@@ -2647,7 +2673,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);</stringPr
                       <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
                     </CounterConfig>
                     <hashTree/>
-                    <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list" enabled="true">
+                    <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list - /resolve" enabled="true">
                       <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                         <collectionProp name="Arguments.arguments">
                           <elementProp name="bankKey" elementType="HTTPArgument">
@@ -2730,7 +2756,7 @@ if (questionAttempts.equals(maxAttempts)) {
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Complete test POST" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Complete test POST - /completeTest" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -2806,7 +2832,7 @@ if (!prev.isResponseCodeOK()) {
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get review page" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get review page -/ReviewShell.aspx" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -2876,7 +2902,7 @@ if (!prev.isResponseCodeOK()) {
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Score test POST" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Score test POST - /scoreTest" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments">
                   <elementProp name="suppressScore" elementType="HTTPArgument">
@@ -2984,7 +3010,7 @@ if (!prev.isResponseCodeOK()) {
             <boolProp name="TransactionController.parent">false</boolProp>
           </TransactionController>
           <hashTree>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get login page" enabled="true">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get login page - /LoginShell.xhtml" enabled="true">
               <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                 <collectionProp name="Arguments.arguments"/>
               </elementProp>
@@ -5720,7 +5746,7 @@ if (questionAttempts.equals(maxAttempts)) {
             <threadCounts>true</threadCounts>
           </value>
         </objProp>
-        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput-segcount2-195kopps-10kstudents.jtl</stringProp>
+        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput-final-10kstudents-fairway.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
@@ -5753,7 +5779,7 @@ if (questionAttempts.equals(maxAttempts)) {
             <threadCounts>true</threadCounts>
           </value>
         </objProp>
-        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput-segcount2-185kopps-20kstudents.jtl</stringProp>
+        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput-final-20kstudents-20rampup-fairway-2.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
@@ -5764,8 +5790,8 @@ if (questionAttempts.equals(maxAttempts)) {
       <ProxyControl guiclass="ProxyControlGui" testclass="ProxyControl" testname="HTTP(S) Test Script Recorder" enabled="false">
         <stringProp name="ProxyControlGui.port">8080</stringProp>
         <collectionProp name="ProxyControlGui.exclude_list">
-          <stringProp name="1409425616">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)</stringProp>
           <stringProp name="-2135475220">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)[\?;].*</stringProp>
+          <stringProp name="1409425616">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)</stringProp>
         </collectionProp>
         <collectionProp name="ProxyControlGui.include_list"/>
         <boolProp name="ProxyControlGui.capture_http_headers">true</boolProp>
