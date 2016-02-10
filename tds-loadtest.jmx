@@ -1415,11 +1415,16 @@ if (json.data) {
                 <stringProp name="script">var response = prev.getResponseDataAsString();
 var json = JSON.parse(response);
 
-var testId = json.data[0].id;
-var testKey = json.data[0].key;
-var testSubject = json.data[0].subject;
-var opportunity = json.data[0].opportunity;
-var oppKey = json.data[0].oppKey;
+// choose a test randomly
+var min = 0;
+var max = json.data.length - 1;
+var i = Math.floor(Math.random() * (max - min + 1)) + min;
+
+var testId = json.data[i].id;
+var testKey = json.data[i].key;
+var testSubject = json.data[i].subject;
+var opportunity = json.data[i].opportunity;
+var oppKey = json.data[i].oppKey;
 
 log.info(&quot;TEST_ID: &quot; + testId);
 log.info(&quot;TEST_KEY: &quot; + testKey);
@@ -5790,8 +5795,8 @@ if (questionAttempts.equals(maxAttempts)) {
       <ProxyControl guiclass="ProxyControlGui" testclass="ProxyControl" testname="HTTP(S) Test Script Recorder" enabled="false">
         <stringProp name="ProxyControlGui.port">8080</stringProp>
         <collectionProp name="ProxyControlGui.exclude_list">
-          <stringProp name="-2135475220">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)[\?;].*</stringProp>
           <stringProp name="1409425616">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)</stringProp>
+          <stringProp name="-2135475220">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)[\?;].*</stringProp>
         </collectionProp>
         <collectionProp name="ProxyControlGui.include_list"/>
         <boolProp name="ProxyControlGui.capture_http_headers">true</boolProp>
