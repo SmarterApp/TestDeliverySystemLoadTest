@@ -283,6 +283,12 @@
               <stringProp name="Argument.value">true</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="PROCTOR_PING_COUNT" elementType="Argument">
+              <stringProp name="Argument.name">PROCTOR_PING_COUNT</stringProp>
+              <stringProp name="Argument.value">1</stringProp>
+              <stringProp name="Argument.desc">Counter for approval attempts - when it reaches 6 a ping is sent to keep the session alive and this value is reset</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
           </collectionProp>
         </Arguments>
         <hashTree/>
@@ -733,7 +739,18 @@ try {
                 <stringProp name="cacheKey"></stringProp>
                 <stringProp name="filename"></stringProp>
                 <stringProp name="parameters"></stringProp>
-                <stringProp name="script">var response = prev.getResponseDataAsString();
+                <stringProp name="script">var pingCount = vars.get(&quot;PROCTOR_PING_COUNT&quot;);
+
+if (pingCount == 6) {
+	vars.put(&quot;PROCTOR_PING_FLAG&quot;, true);
+	pingCount = 1;
+} else {
+	vars.put(&quot;PROCTOR_PING_FLAG&quot;, false);
+	pingCount++;
+}
+vars.put(&quot;PROCTOR_PING_COUNT&quot;, pingCount);
+
+var response = prev.getResponseDataAsString();
 try {
 	var json = JSON.parse(response);
 	
@@ -830,6 +847,48 @@ try {
               </JSR223PostProcessor>
               <hashTree/>
             </hashTree>
+          </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="Ping If Controller" enabled="true">
+            <stringProp name="IfController.condition">${PROCTOR_PING_FLAG}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="ProctorPing" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="sessionKey" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value">${NEW_SESSION_KEY}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">sessionKey</stringProp>
+                  </elementProp>
+                  <elementProp name="" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                    <stringProp name="Argument.value"></stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
+              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">/Services/XHR.axd/ProctorPing</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <boolProp name="HTTPSampler.monitor">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+              <stringProp name="TestPlan.comments">Ping to keep session alive</stringProp>
+            </HTTPSamplerProxy>
+            <hashTree/>
           </hashTree>
           <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="Approval ForEach Controller" enabled="true">
             <stringProp name="TestPlan.comments">TODO: Get the right APPROVAL_TEST_KEYS_ index</stringProp>
@@ -5795,8 +5854,8 @@ if (questionAttempts.equals(maxAttempts)) {
       <ProxyControl guiclass="ProxyControlGui" testclass="ProxyControl" testname="HTTP(S) Test Script Recorder" enabled="false">
         <stringProp name="ProxyControlGui.port">8080</stringProp>
         <collectionProp name="ProxyControlGui.exclude_list">
-          <stringProp name="1409425616">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)</stringProp>
           <stringProp name="-2135475220">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)[\?;].*</stringProp>
+          <stringProp name="1409425616">(?i).*\.(bmp|css|js|gif|ico|jpe?g|png|swf|woff)</stringProp>
         </collectionProp>
         <collectionProp name="ProxyControlGui.include_list"/>
         <boolProp name="ProxyControlGui.capture_http_headers">true</boolProp>
