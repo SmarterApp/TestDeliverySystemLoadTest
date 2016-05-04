@@ -68,7 +68,7 @@ public class PageContent {
     }
 
     private String buildAnswer(String format, String responseType) {
-        return "<![CDATA[TODO make this smart]]>";
+        return "<![CDATA[hardcoded for now since data does not matter for tests]]>";
     }
 
     public Content get_content() {
