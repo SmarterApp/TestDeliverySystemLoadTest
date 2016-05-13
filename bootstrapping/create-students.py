@@ -65,7 +65,7 @@ def main(argv):
 	#open students file for reading
 	with open ('student_logins.csv', 'w') as csvfile:
 		fieldnames = ['StateAbbreviation', 'ResponsibleDistrictIdentifier', 'ResponsibleInstitutionIdentifier', 'LastOrSurname', 'FirstName', 'MiddleName',
-		'Birthdate', 'SSID', 'AlternateSSID', 'GradeLevelWhenAssessed', 'Sex', 'HispanicOrLatinoEthnicity', 'AmericanIndianOrAlaskaNative', 'Asian', 
+		'Birthdate', 'SSID', 'ExternalSSID', 'GradeLevelWhenAssessed', 'Sex', 'HispanicOrLatinoEthnicity', 'AmericanIndianOrAlaskaNative', 'Asian', 
 		'BlackOrAfricanAmerican', 'White', 'NativeHawaiianOrOtherPacificIslander', 'DemographicRaceTwoOrMoreRaces', 'IDEAIndicator', 'LEPStatus', 
 		'Section504Status', 'EconomicDisadvantageStatus', 'LanguageCode', 'EnglishLanguageProficiencyLevel', 'MigrantStatus', 'FirstEntryDateIntoUSSchool',
 		'LimitedEnglishProficiencyEntryDate', 'LEPExitDate', 'TitleIIILanguageInstructionProgramType', 'PrimaryDisabilityType', 'Delete']
