@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Generate token - use swarm for service discovery
+TOKEN=$(docker run --rm swarm create)
+
+sed -i "/export TOKEN=/c\export TOKEN=$TOKEN" ./app_aws.env
+
+# Initialise env variables
+source ./app_aws.env
+
+# Provision new machine
+echo -e "
+Provision machine for JMeter (Client):
+docker-machine --debug create
+    --driver amazonec2
+    --amazonec2-access-key $AWS_ACCESS_KEY_ID
+    --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY
+    --amazonec2-region $AWS_DEFAULT_REGION
+    --amazonec2-vpc-id $AWS_VPC_ID
+    --amazonec2-subnet-id $AWS_SUBNET_ID
+    --amazonec2-zone $AWS_ZONE
+    --amazonec2-ami $AWS_AMI
+    --amazonec2-security-group tds-jmeter-sg
+    --amazonec2-instance-type c4.8xlarge
+    --engine-label type=client
+    --swarm
+    --swarm-master
+    --swarm-discovery token://$TOKEN
+    tds-jmeter-client"
+
+docker-machine create \
+    --driver amazonec2 \
+    --amazonec2-access-key $AWS_ACCESS_KEY_ID \
+    --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY \
+    --amazonec2-region $AWS_DEFAULT_REGION \
+    --amazonec2-vpc-id $AWS_VPC_ID \
+    --amazonec2-subnet-id $AWS_SUBNET_ID \
+    --amazonec2-zone $AWS_ZONE \
+    --amazonec2-ami $AWS_AMI \
+    --amazonec2-security-group tds-jmeter-sg \
+    --amazonec2-instance-type c4.8xlarge \
+    --engine-label type=client \
+    --swarm \
+    --swarm-master \
+    --swarm-discovery token://$TOKEN \
+    tds-jmeter-client
+
+echo "To manage swarm, make sure to run: eval \"\$(docker-machine env --swarm tds-jmeter-client)\""
+exit

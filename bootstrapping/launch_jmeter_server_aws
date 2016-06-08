@@ -1,0 +1,86 @@
+#!/bin/bash
+# Default to 1 if no parameter is given
+count=${1-1}
+
+if ! [[ $count =~ ^[0-9]+$ ]] || ! (( count > 0)); then
+    echo "[ERROR] Parameter is not a positive integer (must be 1 to 20)." >&2; exit 1
+fi
+
+# Max of 10 machines only, change accordingly
+max=10
+
+if [ "$count" -gt "$max" ]; then
+    count=$max
+fi
+
+# Initialise env variables
+source ./app_aws.env
+
+iterator=1
+
+while [ "$iterator" -le "$count" ]; do
+
+    # Provision new machine
+    echo -e "
+    Provision machine for JMeter (Server):
+    docker-machine create
+        --driver amazonec2
+        --amazonec2-access-key $AWS_ACCESS_KEY_ID
+        --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY
+        --amazonec2-region $AWS_DEFAULT_REGION
+        --amazonec2-vpc-id $AWS_VPC_ID
+        --amazonec2-subnet-id $AWS_SUBNET_ID
+        --amazonec2-zone $AWS_ZONE
+        --amazonec2-ami $AWS_AMI
+        --amazonec2-security-group tds-jmeter-sg
+        --amazonec2-instance-type c4.8xlarge
+	--engine-label type=server
+        --swarm
+        --swarm-discovery token://$TOKEN
+        tds-jmeter-server-$iterator"
+    
+    docker-machine create \
+        --driver amazonec2 \
+        --amazonec2-access-key $AWS_ACCESS_KEY_ID \
+        --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY \
+        --amazonec2-region $AWS_DEFAULT_REGION \
+        --amazonec2-vpc-id $AWS_VPC_ID \
+        --amazonec2-subnet-id $AWS_SUBNET_ID \
+        --amazonec2-zone $AWS_ZONE \
+        --amazonec2-ami $AWS_AMI \
+        --amazonec2-security-group tds-jmeter-sg \
+	    --amazonec2-instance-type c4.8xlarge \
+        --engine-label type=server \
+        --swarm \
+        --swarm-discovery token://$TOKEN \
+        tds-jmeter-server-$iterator
+
+    # Set env variables to point to newly created machine
+    eval "$(docker-machine env tds-jmeter-server-$iterator)"
+
+    # Get public ip
+    ip=$(docker-machine ip tds-jmeter-server-$iterator)
+
+    # Run jmeter server on new machine
+    echo -e "
+    Run JMeter in Server Mode:
+    docker run
+        --detach
+        --publish 1099:1099
+        --env IP=$ip
+        hhcordero/docker-jmeter-server"
+
+    docker run \
+        --detach \
+        --publish 1099:1099 \
+        --env IP=$ip \
+        hhcordero/docker-jmeter-server
+
+    # Concatenate server ip addresses
+    server_ips+="$ip,"
+
+    let "iterator += 1"
+done
+
+echo "Server IP's, for use in JMeter Client: $(echo $server_ips | sed 's/,*$//')"
+exit
