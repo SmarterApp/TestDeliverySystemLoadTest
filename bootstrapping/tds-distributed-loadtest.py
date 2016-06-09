@@ -4,7 +4,7 @@ import boto.ec2
 
 def main(argv):
     # Defaults
-    total_proctors = 2
+    students_per_proctor = 10
     total_students = 20
     num_workers = 2
 
@@ -22,12 +22,13 @@ def main(argv):
             print "Number of students = " + arg
             total_students = int(arg)
         elif opt in ("-p", "--proctors"):
-            print "Number of proctors = " + arg
-            total_proctors = int(arg)
+            print "Number of students per proctor = " + arg
+            students_per_proctor = int(arg)
         elif opt in ("-w", "--workers"):
             print "Number of JMeter Workers = " + arg
             num_workers = int(arg)
 
+    total_proctors = total_students / students_per_proctor
     # The path should be the first (only) argument
     loadtest_jmx_path = args[0]
 
@@ -37,7 +38,7 @@ def main(argv):
 
     print "Starting automated tds-loadtest deployment..."
 
-    tmp_loadtest_jmx_path = create_loadtest_copy(loadtest_jmx_path, num_workers, total_students)
+    tmp_loadtest_jmx_path = create_loadtest_copy(loadtest_jmx_path, num_workers, total_students, students_per_proctor)
     start_docker_daemon()
     create_and_start_client_container()
     server_ips = create_and_start_server_containers(num_workers)
@@ -54,7 +55,7 @@ def main(argv):
           "to copy the file to the current directory."
 
 
-def create_loadtest_copy(loadtest_jmx_path, num_workers, total_students):
+def create_loadtest_copy(loadtest_jmx_path, num_workers, total_students, students_per_proctor):
     # Step 1 - Create a copy of the loadtest file and replace student count in copy
     tmp_loadtest_jmx_path = "/tmp/tds-loadtest.jmx"
     print "Copying original jmx file at " + loadtest_jmx_path + ' to ' + tmp_loadtest_jmx_path
@@ -63,6 +64,10 @@ def create_loadtest_copy(loadtest_jmx_path, num_workers, total_students):
     # Replace the TOTAL_STUDENT_COUNT variable with the actual total # of students / # of worker nodes
     os.system(
         "sed -i -e 's/\${TOTAL_STUDENT_COUNT}/" + str(total_students / num_workers) + "/g' " + tmp_loadtest_jmx_path)
+    # Replace the STUDENTS_PER_PROCTOR with the amount provided in the script arguments
+    os.system(
+        "sed -i -e 's/\${STUDENTS_PER_PROCTOR}/" + students_per_proctor + "/g' " + tmp_loadtest_jmx_path)
+    students_per_proctor
     return tmp_loadtest_jmx_path
 
 
@@ -156,7 +161,7 @@ def usage():
     print "Help/usage details:"
     print "  -w, --workers 	    : the number of worker (server) nodes to create and use for the load test"
     print "  -s, --students     : the number of students to create"
-    print "  -p, --proctors     : the number of proctors to create"
+    print "  -p, --proctors     : the number of students per proctors"
     print "  -h, --help       	: this help screen"
 
 

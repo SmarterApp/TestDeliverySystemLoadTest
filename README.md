@@ -102,12 +102,12 @@ be used to create the ec2 instances with Docker.
 2. Ensure that ART and TDS contains the loadtest students and proctors and that the accounts are configured correctly.
 3. Execute the loadtest using the tds-distributed-loadtest.py script. Note the following useful flags:
     * -h / --help     : Script help and instructions, including optional flags
-    * -w / --workers  : The number of worker (server) nodes to create and use for the loadtest (Default: 2)
-    * -s / --students : The number of students to execute the test with (Default: 20)
-    * -p / --proctors : The number of procotrs to execute the test with (Default: 2)
+    * -w / --workers  : The number of **worker** (server) nodes to create and use for the loadtest (Default: 2)
+    * -s / --students : The number of **students** to execute the test with (Default: 20)
+    * -p / --proctors : The number of **students per proctor** (Default: 10)
     * Start a loadtest with 200,000 students and 20,000 proctors, distributed between 4 worker nodes:
 ````
-    python tds-distributed-loadtest.py -w 4 -s 200000 -p 20000 /path/to/tds-loadtest.jmx
+    python tds-distributed-loadtest.py -w 4 -s 200000 -p 10 /path/to/tds-loadtest.jmx
 ````
 4. Monitor the tds-jmeter-client docker log using the following command.
 ````
