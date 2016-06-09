@@ -4,8 +4,8 @@ import boto.ec2
 
 def main(argv):
     # Defaults
-    total_proctors = 1
-    total_students = 10
+    total_proctors = 2
+    total_students = 20
     num_workers = 2
 
     try:
@@ -154,7 +154,7 @@ def launch_worker_execute_test(client_ip, server_ips):
 
 def usage():
     print "Help/usage details:"
-    print "  -c, --connection 	: mongo connection string (defaults to mongodb://localhost:27017/)"
+    print "  -w, --workers 	    : the number of worker (server) nodes to create and use for the load test"
     print "  -s, --students     : the number of students to create"
     print "  -p, --proctors     : the number of proctors to create"
     print "  -h, --help       	: this help screen"
