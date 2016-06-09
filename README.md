@@ -118,6 +118,11 @@ docker logs -f <tds-jmeter-client container id>
 docker-machine scp tds-jmeter-client:/load_tests/tds-loadtest.jtl .
 ````
 
+#### Post-Distributed Load Test Cleanup
+To clean up a distributed load testing environment after running a test and collecting the resulting test data, simply run the 
+"tds-distributed-loadtest.py" python script with the -c (--cleanup) flag. This will kill each tds-jmeter docker-machine remote 
+instance, which will effectively terminate each EC2 instance and remove the associated keypairs from AWS. Allow a few minutes
+for AWS to terminate these instances.
 
 ### Useful commands for viewing test run errors
 * **cat jmeter.log | grep "ERROR"** 						_- all general errors_

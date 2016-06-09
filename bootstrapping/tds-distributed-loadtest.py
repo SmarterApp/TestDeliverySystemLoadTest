@@ -9,7 +9,7 @@ def main(argv):
     num_workers = 2
 
     try:
-        opts, args = getopt.getopt(argv, "hs:p:w:g:", ["help", "students=", "proctors=", "workers="])
+        opts, args = getopt.getopt(argv, "hs:p:w:g:c", ["help", "students=", "proctors=", "workers=", "cleanup"])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -17,6 +17,9 @@ def main(argv):
     for opt, arg in opts:
         if opt in ("-h", "--help"):
             usage();
+            sys.exit()
+        elif opt in ("-c", "--cleanup"):
+            cleanup()
             sys.exit()
         elif opt in ("-s", "--students"):
             print "Number of students = " + arg
@@ -55,6 +58,16 @@ def main(argv):
           "to copy the file to the current directory."
 
 
+def cleanup():
+    print "Starting tds-loadtest environment cleanup..."
+    docker_remote_instances = subprocess.check_output(['docker-machine', 'ls', '-q']).splitlines()
+    for instance in docker_remote_instances:
+        if "tds-jmeter" in instance:
+            print "Removing docker remote instance " + instance
+            os.system("docker-machine rm -f " + instance)
+
+    print "Cleanup completed. All active jmeter AWS EC2 instances will be terminated momentarily."
+
 def create_loadtest_copy(loadtest_jmx_path, num_workers, total_students, students_per_proctor):
     # Step 1 - Create a copy of the loadtest file and replace student count in copy
     tmp_loadtest_jmx_path = "/tmp/tds-loadtest.jmx"
@@ -66,7 +79,7 @@ def create_loadtest_copy(loadtest_jmx_path, num_workers, total_students, student
         "sed -i -e 's/\${TOTAL_STUDENT_COUNT}/" + str(total_students / num_workers) + "/g' " + tmp_loadtest_jmx_path)
     # Replace the STUDENTS_PER_PROCTOR with the amount provided in the script arguments
     os.system(
-        "sed -i -e 's/\${STUDENTS_PER_PROCTOR}/" + students_per_proctor + "/g' " + tmp_loadtest_jmx_path)
+        "sed -i -e 's/\${STUDENTS_PER_PROCTOR}/" + str(students_per_proctor) + "/g' " + tmp_loadtest_jmx_path)
     students_per_proctor
     return tmp_loadtest_jmx_path
 
@@ -162,6 +175,7 @@ def usage():
     print "  -w, --workers 	    : the number of worker (server) nodes to create and use for the load test"
     print "  -s, --students     : the number of students to create"
     print "  -p, --proctors     : the number of students per proctors"
+    print "  -c, --cleanup      : run the cleanup procedure, which terminates all jMeter related ec2 instances in AWS"
     print "  -h, --help       	: this help screen"
 
 
