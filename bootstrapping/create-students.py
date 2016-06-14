@@ -49,22 +49,30 @@ def main(argv):
     # default to grades 3-12 if none provided
     if (len(grade_levels) == 0):
         grade_levels = range(3, 12)
+    # Assume this file is for use with ART import as well as loadtest
+    loadtest_only = False
+    try:
+        client = MongoClient(connection)
+        db = client.art
 
-    client = MongoClient(connection)
-    db = client.art
+        # get the matching institutions objects
+        if (len(institution_ids) != 0):
+            institutions = list(db.institutionEntity.find({"entityId": {"$in": institution_ids}}))
+        else:
+            institutions = list(db.institutionEntity.find({}))
+
+        total_institutions = len(institutions)
+    except:
+        # For loadtest, the institutions don't matter, only usernames and firstnames are read.
+        loadtest_only = True
+        print "Unable to connect to ART mongodb to obtain institution/entity information."
+        print "A seed file will still be generated, but will not be importable in ART."
+
 
     # clean up grade levels to make sure that they are 2 digits
     for idx, grade in enumerate(grade_levels):
         grade_levels[idx] = "{0:0>2}".format(grade_levels[idx])
-
-    # get the matching institutions objects
-    if (len(institution_ids) != 0):
-        institutions = list(db.institutionEntity.find({"entityId": {"$in": institution_ids}}))
-    else:
-        institutions = list(db.institutionEntity.find({}))
-
     total_grade_levels = len(grade_levels)
-    total_institutions = len(institutions)
 
     print "Creating student_logins.csv at current directory."
     # open students file for reading
@@ -86,7 +94,10 @@ def main(argv):
         # SSID, Alt SSID must be unique
         for i in range(0, n):
             studentNum = str(i)
-            institutionObject = institutions[random.randint(0, total_institutions - 1)]
+            if loadtest_only:
+                institutionObject = { 'parentEntityId': 'TEST', 'entityId': 'TEST' }
+            else:
+                institutionObject = institutions[random.randint(0, total_institutions - 1)]
             grade_level = grade_levels[random.randint(0, total_grade_levels - 1)]
 
             # the 6 race options are all set to NO to start, then we randomly make 1 YES
