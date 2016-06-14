@@ -123,17 +123,22 @@ def update_test_sg(sg_name):
                                           to_port=1099,
                                           cidr_ip='0.0.0.0/0')
     except:
-        print "Error connecting to ec2 using boto or updating docker-machine security group in AWS"
+        print "Error connecting to ec2 using boto or updating docker-machine security group in AWS."
+        print "Please ensure that boto is configured correctly using the correct AWS credentials."
+        sys.exit(-1)
 
 
 def configure_client_machine(loadtest_jmx_path):
     # Step 6 - Creating load tests directory in jmeter-client and setting permissions, and then copying tds-loadtest.jmx file over
     print "Creating load test directory in tds-jmeter-client and setting folder permissions."
     os.system('eval "$(docker-machine env --swarm tds-jmeter-client)"')
-    os.system(
-        'docker-machine ssh tds-jmeter-client "sudo mkdir -p /load_tests && sudo chown ubuntu:ubuntu /load_tests && exit"')
+    if not os.system('docker-machine ssh tds-jmeter-client "sudo mkdir -p /load_tests && sudo chown ubuntu:ubuntu /load_tests && exit"') == 0:
+        print "ERROR: Error sshing to tds-jmeter-client machine or creating load_test folder on client host. Aborting loadtest."
+        sys.exit(-1)
     print "Copying test directory (" + loadtest_jmx_path + " to tds-jmeter-client..."
-    os.system('docker-machine scp ' + loadtest_jmx_path + ' tds-jmeter-client:/load_tests')
+    if not os.system('docker-machine scp ' + loadtest_jmx_path + ' tds-jmeter-client:/load_tests') == 0:
+        print "Error copying test plan to tds-jmeter-client's /load_tests directory. Aborting loadtest."
+        sys.exit(-1)
     client_ip = subprocess.check_output(['docker-machine', 'ip', 'tds-jmeter-client'])
     print "tds-jmeter-client ip = " + client_ip
     return client_ip.strip()
@@ -149,8 +154,12 @@ def create_and_distribute_seed_data(total_proctors, total_students):
     print "Finished creating container id file \"jmeter_servers\". Running student and proctor seed data creation and " \
           "distribution scripts..."
     # Step 8 - Create and distribute seed data scripts to each worker container
-    os.system('python create-students.py -d jmeter_servers -n ' + str(total_students))
-    os.system('python create-proctors.py -d jmeter_servers -n ' + str(total_proctors))
+    if not os.system('python create-students.py -d jmeter_servers -n ' + str(total_students)) == 0:
+        print "ERROR: Error running 'create-students.py' script... aborting distributed loadtest."
+        sys.exit(-1)
+    if not os.system('python create-proctors.py -d jmeter_servers -n ' + str(total_proctors)) == 0:
+        print "ERROR: Error running 'create-proctors.py' script... aborting distributed loadtest."
+        sys.exit(-1)
     os.remove('jmeter_servers')
     print "Finished distributing student and proctor seed data!"
 

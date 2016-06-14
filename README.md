@@ -17,6 +17,16 @@ chosen at random.
 During the second phase, students login and begin the test, as the proctor threads approve each student. Students then
 take the test to completion, and proctors begin to close sessions after all respective students have completed their tests.
 
+## Dependencies
+* Apache JMeter 2.13 - For analyzing test output (.jtl) file, editing test plan file (.jmx), and executing load tests
+* Java 7 - Dependency of jmeter
+* Python 2.7+ (for running the scripts to generate the proctor/user .csv and for automated load testing)
+    * pymongo - For running student seed data generation script - Used to read from ART mongodb. **[Install Instructions](https://api.mongodb.com/python/current/installation.html)**
+    * boto - For interacting with AWS/creating security group for distributed loadtest **[Install Instructions](https://pypi.python.org/pypi/boto)**
+        * Configure boto to use AWS access key/secret access key. **[Instructions HERE](http://boto.cloudhackers.com/en/latest/boto_config_tut.html)**
+* Docker + docker-machine
+    * Both can be downloaded for Mac OS X and Windows, bundled in the Docker Toolbox **[Download HERE](https://www.docker.com/products/docker-toolbox)**
+
 ## Load Test Setup and Configuration
 Each jMeter server node will need a copy of the tds-loadtest.jmx test plan. This test plan
 contains the properties and logic used by jMeter to execute a performance test. Each jMeter
@@ -134,10 +144,3 @@ for AWS to terminate these instances.
 
 **NOTE:** Be sure to clear the jmeter.log and .jtl file after each test execution. For accurate results, be sure to
  use fresh proctor and student accounts between subsequent load test executions.
-
-## Dependencies
-* Apache JMeter 2.13
-* Java 7
-* Python 2.7+ (for running the scripts to generate the proctor/user .csv and for automated load testing)
-
-
