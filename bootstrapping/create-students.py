@@ -1,4 +1,4 @@
-import pymongo, csv, sys, getopt, random, os
+import pymongo, csv, sys, getopt, random, os, json
 
 from pymongo import MongoClient
 
@@ -17,11 +17,14 @@ def main(argv):
     grade_levels = []
 
     # default connection string
-    connection = "mongodb://mongo_admin:password123@localhost:27017/art"
+    connection = "mongodb://username:password@ip_of_mongodb:27017/art"
+
+    format = "csv"
 
     try:
-        opts, args = getopt.getopt(argv, "hn:i:g:c:d:",
-                                   ["help", "number=", "institutions=", "grades=", "connection=", "distributed="])
+        opts, args = getopt.getopt(argv, "hn:i:g:c:d:f:",
+                                   ["help", "number=", "institutions="
+                                       , "grades=", "connection=", "distributed=", "format="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -45,6 +48,12 @@ def main(argv):
         elif opt in ("-d", "--distributed"):
             distributed_mode = True
             server_host_filename = arg
+        elif opt in ("-f", "--format"):
+            print "Format = " + arg
+            format = arg
+
+    if format != "json":
+        format = "csv"
 
     # default to grades 3-12 if none provided
     if (len(grade_levels) == 0):
@@ -68,34 +77,110 @@ def main(argv):
         print "Unable to connect to ART mongodb to obtain institution/entity information."
         print "A seed file will still be generated, but will not be importable in ART."
 
-
     # clean up grade levels to make sure that they are 2 digits
     for idx, grade in enumerate(grade_levels):
         grade_levels[idx] = "{0:0>2}".format(grade_levels[idx])
     total_grade_levels = len(grade_levels)
 
-    print "Creating student_logins.csv at current directory."
-    # open students file for reading
-    with open('student_logins.csv', 'w') as csvfile:
-        fieldnames = ['StateAbbreviation', 'ResponsibleDistrictIdentifier', 'ResponsibleInstitutionIdentifier',
-                      'LastOrSurname', 'FirstName', 'MiddleName',
-                      'Birthdate', 'SSID', 'ExternalSSID', 'GradeLevelWhenAssessed', 'Sex', 'HispanicOrLatinoEthnicity',
-                      'AmericanIndianOrAlaskaNative', 'Asian',
-                      'BlackOrAfricanAmerican', 'White', 'NativeHawaiianOrOtherPacificIslander',
-                      'DemographicRaceTwoOrMoreRaces', 'IDEAIndicator', 'LEPStatus',
-                      'Section504Status', 'EconomicDisadvantageStatus', 'LanguageCode',
-                      'EnglishLanguageProficiencyLevel', 'MigrantStatus', 'FirstEntryDateIntoUSSchool',
-                      'LimitedEnglishProficiencyEntryDate', 'LEPExitDate', 'TitleIIILanguageInstructionProgramType',
-                      'PrimaryDisabilityType', 'Delete']
+    if format == "csv":
+        print "Creating student_logins.csv at current directory."
+        # open students file for reading
+        with open('student_logins.csv', 'w') as csvfile:
+            fieldnames = ['StateAbbreviation', 'ResponsibleDistrictIdentifier', 'ResponsibleInstitutionIdentifier',
+                          'LastOrSurname', 'FirstName', 'MiddleName',
+                          'Birthdate', 'SSID', 'ExternalSSID', 'GradeLevelWhenAssessed', 'Sex', 'HispanicOrLatinoEthnicity',
+                          'AmericanIndianOrAlaskaNative', 'Asian',
+                          'BlackOrAfricanAmerican', 'White', 'NativeHawaiianOrOtherPacificIslander',
+                          'DemographicRaceTwoOrMoreRaces', 'IDEAIndicator', 'LEPStatus',
+                          'Section504Status', 'EconomicDisadvantageStatus', 'LanguageCode',
+                          'EnglishLanguageProficiencyLevel', 'MigrantStatus', 'FirstEntryDateIntoUSSchool',
+                          'LimitedEnglishProficiencyEntryDate', 'LEPExitDate', 'TitleIIILanguageInstructionProgramType',
+                          'PrimaryDisabilityType', 'Delete']
 
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
 
-        # SSID, Alt SSID must be unique
+            # SSID, Alt SSID must be unique
+            for i in range(0, n):
+                studentNum = str(i)
+                if loadtest_only:
+                    institutionObject = { 'parentEntityId': 'TEST', 'entityId': 'TEST' }
+                else:
+                    institutionObject = institutions[random.randint(0, total_institutions - 1)]
+                grade_level = grade_levels[random.randint(0, total_grade_levels - 1)]
+
+                # the 6 race options are all set to NO to start, then we randomly make 1 YES
+                race = ["NO", "NO", "NO", "NO", "NO", "NO"]
+                race[random.randint(0, 5)] = "YES"
+
+                writer.writerow({
+                    'StateAbbreviation': 'OR',
+                    'ResponsibleDistrictIdentifier': institutionObject['parentEntityId'],
+                    'ResponsibleInstitutionIdentifier': institutionObject['entityId'],
+                    'LastOrSurname': 'LastName' + studentNum,
+                    'FirstName': 'Name' + studentNum,
+                    'MiddleName': 'MiddleName' + studentNum,
+                    'Birthdate': '',
+                    'SSID': 'ASTDNT' + studentNum,
+                    'ExternalSSID': 'STDNT' + studentNum,
+                    'GradeLevelWhenAssessed': grade_level,
+                    'Sex': "Female" if random.randint(0, 1) == 0 else "Male",  # 50/50 male/female
+                    'HispanicOrLatinoEthnicity': race[0],
+                    'AmericanIndianOrAlaskaNative': race[1],
+                    'Asian': race[2],
+                    'BlackOrAfricanAmerican': race[3],
+                    'White': race[4],
+                    'NativeHawaiianOrOtherPacificIslander': race[5],
+                    'DemographicRaceTwoOrMoreRaces': 'NO',
+                    'IDEAIndicator': 'NO',
+                    'LEPStatus': 'NO',
+                    'Section504Status': 'NO',
+                    'EconomicDisadvantageStatus': 'NO',
+                    'LanguageCode': '',
+                    'EnglishLanguageProficiencyLevel': '',
+                    'MigrantStatus': 'NO',
+                    'FirstEntryDateIntoUSSchool': '',
+                    'LimitedEnglishProficiencyEntryDate': '',
+                    'LEPExitDate': '',
+                    'TitleIIILanguageInstructionProgramType': '',
+                    'PrimaryDisabilityType': '',
+                    'Delete': ''
+                })
+        print "Created student seed file with " + str(n) + " students."
+
+        if distributed_mode:
+            # Get path of python file (where the jmeter_servers file should be located)
+            __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+            # Get number of nodes (lines in jmeter_servers file) that we need to break csv file into
+            num_nodes = sum(1 for line in open(os.path.join(__location__, 'jmeter_servers')) if line.rstrip())
+            print "Number of nodes detected in jmeter_servers file: " + str(num_nodes)
+
+            # Split students into student_logins_<n>.csv so that each file can be SCP'd to host systems.
+            split(open('student_logins.csv', 'r'), ',', n / num_nodes, 'student_logins_%s.csv');
+
+            # Iterate over each server hostname and scp the seed file to the node
+            with open(os.path.join(__location__, server_host_filename)) as jmeter_servers:
+                for i, line in enumerate(jmeter_servers):
+                    host = str(line).strip()
+                    # Get partition seed file path
+                    student_logins_part_path = "./student_logins_" + str(i + 1) + ".csv"
+                    print "Executing SCP transfer of student_logins_" + str(i + 1) + ".csv to host " + host + "..."
+                    # Do a docker cp into the jmeter-server containers
+                    os.system('eval "$(docker-machine env --swarm tds-jmeter-client)" && ' +
+                        'docker cp ' + student_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/student_logins.csv')
+                    print "Transfer to host " + host + " has completed. Cleaning up " + student_logins_part_path + "..."
+                    os.remove(student_logins_part_path)
+                    print "Cleanup complete!"
+    elif(format == "json"):
+        print "Creating jsonStudents.txt at current directory"
+
+        data = []
+
         for i in range(0, n):
             studentNum = str(i)
             if loadtest_only:
-                institutionObject = { 'parentEntityId': 'TEST', 'entityId': 'TEST' }
+                institutionObject = {'parentEntityId': 'TEST', 'entityId': 'TEST'}
             else:
                 institutionObject = institutions[random.randint(0, total_institutions - 1)]
             grade_level = grade_levels[random.randint(0, total_grade_levels - 1)]
@@ -104,66 +189,45 @@ def main(argv):
             race = ["NO", "NO", "NO", "NO", "NO", "NO"]
             race[random.randint(0, 5)] = "YES"
 
-            writer.writerow({
-                'StateAbbreviation': 'OR',
-                'ResponsibleDistrictIdentifier': institutionObject['parentEntityId'], 
-                'ResponsibleInstitutionIdentifier': institutionObject['entityId'],
-                'LastOrSurname': 'LastName' + studentNum,
-                'FirstName': 'Name' + studentNum,
-                'MiddleName': 'MiddleName' + studentNum,
-                'Birthdate': '',
-                'SSID': 'ASTDNT' + studentNum,
-                'ExternalSSID': 'STDNT' + studentNum,
-                'GradeLevelWhenAssessed': grade_level,
-                'Sex': "Female" if random.randint(0, 1) == 0 else "Male",  # 50/50 male/female
-                'HispanicOrLatinoEthnicity': race[0],
-                'AmericanIndianOrAlaskaNative': race[1],
-                'Asian': race[2],
-                'BlackOrAfricanAmerican': race[3],
-                'White': race[4],
-                'NativeHawaiianOrOtherPacificIslander': race[5],
-                'DemographicRaceTwoOrMoreRaces': 'NO',
-                'IDEAIndicator': 'NO',
-                'LEPStatus': 'NO',
-                'Section504Status': 'NO',
-                'EconomicDisadvantageStatus': 'NO',
-                'LanguageCode': '',
-                'EnglishLanguageProficiencyLevel': '',
-                'MigrantStatus': 'NO',
-                'FirstEntryDateIntoUSSchool': '',
-                'LimitedEnglishProficiencyEntryDate': '',
-                'LEPExitDate': '',
-                'TitleIIILanguageInstructionProgramType': '',
-                'PrimaryDisabilityType': '',
-                'Delete': ''
-            })
-    print "Created student seed file with " + str(n) + " students."
+            data.append({
+                    'StateAbbreviation': 'CA',
+                    'ResponsibleDistrictIdentifier': institutionObject['parentEntityId'],
+                    'ResponsibleInstitutionIdentifier': institutionObject['entityId'],
+                    'LastOrSurname': 'LastName' + studentNum,
+                    'FirstName': 'Name' + studentNum,
+                    'MiddleName': 'MiddleName' + studentNum,
+                    'Birthdate': '',
+                    'SSID': 'ASTDNT' + studentNum,
+                    'ExternalSSID': 'STDNT' + studentNum,
+                    'GradeLevelWhenAssessed': grade_level,
+                    'Sex': "Female" if random.randint(0, 1) == 0 else "Male",  # 50/50 male/female
+                    'HispanicOrLatinoEthnicity': race[0],
+                    'AmericanIndianOrAlaskaNative': race[1],
+                    'Asian': race[2],
+                    'BlackOrAfricanAmerican': race[3],
+                    'White': race[4],
+                    'NativeHawaiianOrOtherPacificIslander': race[5],
+                    'DemographicRaceTwoOrMoreRaces': 'NO',
+                    'IDEAIndicator': 'NO',
+                    'LEPStatus': 'NO',
+                    'Section504Status': 'NO',
+                    'EconomicDisadvantageStatus': 'NO',
+                    'LanguageCode': '',
+                    'EnglishLanguageProficiencyLevel': '',
+                    'MigrantStatus': 'NO',
+                    'FirstEntryDateIntoUSSchool': '',
+                    'LimitedEnglishProficiencyEntryDate': '',
+                    'LEPExitDate': '',
+                    'TitleIIILanguageInstructionProgramType': '',
+                    'PrimaryDisabilityType': '',
+                    'Delete': ''
+                })
 
-    if distributed_mode:
-        # Get path of python file (where the jmeter_servers file should be located)
-        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        with open('jsonStudents.txt', 'w') as outfile:
+            json.dump(data, outfile)
 
-        # Get number of nodes (lines in jmeter_servers file) that we need to break csv file into
-        num_nodes = sum(1 for line in open(os.path.join(__location__, 'jmeter_servers')) if line.rstrip())
-        print "Number of nodes detected in jmeter_servers file: " + str(num_nodes)
-
-        # Split students into student_logins_<n>.csv so that each file can be SCP'd to host systems.
-        split(open('student_logins.csv', 'r'), ',', n / num_nodes, 'student_logins_%s.csv');
-
-        # Iterate over each server hostname and scp the seed file to the node
-        with open(os.path.join(__location__, server_host_filename)) as jmeter_servers:
-            for i, line in enumerate(jmeter_servers):
-                host = str(line).strip()
-                # Get partition seed file path
-                student_logins_part_path = "./student_logins_" + str(i + 1) + ".csv"
-                print "Executing SCP transfer of student_logins_" + str(i + 1) + ".csv to host " + host + "..."
-                # Do a docker cp into the jmeter-server containers
-                os.system('eval "$(docker-machine env --swarm tds-jmeter-client)" && ' +
-                    'docker cp ' + student_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/student_logins.csv')
-                print "Transfer to host " + host + " has completed. Cleaning up " + student_logins_part_path + "..."
-                os.remove(student_logins_part_path)
-                print "Cleanup complete!"
-
+    else:
+        print "Invalid format"
 
 def usage():
     print "Help/usage details:"
