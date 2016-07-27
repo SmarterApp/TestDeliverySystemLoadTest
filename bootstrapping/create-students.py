@@ -1,4 +1,4 @@
-import pymongo, csv, sys, getopt, random, os, json
+import pymongo, csv, sys, getopt, random, os, json, datetime
 
 from pymongo import MongoClient
 
@@ -21,10 +21,14 @@ def main(argv):
 
     format = "csv"
 
+    mode = "create"
+
+    errors = False
+
     try:
-        opts, args = getopt.getopt(argv, "hn:i:g:c:d:f:",
+        opts, args = getopt.getopt(argv, "hn:i:g:c:d:f:m:e:",
                                    ["help", "number=", "institutions="
-                                       , "grades=", "connection=", "distributed=", "format="])
+                                       , "grades=", "connection=", "distributed=", "format=", "mode=", "errors="])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -51,9 +55,20 @@ def main(argv):
         elif opt in ("-f", "--format"):
             print "Format = " + arg
             format = arg
+        elif opt in ("-m", "--mode"):
+            print "Mode = " + arg
+            mode = arg
+        elif opt in ("-e", "--errors"):
+            print "Errors = " + arg
+            errors = arg
 
     if format != "json":
         format = "csv"
+
+    if mode != "delete":
+        mode = "create"
+
+    errors = (errors == "true" or errors == "True" or errors)
 
     # default to grades 3-12 if none provided
     if (len(grade_levels) == 0):
@@ -88,7 +103,8 @@ def main(argv):
         with open('student_logins.csv', 'w') as csvfile:
             fieldnames = ['StateAbbreviation', 'ResponsibleDistrictIdentifier', 'ResponsibleInstitutionIdentifier',
                           'LastOrSurname', 'FirstName', 'MiddleName',
-                          'Birthdate', 'SSID', 'ExternalSSID', 'GradeLevelWhenAssessed', 'Sex', 'HispanicOrLatinoEthnicity',
+                          'Birthdate', 'SSID', 'ExternalSSID', 'GradeLevelWhenAssessed', 'Sex',
+                          'HispanicOrLatinoEthnicity',
                           'AmericanIndianOrAlaskaNative', 'Asian',
                           'BlackOrAfricanAmerican', 'White', 'NativeHawaiianOrOtherPacificIslander',
                           'DemographicRaceTwoOrMoreRaces', 'IDEAIndicator', 'LEPStatus',
@@ -104,7 +120,7 @@ def main(argv):
             for i in range(0, n):
                 studentNum = str(i)
                 if loadtest_only:
-                    institutionObject = { 'parentEntityId': 'TEST', 'entityId': 'TEST' }
+                    institutionObject = {'parentEntityId': 'TEST', 'entityId': 'TEST'}
                 else:
                     institutionObject = institutions[random.randint(0, total_institutions - 1)]
                 grade_level = grade_levels[random.randint(0, total_grade_levels - 1)]
@@ -168,14 +184,16 @@ def main(argv):
                     print "Executing SCP transfer of student_logins_" + str(i + 1) + ".csv to host " + host + "..."
                     # Do a docker cp into the jmeter-server containers
                     os.system('eval "$(docker-machine env --swarm tds-jmeter-client)" && ' +
-                        'docker cp ' + student_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/student_logins.csv')
+                              'docker cp ' + student_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/student_logins.csv')
                     print "Transfer to host " + host + " has completed. Cleaning up " + student_logins_part_path + "..."
                     os.remove(student_logins_part_path)
                     print "Cleanup complete!"
-    elif(format == "json"):
+    elif format == "json" and mode == "create":
         print "Creating jsonStudents.txt at current directory"
 
         data = []
+
+        dayseperator = 1501 if errors else 2000
 
         for i in range(0, n):
             studentNum = str(i)
@@ -185,49 +203,68 @@ def main(argv):
                 institutionObject = institutions[random.randint(0, total_institutions - 1)]
             grade_level = grade_levels[random.randint(0, total_grade_levels - 1)]
 
-            # the 6 race options are all set to NO to start, then we randomly make 1 YES
-            race = ["NO", "NO", "NO", "NO", "NO", "NO"]
-            race[random.randint(0, 5)] = "YES"
+            # the 6 race options are all set to false to start, then we randomly make 1 true
+            race = [False, False, False, False, False, False]
+            race[random.randint(0, 5)] = True
 
+            # This is a StudentDto as required by the batching API
             data.append({
-                    'StateAbbreviation': 'CA',
-                    'ResponsibleDistrictIdentifier': institutionObject['parentEntityId'],
-                    'ResponsibleInstitutionIdentifier': institutionObject['entityId'],
-                    'LastOrSurname': 'LastName' + studentNum,
-                    'FirstName': 'Name' + studentNum,
-                    'MiddleName': 'MiddleName' + studentNum,
-                    'Birthdate': '',
-                    'SSID': 'ASTDNT' + studentNum,
-                    'ExternalSSID': 'STDNT' + studentNum,
-                    'GradeLevelWhenAssessed': grade_level,
-                    'Sex': "Female" if random.randint(0, 1) == 0 else "Male",  # 50/50 male/female
-                    'HispanicOrLatinoEthnicity': race[0],
-                    'AmericanIndianOrAlaskaNative': race[1],
-                    'Asian': race[2],
-                    'BlackOrAfricanAmerican': race[3],
-                    'White': race[4],
-                    'NativeHawaiianOrOtherPacificIslander': race[5],
-                    'DemographicRaceTwoOrMoreRaces': 'NO',
-                    'IDEAIndicator': 'NO',
-                    'LEPStatus': 'NO',
-                    'Section504Status': 'NO',
-                    'EconomicDisadvantageStatus': 'NO',
-                    'LanguageCode': '',
-                    'EnglishLanguageProficiencyLevel': '',
-                    'MigrantStatus': 'NO',
-                    'FirstEntryDateIntoUSSchool': '',
-                    'LimitedEnglishProficiencyEntryDate': '',
-                    'LEPExitDate': '',
-                    'TitleIIILanguageInstructionProgramType': '',
-                    'PrimaryDisabilityType': '',
-                    'Delete': ''
-                })
+                "ssid": 'ASTDNT' + studentNum,
+                "stateAbbreviation": "CA",
+                "institutionIdentifier": institutionObject['entityId'],
+                "districtIdentifier": institutionObject['parentEntityId'],
+                "firstName": 'Name' + studentNum,
+                "lastName": 'LastName' + studentNum,
+                "middleName": 'MiddleName' + studentNum,
+                "birthDate": datetime.date.fromordinal(
+                    datetime.date.today().toordinal() - random.randint(dayseperator, 3000)).strftime("%F"),
+                "externalSsid": 'STDNT' + studentNum,
+                "gradeLevelWhenAssessed": grade_level,
+                "sex": "Female" if random.randint(0, 1) == 0 else "Male",
+                "hispanicOrLatino": race[0],
+                "americanIndianOrAlaskaNative": race[1],
+                "asian": race[2],
+                "blackOrAfricanAmerican": race[3],
+                "white": race[4],
+                "nativeHawaiianOrPacificIsland": race[5],
+                "twoOrMoreRaces": False if random.randint(0, 1) == 0 else True,
+                "iDEAIndicator": False if random.randint(0, 1) == 0 else True,
+                "lepStatus": False if random.randint(0, 1) == 0 else True,
+                "section504Status": False if random.randint(0, 1) == 0 else True,
+                "disadvantageStatus": False if random.randint(0, 1) == 0 else True,
+                "languageCode": None,
+                "migrantStatus": False if random.randint(0, 1) == 0 else True,
+                "firstEntryDateIntoUsSchool": datetime.date.fromordinal(
+                    datetime.date.today().toordinal() - random.randint(1, 1500)).strftime("%F"),
+                "lepEntryDate": None,
+                "lepExitDate": None,
+                "title3ProgramType": None,
+                "primaryDisabilityType": None,
+                "elpLevel": 0
+            })
 
         with open('jsonStudents.txt', 'w') as outfile:
             json.dump(data, outfile)
 
+    elif format == "json" and mode == "delete":
+        print "Creating jsonStudentsDelete.txt at current directory"
+
+        data = []
+
+        for i in range(0, n):
+            studentNum = str(i)
+
+            data.append({
+                "ssid": 'ASTDNT' + studentNum,
+                "stateCode": "CA"
+            })
+
+        with open('jsonStudentsDelete.txt', 'w') as outfile:
+            json.dump(data, outfile)
+
     else:
         print "Invalid format"
+
 
 def usage():
     print "Help/usage details:"
