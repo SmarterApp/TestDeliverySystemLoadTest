@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="2.8" jmeter="2.13 r1665067">
+<jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -180,9 +180,21 @@
             <stringProp name="Argument.desc">10 means there are 10 students for every proctor</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="PROCTOR_HOST_PROTOCOL" elementType="Argument">
+            <stringProp name="Argument.name">PROCTOR_HOST_PROTOCOL</stringProp>
+            <stringProp name="Argument.value">https</stringProp>
+            <stringProp name="Argument.desc">HTTP/HTTPS protocol</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           <elementProp name="PROCTOR_HOST" elementType="Argument">
             <stringProp name="Argument.name">PROCTOR_HOST</stringProp>
             <stringProp name="Argument.value">tds-loadtest.sbtds.org</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="PROCTOR_HOST_ROOT_PATH" elementType="Argument">
+            <stringProp name="Argument.name">PROCTOR_HOST_ROOT_PATH</stringProp>
+            <stringProp name="Argument.value">/proctor/</stringProp>
+            <stringProp name="Argument.desc">Root path for proctor app - usually at &quot;/&quot;, sometimes &quot;/proctor&quot;</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="PROCTOR_HOST_PORT" elementType="Argument">
@@ -228,6 +240,26 @@
           <elementProp name="APPROVAL_FAILURES" elementType="Argument">
             <stringProp name="Argument.name">APPROVAL_FAILURES</stringProp>
             <stringProp name="Argument.value">1</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="STUDENT_HOST" elementType="Argument">
+            <stringProp name="Argument.name">STUDENT_HOST</stringProp>
+            <stringProp name="Argument.value">tds-loadtest.sbtds.org</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="STUDENT_HOST_PORT" elementType="Argument">
+            <stringProp name="Argument.name">STUDENT_HOST_PORT</stringProp>
+            <stringProp name="Argument.value"></stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="STUDENT_HOST_ROOT_PATH" elementType="Argument">
+            <stringProp name="Argument.name">STUDENT_HOST_ROOT_PATH</stringProp>
+            <stringProp name="Argument.value">/student</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="STUDENT_HOST_PROTOCOL" elementType="Argument">
+            <stringProp name="Argument.name">STUDENT_HOST_PROTOCOL</stringProp>
+            <stringProp name="Argument.value">https</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -316,17 +348,16 @@
             <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path"></stringProp>
+            <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-            <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
             <boolProp name="HTTPSampler.image_parser">true</boolProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
-            <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           </HTTPSamplerProxy>
@@ -346,10 +377,10 @@
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
             <stringProp name="HTTPSampler.domain">${SSO_HOST}</stringProp>
-            <stringProp name="HTTPSampler.port">8080</stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path">/auth/SSORedirect/metaAlias/sbac/idp?SAMLRequest=${SAMLRequest}</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -359,7 +390,6 @@
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
             <boolProp name="HTTPSampler.image_parser">true</boolProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
-            <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re">https?://${SSO_HOST}/.*</stringProp>
           </HTTPSamplerProxy>
@@ -504,10 +534,10 @@
               </collectionProp>
             </elementProp>
             <stringProp name="HTTPSampler.domain">${SSO_HOST}</stringProp>
-            <stringProp name="HTTPSampler.port">8080</stringProp>
+            <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path">auth/UI/Login</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -516,7 +546,6 @@
             <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
-            <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re">https?://${DOMAIN}/.*</stringProp>
           </HTTPSamplerProxy>
@@ -529,9 +558,9 @@
             <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol">http</stringProp>
+            <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path"></stringProp>
+            <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -539,7 +568,6 @@
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
             <boolProp name="HTTPSampler.image_parser">true</boolProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
-            <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           </HTTPSamplerProxy>
@@ -558,9 +586,9 @@
             <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/Services/XHR.axd/GetInitData</stringProp>
+            <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}Services/XHR.axd/GetInitData</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -646,9 +674,9 @@ try {
             <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/Services/XHR.axd/InsertSessionTests</stringProp>
+            <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}Services/XHR.axd/InsertSessionTests</stringProp>
             <stringProp name="HTTPSampler.method">POST</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -722,9 +750,9 @@ try {
               <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/AutoRefreshData</stringProp>
+              <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}Services/XHR.axd/AutoRefreshData</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -876,9 +904,9 @@ try {
               <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/ProctorPing</stringProp>
+              <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}Services/XHR.axd/ProctorPing</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -914,9 +942,9 @@ try {
               <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/GetAccs</stringProp>
+              <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}Services/XHR.axd/GetAccs</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1023,9 +1051,9 @@ if (json[0]) {
               <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol"></stringProp>
+              <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/Services/XHR.axd/ApproveOpportunity</stringProp>
+              <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}Services/XHR.axd/ApproveOpportunity</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1054,9 +1082,9 @@ if (json[0]) {
           <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
           <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-          <stringProp name="HTTPSampler.path">/Services/XHR.axd/PauseSession</stringProp>
+          <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}Services/XHR.axd/PauseSession</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1074,9 +1102,9 @@ if (json[0]) {
           <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path">/saml/logout</stringProp>
+          <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}saml/logout</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -1153,11 +1181,11 @@ if (json[0]) {
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
-            <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+            <stringProp name="HTTPSampler.domain">${STUDENT_HOST}</stringProp>
+            <stringProp name="HTTPSampler.port">${STUDENT_HOST_PORT}</stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
-            <stringProp name="HTTPSampler.protocol"></stringProp>
+            <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path"></stringProp>
             <boolProp name="HTTPSampler.image_parser">true</boolProp>
@@ -1179,7 +1207,7 @@ if (json[0]) {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">/student</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1254,7 +1282,7 @@ if (json[0]) {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/API/MasterShell.axd/loginStudent?timestamp=${__time()}</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -1413,7 +1441,7 @@ if (json.data) {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/API/MasterShell.axd/getTests?timestamp=${__time()}</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -1610,7 +1638,7 @@ vars.put(&quot;OPP_KEY&quot;, oppKey);</stringProp>
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/API/MasterShell.axd/openTest?timestamp=${__time()}</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -1756,7 +1784,7 @@ if (json.data) {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                 <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                <stringProp name="HTTPSampler.protocol">http</stringProp>
+                <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
                 <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
                 <stringProp name="HTTPSampler.path">/student/Pages/API/MasterShell.axd/checkApproval?timestamp=${__time()}</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -1867,7 +1895,7 @@ try {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">/student/Shared/Audio/SoundCheckSample.ogg</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1919,7 +1947,7 @@ try {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">/student/Projects/SBAC/Help/help.html</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -1987,7 +2015,7 @@ try {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/API/MasterShell.axd/startTest?timestamp=${__time()}</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -2055,7 +2083,7 @@ try {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/TestShell.aspx</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2117,7 +2145,7 @@ try {
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                 <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                <stringProp name="HTTPSampler.protocol">http</stringProp>
+                <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
                 <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
                 <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/updateResponses</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -2229,7 +2257,7 @@ try {
                     <stringProp name="HTTPSampler.port"></stringProp>
                     <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                     <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                    <stringProp name="HTTPSampler.protocol"></stringProp>
+                    <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
                     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
                     <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=${__V(groupInfo_${groupNum}_g4)}&amp;page=${__V(groupInfo_${groupNum}_g1)}&amp;pageKey=${__V(groupInfo_${groupNum}_g5)}&amp;new=false&amp;attempt=1</stringProp>
                     <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -2377,7 +2405,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                       <stringProp name="HTTPSampler.port"></stringProp>
                       <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                       <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                      <stringProp name="HTTPSampler.protocol"></stringProp>
+                      <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
                       <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
                       <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
                       <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -2423,7 +2451,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                 <stringProp name="HTTPSampler.port"></stringProp>
                 <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                 <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                <stringProp name="HTTPSampler.protocol">http</stringProp>
+                <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
                 <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
                 <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/updateResponses</stringProp>
                 <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -2539,7 +2567,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                     <stringProp name="HTTPSampler.port"></stringProp>
                     <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                     <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                    <stringProp name="HTTPSampler.protocol"></stringProp>
+                    <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
                     <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
                     <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/getPageContent?groupID=${__V(groupInfo_${groupNum}_g4)}&amp;page=${__V(groupInfo_${groupNum}_g1)}&amp;pageKey=${__V(groupInfo_${groupNum}_g5)}&amp;new=false&amp;attempt=1</stringProp>
                     <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -2669,7 +2697,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);</stringPr
                         <stringProp name="HTTPSampler.port"></stringProp>
                         <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                         <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                        <stringProp name="HTTPSampler.protocol"></stringProp>
+                        <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
                         <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
                         <stringProp name="HTTPSampler.path">${__unescapeHtml(${__V(PASS_RESOURCE_URL_${resourceCounter})})}</stringProp>
                         <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -2788,7 +2816,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);</stringPr
                       <stringProp name="HTTPSampler.port"></stringProp>
                       <stringProp name="HTTPSampler.connect_timeout"></stringProp>
                       <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                      <stringProp name="HTTPSampler.protocol"></stringProp>
+                      <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
                       <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
                       <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
                       <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -2843,7 +2871,7 @@ if (questionAttempts.equals(maxAttempts)) {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/API/TestShell.axd/completeTest?currentPage=5&amp;timestamp=${__time()}</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -2919,7 +2947,7 @@ if (!prev.isResponseCodeOK()) {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/ReviewShell.aspx</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -3011,7 +3039,7 @@ if (!prev.isResponseCodeOK()) {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/API/MasterShell.axd/scoreTest?timestamp=${__time()}</stringProp>
               <stringProp name="HTTPSampler.method">POST</stringProp>
@@ -3097,7 +3125,7 @@ if (!prev.isResponseCodeOK()) {
               <stringProp name="HTTPSampler.port"></stringProp>
               <stringProp name="HTTPSampler.connect_timeout"></stringProp>
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
-              <stringProp name="HTTPSampler.protocol">http</stringProp>
+              <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
               <stringProp name="HTTPSampler.path">/student/Pages/LoginShell.xhtml</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -5885,6 +5913,7 @@ if (questionAttempts.equals(maxAttempts)) {
         <stringProp name="ProxyControlGui.content_type_include"></stringProp>
         <stringProp name="ProxyControlGui.content_type_exclude"></stringProp>
         <boolProp name="ProxyControlGui.notify_child_sl_filtered">true</boolProp>
+        <stringProp name="ProxyControlGui.proxy_prefix_http_sampler_name"></stringProp>
       </ProxyControl>
       <hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
