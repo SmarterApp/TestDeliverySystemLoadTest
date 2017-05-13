@@ -45,7 +45,7 @@ def main(argv):
     start_docker_daemon()
     create_and_start_client_container()
     server_ips = create_and_start_server_containers(num_workers)
-    update_test_sg('tds-jmeter-sg')
+    # update_test_sg('tds-jmeter-sg')
     client_ip = configure_client_machine(tmp_loadtest_jmx_path)
     create_and_distribute_seed_data(total_proctors, total_students)
     launch_worker_execute_test(client_ip, server_ips)

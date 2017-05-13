@@ -6,7 +6,7 @@ def main(argv):
     # number of proctors to create
     n = 100
     usernamePrefix = "proctor"
-    domainSuffix = "example.com"
+    domainSuffix = "testing.com"
     password = "password123"
     distributed_mode = False
 

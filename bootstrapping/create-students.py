@@ -137,8 +137,8 @@ def main(argv):
                     'FirstName': 'Name' + studentNum,
                     'MiddleName': 'MiddleName' + studentNum,
                     'Birthdate': '',
-                    'SSID': 'ASTDNT' + studentNum,
-                    'ExternalSSID': 'STDNT' + studentNum,
+                    'SSID': 'LTSTUDENT' + studentNum,
+                    'ExternalSSID': 'LTSTUDENT' + studentNum,
                     'GradeLevelWhenAssessed': grade_level,
                     'Sex': "Female" if random.randint(0, 1) == 0 else "Male",  # 50/50 male/female
                     'HispanicOrLatinoEthnicity': race[0],
@@ -209,7 +209,7 @@ def main(argv):
 
             # This is a StudentDto as required by the batching API
             data.append({
-                "ssid": 'ASTDNT' + studentNum,
+                "ssid": 'LTSTUDENT' + studentNum,
                 "stateAbbreviation": "CA",
                 "institutionIdentifier": institutionObject['entityId'],
                 "districtIdentifier": institutionObject['parentEntityId'],
@@ -218,7 +218,7 @@ def main(argv):
                 "middleName": 'MiddleName' + studentNum,
                 "birthDate": datetime.date.fromordinal(
                     datetime.date.today().toordinal() - random.randint(dayseperator, 3000)).strftime("%F"),
-                "externalSsid": 'STDNT' + studentNum,
+                "externalSsid": 'LTSTUDENT' + studentNum,
                 "gradeLevelWhenAssessed": grade_level,
                 "sex": "Female" if random.randint(0, 1) == 0 else "Male",
                 "hispanicOrLatino": race[0],
