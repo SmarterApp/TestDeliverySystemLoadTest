@@ -184,7 +184,7 @@ def main(argv):
                     print "Executing SCP transfer of student_logins_" + str(i + 1) + ".csv to host " + host + "..."
                     # Do a docker cp into the jmeter-server containers
                     os.system('eval "$(docker-machine env --swarm tds-jmeter-client)" && ' +
-                              'docker cp ' + student_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/student_logins.csv')
+                              'docker cp ' + student_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/bin/student_logins.csv')
                     print "Transfer to host " + host + " has completed. Cleaning up " + student_logins_part_path + "..."
                     os.remove(student_logins_part_path)
                     print "Cleanup complete!"

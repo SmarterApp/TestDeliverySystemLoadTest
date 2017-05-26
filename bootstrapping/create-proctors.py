@@ -75,7 +75,7 @@ def main(argv):
                 print "Executing SCP transfer of proctor_logins_" + str(i + 1) + ".csv to host " + host + "..."
                 # Do a docker cp into the jmeter-server containers
                 os.system('eval "$(docker-machine env --swarm tds-jmeter-client)" && ' +
-                    'docker cp ' + proctor_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/proctor_logins.csv')
+                    'docker cp ' + proctor_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/bin/proctor_logins.csv')
                 print "Transfer to host " + host + " has completed. Cleaning up " + proctor_logins_part_path + "..."
                 os.remove(proctor_logins_part_path)
                 print "Cleanup complete!"

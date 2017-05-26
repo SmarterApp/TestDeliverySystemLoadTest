@@ -254,7 +254,7 @@
           </elementProp>
           <elementProp name="STUDENT_HOST_ROOT_PATH" elementType="Argument">
             <stringProp name="Argument.name">STUDENT_HOST_ROOT_PATH</stringProp>
-            <stringProp name="Argument.value">/student</stringProp>
+            <stringProp name="Argument.value">/student/</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="STUDENT_HOST_PROTOCOL" elementType="Argument">
@@ -264,6 +264,21 @@
           </elementProp>
         </collectionProp>
       </Arguments>
+      <hashTree/>
+      <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+          <collectionProp name="Arguments.arguments"/>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain"></stringProp>
+        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        <stringProp name="HTTPSampler.protocol"></stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path"></stringProp>
+        <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+        <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+      </ConfigTestElement>
       <hashTree/>
       <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
         <collectionProp name="CookieManager.cookies"/>
@@ -358,6 +373,7 @@
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
             <boolProp name="HTTPSampler.image_parser">true</boolProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
@@ -390,6 +406,7 @@
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
             <boolProp name="HTTPSampler.image_parser">true</boolProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
@@ -547,6 +564,7 @@
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re">https?://${DOMAIN}/.*</stringProp>
@@ -568,6 +586,7 @@
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
             <boolProp name="HTTPSampler.image_parser">true</boolProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
@@ -596,6 +615,7 @@
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             <stringProp name="TestPlan.comments">gets the available tests that we can start</stringProp>
@@ -684,6 +704,7 @@ try {
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
             <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           </HTTPSamplerProxy>
@@ -760,6 +781,7 @@ try {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">TODO: run every 30 seconds and auto-approve</stringProp>
@@ -782,7 +804,7 @@ vars.put(&quot;PROCTOR_PING_COUNT&quot;, pingCount);
 
 //Clear existing approvals
 for (var i = 1; i &lt;= vars.get(&quot;STUDENTS_PER_PROCTOR&quot;); i++) {
-	vars.remove(&quot;APPROVAL_OPPS_AND_TEST_KEYS_&quot; + i);
+	vars.put(&quot;APPROVAL_OPPS_AND_TEST_KEYS_&quot; + i, null);
 }
 
 var response = prev.getResponseDataAsString();
@@ -800,7 +822,7 @@ try {
 		if (json.testOpps) {
 			for (var i = 0; i &lt; json.testOpps.length; i++) {
 				var testOpp = json.testOpps[i];
-				if (testOpp.status == &quot;completed&quot;) {
+				if (testOpp.status == &quot;completed&quot; || testOpp.status == &quot;submitted&quot;) {
 					completedStudents++;
 				} else {
 					break;
@@ -873,6 +895,9 @@ try {
 		failure++;
 		log.info(&quot;Proctor ${__threadNum()} - Current approval failures: &quot; + failure);
 		vars.put(&quot;APPROVAL_FAILURES&quot;,  failure);
+
+		//If we failed, it was likely due to a timeout, make a lighter request next run.
+		vars.put(&quot;GET_TEST_OPPS&quot;, &quot;false&quot;);
 	}
 }
 </stringProp>
@@ -917,6 +942,7 @@ try {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">Ping to keep session alive</stringProp>
@@ -955,6 +981,7 @@ try {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button</stringProp>
@@ -1064,6 +1091,7 @@ if (json[0]) {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">this is when the user clicks on the Approvals button // TODO: parse and get real accs values</stringProp>
@@ -1095,6 +1123,7 @@ if (json[0]) {
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
@@ -1115,6 +1144,7 @@ if (json[0]) {
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
@@ -1194,6 +1224,7 @@ if (json[0]) {
             <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path"></stringProp>
+            <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
             <boolProp name="HTTPSampler.image_parser">true</boolProp>
             <boolProp name="HTTPSampler.concurrentDwn">true</boolProp>
             <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
@@ -1215,12 +1246,13 @@ if (json[0]) {
               <stringProp name="HTTPSampler.response_timeout"></stringProp>
               <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
               <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-              <stringProp name="HTTPSampler.path">/student</stringProp>
+              <stringProp name="HTTPSampler.path">/student/</stringProp>
               <stringProp name="HTTPSampler.method">GET</stringProp>
               <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">Detected the start of a redirect chain</stringProp>
@@ -1296,6 +1328,7 @@ if (json[0]) {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             </HTTPSamplerProxy>
@@ -1455,6 +1488,7 @@ if (json.data) {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             </HTTPSamplerProxy>
@@ -1653,6 +1687,7 @@ vars.put(&quot;OPP_KEY&quot;, oppKey);</stringProp>
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">not sure what the response values are used for (browserKey and appKey)</stringProp>
@@ -1799,6 +1834,7 @@ if (json.data) {
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                 <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
                 <boolProp name="HTTPSampler.monitor">false</boolProp>
                 <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                 <stringProp name="TestPlan.comments">not sure what this is doing?</stringProp>
@@ -1910,6 +1946,7 @@ try {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">this is when the sound check icon is clicked on</stringProp>
@@ -1962,6 +1999,7 @@ try {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">shown before the actual test starts</stringProp>
@@ -2030,6 +2068,7 @@ try {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               <stringProp name="TestPlan.comments">user clicks the Begin Test button and posts this data to kick things off</stringProp>
@@ -2098,6 +2137,7 @@ try {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             </HTTPSamplerProxy>
@@ -2160,6 +2200,7 @@ try {
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                 <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
                 <boolProp name="HTTPSampler.monitor">false</boolProp>
                 <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                 <stringProp name="TestPlan.comments">TODO: regex to get prefetch and then dynamically make next calls from that</stringProp>
@@ -2273,6 +2314,7 @@ try {
                     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                     <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                     <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                    <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
                     <boolProp name="HTTPSampler.monitor">false</boolProp>
                     <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                   </HTTPSamplerProxy>
@@ -2331,10 +2373,10 @@ try {
                       <stringProp name="filename"></stringProp>
                       <stringProp name="parameters"></stringProp>
                       <boolProp name="resetInterpreter">false</boolProp>
-                      <stringProp name="script">import org.opentestsystem.loadtesting.tds_loadtesting;
-import org.opentestsystem.loadtesting.tds_loadtesting.PageContent;
-import org.opentestsystem.loadtesting.tds_loadtesting.Content;
-import org.opentestsystem.loadtesting.tds_loadtesting.Item;
+                      <stringProp name="script">import org.opentestsystem.loadtesting;
+import org.opentestsystem.loadtesting.PageContent;
+import org.opentestsystem.loadtesting.Content;
+import org.opentestsystem.loadtesting.Item;
 
 PageContent pageContent = new PageContent(prev.getResponseDataAsString());
 String groupNum = vars.get(&quot;groupNum&quot;);
@@ -2421,6 +2463,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                       <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                       <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                       <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                      <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
                       <boolProp name="HTTPSampler.monitor">false</boolProp>
                       <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                       <stringProp name="TestPlan.comments">TODO: look into what the index values that are posted are?</stringProp>
@@ -2467,6 +2510,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                 <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                 <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                 <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
                 <boolProp name="HTTPSampler.monitor">false</boolProp>
                 <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
               </HTTPSamplerProxy>
@@ -2584,6 +2628,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                     <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                     <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                     <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                    <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
                     <boolProp name="HTTPSampler.monitor">false</boolProp>
                     <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                   </HTTPSamplerProxy>
@@ -2651,10 +2696,10 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                       <stringProp name="filename"></stringProp>
                       <stringProp name="parameters"></stringProp>
                       <boolProp name="resetInterpreter">false</boolProp>
-                      <stringProp name="script">import org.opentestsystem.loadtesting.tds_loadtesting;
-import org.opentestsystem.loadtesting.tds_loadtesting.PageContent;
-import org.opentestsystem.loadtesting.tds_loadtesting.Content;
-import org.opentestsystem.loadtesting.tds_loadtesting.Item;
+                      <stringProp name="script">import org.opentestsystem.loadtesting;
+import org.opentestsystem.loadtesting.PageContent;
+import org.opentestsystem.loadtesting.Content;
+import org.opentestsystem.loadtesting.Item;
 
 PageContent pageContent = new PageContent(prev.getResponseDataAsString());
 String groupNum = vars.get(&quot;groupNum&quot;);
@@ -2714,6 +2759,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);</stringPr
                         <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                         <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                         <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                        <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
                         <boolProp name="HTTPSampler.monitor">false</boolProp>
                         <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                       </HTTPSamplerProxy>
@@ -2833,6 +2879,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);</stringPr
                       <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
                       <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
                       <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                      <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
                       <boolProp name="HTTPSampler.monitor">false</boolProp>
                       <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
                       <stringProp name="TestPlan.comments">TODO: look into what the index values that are posted are?</stringProp>
@@ -2888,6 +2935,7 @@ if (questionAttempts.equals(maxAttempts)) {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             </HTTPSamplerProxy>
@@ -2964,6 +3012,7 @@ if (!prev.isResponseCodeOK()) {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             </HTTPSamplerProxy>
@@ -3056,6 +3105,7 @@ if (!prev.isResponseCodeOK()) {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             </HTTPSamplerProxy>
@@ -3142,6 +3192,7 @@ if (!prev.isResponseCodeOK()) {
               <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
               <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
               <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
               <boolProp name="HTTPSampler.monitor">false</boolProp>
               <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
             </HTTPSamplerProxy>
@@ -5865,7 +5916,7 @@ if (questionAttempts.equals(maxAttempts)) {
             <threadCounts>true</threadCounts>
           </value>
         </objProp>
-        <stringProp name="filename"></stringProp>
+        <stringProp name="filename">/Users/willtritchler/smarter_app/tds_loadtest/testoutput.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
@@ -5898,7 +5949,7 @@ if (questionAttempts.equals(maxAttempts)) {
             <threadCounts>true</threadCounts>
           </value>
         </objProp>
-        <stringProp name="filename">/Users/emunoz/trunk/sbrepo/tds-loadtest/bootstrapping/testoutput-final-20kstudents-20rampup-fairway-2.jtl</stringProp>
+        <stringProp name="filename">/Users/willtritchler/smarter_app/tds_loadtest/tds-loadtest.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>

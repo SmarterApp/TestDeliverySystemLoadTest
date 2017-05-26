@@ -5,16 +5,49 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.opentestsystem.loadtesting</groupId>
-    <artifactId>tds_loadtesting</artifactId>
+    <artifactId>tds-loadtesting</artifactId>
     <version>1.0</version>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <packaging>pom</packaging>
 
+    <properties>
+        <docker.image.prefix>fwsbac</docker.image.prefix>
+        <docker-maven-plugin.version>0.4.10</docker-maven-plugin.version>
+    </properties>
+
+    <modules>
+        <module>loadtest-library</module>
+        <module>tds-jmeter-client</module>
+        <module>tds-jmeter-server</module>
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${docker-maven-plugin.version}</version>
+                    <configuration>
+                        <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                        <imageTags>
+                            <imageTag>${project.version}</imageTag>
+                            <imageTag>latest</imageTag>
+                        </imageTags>
+                        <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

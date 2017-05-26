@@ -68,13 +68,13 @@ while [ "$iterator" -le "$count" ]; do
         --detach
         --publish 1099:1099
         --env IP=$ip
-        hhcordero/docker-jmeter-server"
+        fwsbac/tds-jmeter-server"
 
     docker run \
         --detach \
         --publish 1099:1099 \
         --env IP=$ip \
-        hhcordero/docker-jmeter-server
+        fwsbac/tds-jmeter-server
 
     # Concatenate server ip addresses
     server_ips+="$ip,"
