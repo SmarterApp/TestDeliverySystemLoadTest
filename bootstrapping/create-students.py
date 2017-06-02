@@ -120,7 +120,7 @@ def main(argv):
             for i in range(0, n):
                 studentNum = str(i)
                 if loadtest_only:
-                    institutionObject = {'parentEntityId': 'TEST', 'entityId': 'TEST'}
+                    institutionObject = {'parentEntityId': 'orbend001', 'entityId': 'orbendhs'}
                 else:
                     institutionObject = institutions[random.randint(0, total_institutions - 1)]
                 grade_level = grade_levels[random.randint(0, total_grade_levels - 1)]
