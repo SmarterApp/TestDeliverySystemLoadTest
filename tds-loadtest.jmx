@@ -570,7 +570,68 @@
             <boolProp name="HTTPSampler.monitor">false</boolProp>
             <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
           </HTTPSamplerProxy>
-          <hashTree/>
+          <hashTree>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">SAMLResponse</stringProp>
+              <stringProp name="RegexExtractor.regex">name=&quot;SAMLResponse&quot; value=&quot;(.*?)&quot;</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Unescape SAMLResponse" enabled="true">
+              <stringProp name="scriptLanguage">javascript</stringProp>
+              <stringProp name="parameters">${__unescapeHtml(${SAMLResponse})}</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="cacheKey"></stringProp>
+              <stringProp name="script">var response = vars.get(&quot;SAMLResponse&quot;);
+try {
+	vars.put(&quot;unescapedSAMLResponse&quot;, Parameters);
+	ctx.setVariables(vars);
+} catch (exception) {
+	log.error(&quot;Proctor ${__threadNum()} : Error in decoding login response body when logging into proctor&quot;);
+	log.error(exception);
+}
+</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If Login requires Post-back" enabled="true">
+            <stringProp name="IfController.condition">${__javaScript(vars.get(&quot;SAMLResponse&quot;) != null)}</stringProp>
+            <boolProp name="IfController.evaluateAll">false</boolProp>
+            <boolProp name="IfController.useExpression">true</boolProp>
+          </IfController>
+          <hashTree>
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST Login Response to Proctor" enabled="true">
+              <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                <collectionProp name="Arguments.arguments">
+                  <elementProp name="SAMLResponse" elementType="HTTPArgument">
+                    <boolProp name="HTTPArgument.always_encode">true</boolProp>
+                    <stringProp name="Argument.value">${unescapedSAMLResponse}</stringProp>
+                    <stringProp name="Argument.metadata">=</stringProp>
+                    <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                    <stringProp name="Argument.name">SAMLResponse</stringProp>
+                  </elementProp>
+                </collectionProp>
+              </elementProp>
+              <stringProp name="HTTPSampler.domain">${PROCTOR_HOST}</stringProp>
+              <stringProp name="HTTPSampler.port">${PROCTOR_HOST_PORT}</stringProp>
+              <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+              <stringProp name="HTTPSampler.response_timeout"></stringProp>
+              <stringProp name="HTTPSampler.protocol">${PROCTOR_HOST_PROTOCOL}</stringProp>
+              <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+              <stringProp name="HTTPSampler.path">${PROCTOR_HOST_ROOT_PATH}saml/SSO</stringProp>
+              <stringProp name="HTTPSampler.method">POST</stringProp>
+              <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+              <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+              <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+              <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+              <boolProp name="HTTPSampler.monitor">false</boolProp>
+              <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+            </HTTPSamplerProxy>
+            <hashTree/>
+          </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Request Proctor Application After Login" enabled="false">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments"/>
@@ -1554,8 +1615,11 @@ do {
 } while (json.data[i].status !== 2);
 
 //FORCE TO TEST KNOWN TO WORK
-var testId = &quot;SBAC-IRP-Perf-MATH-3&quot;; //json.data[i].id;
-var testKey = &quot;(SBAC_PT)SBAC-IRP-Perf-MATH-3-Summer-2015-2016&quot;; //json.data[i].key;
+//var testId = &quot;SBAC-IRP-Perf-MATH-3&quot;; //json.data[i].id;
+//var testKey = &quot;(SBAC_PT)SBAC-IRP-Perf-MATH-3-Summer-2015-2016&quot;; //json.data[i].key;
+
+var testId = json.data[i].id;
+var testKey = json.data[i].key;
 var testSubject = json.data[i].subject;
 var opportunity = json.data[i].opportunity;
 var oppKey = json.data[i].oppKey;
@@ -2412,64 +2476,71 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                       <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
                     </CounterConfig>
                     <hashTree/>
-                    <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list - /resolve" enabled="true">
-                      <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
-                        <collectionProp name="Arguments.arguments">
-                          <elementProp name="bankKey" elementType="HTTPArgument">
-                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                            <stringProp name="Argument.value">${__V(wordList_${wordNum}_g1)}</stringProp>
-                            <stringProp name="Argument.metadata">=</stringProp>
-                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                            <stringProp name="Argument.name">bankKey</stringProp>
-                          </elementProp>
-                          <elementProp name="itemKey" elementType="HTTPArgument">
-                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                            <stringProp name="Argument.value">${__V(wordList_${wordNum}_g2)}</stringProp>
-                            <stringProp name="Argument.metadata">=</stringProp>
-                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                            <stringProp name="Argument.name">itemKey</stringProp>
-                          </elementProp>
-                          <elementProp name="TDS_ACCS" elementType="HTTPArgument">
-                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                            <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
-                            <stringProp name="Argument.metadata">=</stringProp>
-                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                            <stringProp name="Argument.name">TDS_ACCS</stringProp>
-                          </elementProp>
-                          <elementProp name="index" elementType="HTTPArgument">
-                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                            <stringProp name="Argument.value">1</stringProp>
-                            <stringProp name="Argument.metadata">=</stringProp>
-                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                            <stringProp name="Argument.name">index</stringProp>
-                          </elementProp>
-                          <elementProp name="index" elementType="HTTPArgument">
-                            <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                            <stringProp name="Argument.value">2</stringProp>
-                            <stringProp name="Argument.metadata">=</stringProp>
-                            <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                            <stringProp name="Argument.name">index</stringProp>
-                          </elementProp>
-                        </collectionProp>
-                      </elementProp>
-                      <stringProp name="HTTPSampler.domain"></stringProp>
-                      <stringProp name="HTTPSampler.port"></stringProp>
-                      <stringProp name="HTTPSampler.connect_timeout"></stringProp>
-                      <stringProp name="HTTPSampler.response_timeout"></stringProp>
-                      <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
-                      <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-                      <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
-                      <stringProp name="HTTPSampler.method">POST</stringProp>
-                      <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-                      <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
-                      <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
-                      <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
-                      <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
-                      <boolProp name="HTTPSampler.monitor">false</boolProp>
-                      <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
-                      <stringProp name="TestPlan.comments">TODO: look into what the index values that are posted are?</stringProp>
-                    </HTTPSamplerProxy>
-                    <hashTree/>
+                    <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If bankKey and itemKey exist" enabled="true">
+                      <stringProp name="IfController.condition">${__BeanShell(vars.get(&quot;wordList_${wordNum}_g1&quot;) != null &amp;&amp; vars.get(&quot;wordList_${wordNum}_g2&quot;) != null)}</stringProp>
+                      <boolProp name="IfController.evaluateAll">false</boolProp>
+                      <boolProp name="IfController.useExpression">true</boolProp>
+                    </IfController>
+                    <hashTree>
+                      <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list - /resolve" enabled="true">
+                        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                          <collectionProp name="Arguments.arguments">
+                            <elementProp name="bankKey" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">${__V(wordList_${wordNum}_g1)}</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">bankKey</stringProp>
+                            </elementProp>
+                            <elementProp name="itemKey" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">${__V(wordList_${wordNum}_g2)}</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">itemKey</stringProp>
+                            </elementProp>
+                            <elementProp name="TDS_ACCS" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">TDS_ACCS</stringProp>
+                            </elementProp>
+                            <elementProp name="index" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">1</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">index</stringProp>
+                            </elementProp>
+                            <elementProp name="index" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">2</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">index</stringProp>
+                            </elementProp>
+                          </collectionProp>
+                        </elementProp>
+                        <stringProp name="HTTPSampler.domain"></stringProp>
+                        <stringProp name="HTTPSampler.port"></stringProp>
+                        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                        <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
+                        <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                        <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
+                        <stringProp name="HTTPSampler.method">POST</stringProp>
+                        <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                        <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                        <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                        <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                        <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                        <boolProp name="HTTPSampler.monitor">false</boolProp>
+                        <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                        <stringProp name="TestPlan.comments">TODO: look into what the index values that are posted are?</stringProp>
+                      </HTTPSamplerProxy>
+                      <hashTree/>
+                    </hashTree>
                   </hashTree>
                 </hashTree>
               </hashTree>
@@ -2677,7 +2748,7 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);
                     <hashTree/>
                     <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Find word lists" enabled="true">
                       <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-                      <stringProp name="RegexExtractor.refname">wordList</stringProp>
+                      <stringProp name="RegexExtractor.refname">wordListInner</stringProp>
                       <stringProp name="RegexExtractor.regex">&lt;resource type=&quot;wordList&quot; bankKey=&quot;([0-9]+?)&quot; itemKey=&quot;([0-9]+?)&quot;/&gt;</stringProp>
                       <stringProp name="RegexExtractor.template">$1$$2$</stringProp>
                       <stringProp name="RegexExtractor.default"></stringProp>
@@ -2815,32 +2886,32 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);</stringPr
                   </hashTree>
                   <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop through word lists from response" enabled="true">
                     <boolProp name="LoopController.continue_forever">true</boolProp>
-                    <stringProp name="LoopController.loops">${wordList_matchNr}</stringProp>
+                    <stringProp name="LoopController.loops">${wordListInner_matchNr}</stringProp>
                   </LoopController>
                   <hashTree>
                     <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
                       <stringProp name="CounterConfig.start">1</stringProp>
-                      <stringProp name="CounterConfig.end">${wordList_matchNr}</stringProp>
+                      <stringProp name="CounterConfig.end">${wordListInner_matchNr}</stringProp>
                       <stringProp name="CounterConfig.incr">1</stringProp>
-                      <stringProp name="CounterConfig.name">wordNum</stringProp>
+                      <stringProp name="CounterConfig.name">wordNumInner</stringProp>
                       <stringProp name="CounterConfig.format">#</stringProp>
                       <boolProp name="CounterConfig.per_user">true</boolProp>
                       <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
                     </CounterConfig>
                     <hashTree/>
-                    <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list - /resolve" enabled="true">
+                    <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list - /resolve" enabled="false">
                       <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                         <collectionProp name="Arguments.arguments">
                           <elementProp name="bankKey" elementType="HTTPArgument">
                             <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                            <stringProp name="Argument.value">${__V(wordList_${wordNum}_g1)}</stringProp>
+                            <stringProp name="Argument.value">${__V(wordListInner_${wordNumInner}_g1)}</stringProp>
                             <stringProp name="Argument.metadata">=</stringProp>
                             <boolProp name="HTTPArgument.use_equals">true</boolProp>
                             <stringProp name="Argument.name">bankKey</stringProp>
                           </elementProp>
                           <elementProp name="itemKey" elementType="HTTPArgument">
                             <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                            <stringProp name="Argument.value">${__V(wordList_${wordNum}_g2)}</stringProp>
+                            <stringProp name="Argument.value">${__V(wordListInner_${wordNumInner}_g2)}</stringProp>
                             <stringProp name="Argument.metadata">=</stringProp>
                             <boolProp name="HTTPArgument.use_equals">true</boolProp>
                             <stringProp name="Argument.name">itemKey</stringProp>
@@ -2892,6 +2963,71 @@ vars.put(&quot;RESPONSES_XML_&quot; + pages.toString(), responsesXml);</stringPr
                         <boolProp name="displaySamplerProperties">true</boolProp>
                         <boolProp name="displaySystemProperties">false</boolProp>
                       </DebugPostProcessor>
+                      <hashTree/>
+                    </hashTree>
+                    <IfController guiclass="IfControllerPanel" testclass="IfController" testname="If bankKey and itemKey exist" enabled="true">
+                      <stringProp name="IfController.condition">${__BeanShell(vars.get(&quot;wordList_${wordNum}_g1&quot;) != null &amp;&amp; vars.get(&quot;wordList_${wordNum}_g2&quot;) != null)}</stringProp>
+                      <boolProp name="IfController.evaluateAll">false</boolProp>
+                      <boolProp name="IfController.useExpression">true</boolProp>
+                    </IfController>
+                    <hashTree>
+                      <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="request word list - /resolve" enabled="true">
+                        <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+                          <collectionProp name="Arguments.arguments">
+                            <elementProp name="bankKey" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">${__V(wordList_${wordNum}_g1)}</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">bankKey</stringProp>
+                            </elementProp>
+                            <elementProp name="itemKey" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">${__V(wordList_${wordNum}_g2)}</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">itemKey</stringProp>
+                            </elementProp>
+                            <elementProp name="TDS_ACCS" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">TDS_WL_Glossary</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">TDS_ACCS</stringProp>
+                            </elementProp>
+                            <elementProp name="index" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">1</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">index</stringProp>
+                            </elementProp>
+                            <elementProp name="index" elementType="HTTPArgument">
+                              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                              <stringProp name="Argument.value">2</stringProp>
+                              <stringProp name="Argument.metadata">=</stringProp>
+                              <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                              <stringProp name="Argument.name">index</stringProp>
+                            </elementProp>
+                          </collectionProp>
+                        </elementProp>
+                        <stringProp name="HTTPSampler.domain"></stringProp>
+                        <stringProp name="HTTPSampler.port"></stringProp>
+                        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+                        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+                        <stringProp name="HTTPSampler.protocol">${STUDENT_HOST_PROTOCOL}</stringProp>
+                        <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+                        <stringProp name="HTTPSampler.path">/student/Pages/API/WordList.axd/resolve</stringProp>
+                        <stringProp name="HTTPSampler.method">POST</stringProp>
+                        <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+                        <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+                        <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+                        <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+                        <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+                        <boolProp name="HTTPSampler.monitor">false</boolProp>
+                        <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+                        <stringProp name="TestPlan.comments">TODO: look into what the index values that are posted are?</stringProp>
+                      </HTTPSamplerProxy>
                       <hashTree/>
                     </hashTree>
                   </hashTree>
