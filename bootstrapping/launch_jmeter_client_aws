@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Generate token - use swarm for service discovery
-TOKEN=$(docker run --rm swarm create)
+#TOKEN=$(docker run --rm swarm create)
 
-sed -i "/export TOKEN=/c\export TOKEN=$TOKEN" ./app_aws.env
+#sed -i -e "s/export TOKEN=.*/export TOKEN=$TOKEN/" ./app_aws.env
 
 # Initialise env variables
 source ./app_aws.env

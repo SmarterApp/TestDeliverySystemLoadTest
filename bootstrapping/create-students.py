@@ -120,7 +120,7 @@ def main(argv):
             for i in range(0, n):
                 studentNum = str(i)
                 if loadtest_only:
-                    institutionObject = {'parentEntityId': 'TEST', 'entityId': 'TEST'}
+                    institutionObject = {'parentEntityId': 'orbend001', 'entityId': 'orbendhs'}
                 else:
                     institutionObject = institutions[random.randint(0, total_institutions - 1)]
                 grade_level = grade_levels[random.randint(0, total_grade_levels - 1)]
@@ -137,8 +137,8 @@ def main(argv):
                     'FirstName': 'Name' + studentNum,
                     'MiddleName': 'MiddleName' + studentNum,
                     'Birthdate': '',
-                    'SSID': 'ASTDNT' + studentNum,
-                    'ExternalSSID': 'STDNT' + studentNum,
+                    'SSID': 'LTSTUDENT' + studentNum,
+                    'ExternalSSID': 'LTSTUDENT' + studentNum,
                     'GradeLevelWhenAssessed': grade_level,
                     'Sex': "Female" if random.randint(0, 1) == 0 else "Male",  # 50/50 male/female
                     'HispanicOrLatinoEthnicity': race[0],
@@ -184,7 +184,7 @@ def main(argv):
                     print "Executing SCP transfer of student_logins_" + str(i + 1) + ".csv to host " + host + "..."
                     # Do a docker cp into the jmeter-server containers
                     os.system('eval "$(docker-machine env --swarm tds-jmeter-client)" && ' +
-                              'docker cp ' + student_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/student_logins.csv')
+                              'docker cp ' + student_logins_part_path + ' ' + host + ':/usr/local/apache-jmeter-2.13/bin/student_logins.csv')
                     print "Transfer to host " + host + " has completed. Cleaning up " + student_logins_part_path + "..."
                     os.remove(student_logins_part_path)
                     print "Cleanup complete!"
@@ -209,7 +209,7 @@ def main(argv):
 
             # This is a StudentDto as required by the batching API
             data.append({
-                "ssid": 'ASTDNT' + studentNum,
+                "ssid": 'LTSTUDENT' + studentNum,
                 "stateAbbreviation": "CA",
                 "institutionIdentifier": institutionObject['entityId'],
                 "districtIdentifier": institutionObject['parentEntityId'],
@@ -218,7 +218,7 @@ def main(argv):
                 "middleName": 'MiddleName' + studentNum,
                 "birthDate": datetime.date.fromordinal(
                     datetime.date.today().toordinal() - random.randint(dayseperator, 3000)).strftime("%F"),
-                "externalSsid": 'STDNT' + studentNum,
+                "externalSsid": 'LTSTUDENT' + studentNum,
                 "gradeLevelWhenAssessed": grade_level,
                 "sex": "Female" if random.randint(0, 1) == 0 else "Male",
                 "hispanicOrLatino": race[0],

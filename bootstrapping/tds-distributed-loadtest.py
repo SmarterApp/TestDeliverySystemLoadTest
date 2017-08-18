@@ -1,5 +1,6 @@
 import subprocess, os, sys, getopt, re, time, shutil
 import boto.ec2
+from xml.etree import ElementTree as elementTree
 
 
 def main(argv):
@@ -16,7 +17,7 @@ def main(argv):
 
     for opt, arg in opts:
         if opt in ("-h", "--help"):
-            usage();
+            usage()
             sys.exit()
         elif opt in ("-c", "--cleanup"):
             cleanup()
@@ -45,7 +46,7 @@ def main(argv):
     start_docker_daemon()
     create_and_start_client_container()
     server_ips = create_and_start_server_containers(num_workers)
-    update_test_sg('tds-jmeter-sg')
+    #update_test_sg('tds-jmeter-sg')
     client_ip = configure_client_machine(tmp_loadtest_jmx_path)
     create_and_distribute_seed_data(total_proctors, total_students)
     launch_worker_execute_test(client_ip, server_ips)
@@ -72,15 +73,16 @@ def create_loadtest_copy(loadtest_jmx_path, num_workers, total_students, student
     # Step 1 - Create a copy of the loadtest file and replace student count in copy
     tmp_loadtest_jmx_path = "/tmp/tds-loadtest.jmx"
     print "Copying original jmx file at " + loadtest_jmx_path + ' to ' + tmp_loadtest_jmx_path
+    tree = elementTree.parse(loadtest_jmx_path)
     # Copy the loadtest jmx file to the tmp directory.
     shutil.copy2(loadtest_jmx_path, tmp_loadtest_jmx_path)
-    # Replace the TOTAL_STUDENT_COUNT variable with the actual total # of students / # of worker nodes
-    os.system(
-        "sed -i -e 's/\${TOTAL_STUDENT_COUNT}/" + str(total_students / num_workers) + "/g' " + tmp_loadtest_jmx_path)
+    # Replace the TOTAL_STUDENT_COUNT variable with the actual total # of students / # of worker nodes/
+    tree.getroot().find("./hashTree/hashTree[1]/Arguments/collectionProp/elementProp[@name='TOTAL_STUDENT_COUNT']/stringProp[@name='Argument.value']").text = str(total_students / num_workers)
+    #os.system("sed -i -e 's/\${TOTAL_STUDENT_COUNT}/" + str(total_students / num_workers) + "/g' " + tmp_loadtest_jmx_path)
     # Replace the STUDENTS_PER_PROCTOR with the amount provided in the script arguments
-    os.system(
-        "sed -i -e 's/\${STUDENTS_PER_PROCTOR}/" + str(students_per_proctor) + "/g' " + tmp_loadtest_jmx_path)
-    students_per_proctor
+    tree.getroot().find("./hashTree/hashTree[1]/Arguments/collectionProp/elementProp[@name='STUDENTS_PER_PROCTOR']/stringProp[@name='Argument.value']").text = str(students_per_proctor)
+    #os.system("sed -i -e 's/\${STUDENTS_PER_PROCTOR}/" + str(students_per_proctor) + "/g' " + tmp_loadtest_jmx_path)
+    tree.write(tmp_loadtest_jmx_path)
     return tmp_loadtest_jmx_path
 
 
@@ -176,7 +178,7 @@ def launch_worker_execute_test(client_ip, server_ips):
               '  --env IP="' + client_ip + '" '
               '  --env REMOTE_HOSTS="' + server_ips + '" '
               '  --env constraint:type==client ' +
-              '  hhcordero/docker-jmeter-client')
+              '  fwsbac/tds-jmeter-client')
 
 
 def usage():
